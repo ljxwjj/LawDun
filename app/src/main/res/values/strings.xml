@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">e律师</string>
+
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+    <string name="commit">确定提交</string>
+    <string name="form_search">检索</string>
+    <string name="search">搜索</string>
+    <string name="form_clear">清空</string>
+    <string name="main_exit">再按一次返回键退出</string>
+    <string name="notice">提示消息</string>
+    <string name="confirm_delete">确定删除</string>
+
+    <string name="wait_loading">正在加载，请稍等...</string>
+    <string name="submit_success">数据提交成功</string>
+    <string name="submit_fail">数据提交失败</string>
+    <string name="load_fail">数据加载失败</string>
+    <string name="no_more">没有更多了</string>
+    <string name="load_data_empty">暂未检索到相关数据</string>
+    <string name="relogin">重新登录</string>
+    <string name="relogin_message">您的帐号已在其它设备上登录。如非本人操作，则密码可能已泄露，建议修改密码，如有疑问请联系客服。</string>
+    <string name="network_exception_message">网络异常，请重试</string>
+</resources>
