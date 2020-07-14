@@ -24,6 +24,16 @@
         app:layout_constraintTop_toBottomOf="@id/inputPhone"
         android:inputType="textPassword" />
 
+    <TextView
+        android:id="@+id/inputFile"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:hint="请选择文件"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/inputPassword" />
+
     <Button
         android:id="@+id/submitBtn"
         android:layout_width="wrap_content"
@@ -32,7 +42,7 @@
         android:text="登录"
         android:textColor="@color/common_color_white"
         android:textSize="@dimen/common_size_normal"
-        app:layout_constraintTop_toBottomOf="@id/inputPassword"
+        app:layout_constraintTop_toBottomOf="@id/inputFile"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/registerBtn"
         app:layout_constraintHorizontal_chainStyle="spread"/>

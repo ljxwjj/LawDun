@@ -106,7 +106,7 @@ public class AppRequest {
 			header.put("app_Uid", "0");
 			header.put("app_LawId", "0");
 		}
-		header.put("app_code", generateSign());
+		header.put("app_code", generateSign().toLowerCase());
 	}
 
 	public void signWithJson() {
@@ -117,7 +117,7 @@ public class AppRequest {
 			header.put("app_Uid", "0");
 			header.put("app_LawId", "0");
 		}
-		header.put("app_code", generateSign());
+		header.put("app_code", generateSign().toLowerCase());
 	}
 
 	private String generateSign() {
@@ -136,9 +136,8 @@ public class AppRequest {
 		});
 		for (String key : keys) {
 			String value = allParam.get(key);
-			if (!StringUtil.isSignlessInteger(value)) continue;
 			strBuilder.append(key.toLowerCase());
-			strBuilder.append(param.get(key));
+			strBuilder.append(value);
 		}
 		return MD5Util.getMD5(strBuilder.toString());
 	}
