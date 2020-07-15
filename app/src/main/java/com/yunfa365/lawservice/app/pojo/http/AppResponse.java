@@ -9,7 +9,8 @@ public class AppResponse {
 	/**
 	 * 状态  0：成功   1：参数有误或未经过参数验证  2：请求失败
 	 */
-	public int Status;
+	public boolean flag;
+	public String Code;
 	/**
 	 * 返回信息(当请求返回状态不为0时的提示信息，请求成功时此字段返回空)
 	 */
@@ -17,25 +18,23 @@ public class AppResponse {
 	/**
 	 *  当请求成功时，返回数据(同样为json格式)
 	 */
-	public String Results;
+	public String RData;
 
 	/**
 	 * 响应结果原始字符串
 	 */
 	public String response;
-	public Object body;
-	public Object data;
 
 	public <T> T resultsToObject(Class<T> t) {
-		return StringUtil.toObject(Results, t);
+		return StringUtil.toObject(RData, t);
 	}
 
 	public <T> List<T> resultsToList(Class<T> t) {
-		return StringUtil.toObjectList(Results, t);
+		return StringUtil.toObjectList(RData, t);
 	}
 
 	public <T> T[] resultsToArray(Class<T> t) {
-		return StringUtil.toObjectArray(Results, t);
+		return StringUtil.toObjectArray(RData, t);
 	}
 
 	public <T> T getFirstObject(Class<T> t) {

@@ -18,9 +18,7 @@ import com.mobsandgeeks.saripaar.annotation.Order;
 import com.mobsandgeeks.saripaar.annotation.Password;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.yunfa365.lawservice.app.R;
-import com.yunfa365.lawservice.app.constant.AppCst;
 import com.yunfa365.lawservice.app.future.HttpFormFuture;
-import com.yunfa365.lawservice.app.future.HttpJsonFuture;
 import com.yunfa365.lawservice.app.pojo.AppGlobal;
 import com.yunfa365.lawservice.app.pojo.User;
 import com.yunfa365.lawservice.app.pojo.event.LoginEvent;
@@ -99,7 +97,7 @@ class LoginActivity extends BaseActivity {
 
     @Click(R.id.registerBtn)
     void registerBtnOnClick() {
-        WebActivity_.intent(this).start();
+        RegisterActivity_.intent(this).start();
     }
 
     @Click(R.id.inputFile)
@@ -186,9 +184,9 @@ class LoginActivity extends BaseActivity {
                     public void onComplete(AgnettyResult result) {
                         hideLoading();
                         AppResponse resp = (AppResponse)result.getAttach();
-                        if (resp.Status == AppCst.HTTP_CODE_SUCCESS) {
-                            AppGlobal.mUser = resp.resultsToObject(User.class);
-                            SpUtil.setCurrentUser(LoginActivity.this, resp.Results);
+                        if (resp.flag) {
+                            AppGlobal.mUser = resp.getFirstObject(User.class);
+                            SpUtil.setCurrentUser(LoginActivity.this, resp.RData);
 
                             EventBus.getDefault().post(new LoginEvent());
                             LogUtil.d("login success----------");

@@ -62,9 +62,11 @@
         <activity android:name=".ui.activity.LoginActivity_"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".ui.activity.RegisterActivity_"
+            android:screenOrientation="portrait">
+        </activity>
         <activity android:name=".ui.activity.WebActivity_"
-        android:screenOrientation="portrait">
-    </activity>
+        android:screenOrientation="portrait"></activity>
 
     </application>
 

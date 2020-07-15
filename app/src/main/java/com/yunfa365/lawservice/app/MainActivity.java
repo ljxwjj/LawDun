@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView text1;
     private TextView text2;
-    private int mWiteTime = 3;
+    private int mWiteTime = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

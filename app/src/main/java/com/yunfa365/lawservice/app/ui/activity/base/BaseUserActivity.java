@@ -8,10 +8,13 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
+import com.baidu.android.pushservice.PushManager;
 import com.yunfa365.lawservice.app.R;
 import com.yunfa365.lawservice.app.pojo.AppGlobal;
 import com.yunfa365.lawservice.app.pojo.event.LogoutEvent;
+import com.yunfa365.lawservice.app.ui.activity.LoginActivity_;
 import com.yunfa365.lawservice.app.utils.AppUtil;
+import com.yunfa365.lawservice.app.utils.SpUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -48,5 +51,14 @@ public class BaseUserActivity extends BaseActivity {
         public void onEvent(LogoutEvent event) {
             showReLoginDialog();
         }
+    }
+
+    protected void logout() {
+        AppGlobal.mUser = null;
+        SpUtil.setCurrentUser(this, "");
+        PushManager.stopWork(this); // 关闭推送
+        Intent intent = new Intent(this, LoginActivity_.class);
+        startActivity(intent);
+        finish();
     }
 }

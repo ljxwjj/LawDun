@@ -46,7 +46,7 @@ public class User {
                     @Override
                     public void onComplete(AgnettyResult result) {
                         AppResponse resp = (AppResponse) result.getAttach();
-                        if (resp != null && resp.Status == AppCst.HTTP_CODE_SUCCESS) {
+                        if (resp != null && resp.flag) {
                             UserRole roles = resp.resultsToObject(UserRole.class);
                             AppGlobal.mUser.mRole = roles;
                             AppGlobal.mUser.mRole.parseRoles();

@@ -89,7 +89,8 @@ public class AppApplication extends Application {
         }
         LogUtil.d(userInfo);
         try {
-            AppGlobal.mUser = StringUtil.toObject(userInfo, User.class);
+            User[] users = StringUtil.toObjectArray(userInfo, User.class);
+            AppGlobal.mUser = users[0];
             EventBus.getDefault().post(new LoginEvent());
         } catch (Exception e) {
             SpUtil.setCurrentUser(this, "");

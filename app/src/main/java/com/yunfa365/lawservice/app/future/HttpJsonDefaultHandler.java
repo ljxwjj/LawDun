@@ -63,12 +63,13 @@ public class HttpJsonDefaultHandler extends HttpJsonHandler {
             response = response.replaceAll("\\\\\\\\", "\\\\");
             JSONObject json = new JSONObject(response);
             AppResponse res = new AppResponse();
+            res.flag = json.getBoolean("flag");
+            res.Code = json.getString("Code");
             res.Message = json.getString("Message");
-            res.Status = json.getInt("Status");
-            res.Results = json.getString("Results");
+            res.RData = json.getString("RData");
             res.response = response;
 
-            if (res.Status == -1) {
+            if ("-1".equals(res.Code)) {
                 EventBus.getDefault().post(new LogoutEvent());
             }
             evt.getFuture().commitComplete(res);

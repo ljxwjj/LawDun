@@ -12,11 +12,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 public class AppRequest {
-	static final Random random = new Random();
-
 	@Expose(serialize = false)
 	private String urlPath; // must start with /
 
@@ -136,9 +133,9 @@ public class AppRequest {
 		});
 		for (String key : keys) {
 			String value = allParam.get(key);
-			strBuilder.append(key.toLowerCase());
+			strBuilder.append(key);
 			strBuilder.append(value);
 		}
-		return MD5Util.getMD5(strBuilder.toString());
+		return MD5Util.getMD5(strBuilder.toString().toLowerCase());
 	}
 }
