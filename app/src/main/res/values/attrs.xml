@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="AVLoadingIndicatorView">
+        <attr name="minWidth" format="dimension" />
+        <attr name="maxWidth" format="dimension"/>
+        <attr name="minHeight" format="dimension" />
+        <attr name="maxHeight" format="dimension"/>
+        <attr name="indicatorName" format="string"/>
+        <attr name="indicatorColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="IconCenterEditText">
+        <attr name="isLeft" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="CustomFont">
+        <attr name="ttf_font" format="string" />
+    </declare-styleable>
+
+    <attr name="labelStr" format="string" />
+    <attr name="valueStr" format="string" />
+    <declare-styleable name="LabelTextView">
+        <attr name="labelStr" />
+        <attr name="valueStr" />
+    </declare-styleable>
+
+    <declare-styleable name="TitleEditText">
+        <attr name="labelStr" />
+        <attr name="valueStr" />
+        <attr name="hintStr" format="string" />
+        <attr name="isSelect" format="boolean" />
+        <attr name="android:inputType"/>
+        <attr name="android:maxLength"/>
+    </declare-styleable>
+
+    <declare-styleable name="ClipSquareImageView">
+        <attr name="ClipSquareIV_BorderDistance" format="dimension"/>
+        <attr name="ClipSquareIV_BorderWidth" format="dimension"/>
+        <attr name="ClipSquareIV_BorderColor" format="color"/>
+        <attr name="ClipSquareIV_OutsideColor" format="color"/>
+    </declare-styleable>
+</resources>

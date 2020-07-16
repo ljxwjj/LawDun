@@ -68,6 +68,10 @@
         <activity android:name=".ui.activity.WebActivity_"
         android:screenOrientation="portrait"></activity>
 
+
+        <activity android:name=".ui.activity.office.ChongTuActivity_"
+            android:screenOrientation="portrait"></activity>
+
     </application>
 
 </manifest>

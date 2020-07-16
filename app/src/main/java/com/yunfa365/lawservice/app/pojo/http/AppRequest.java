@@ -97,8 +97,8 @@ public class AppRequest {
 
 	public void signWithForm() {
 		if (AppGlobal.mUser != null) {
-			header.put("app_Uid", AppGlobal.mUser.WUid + "");
-			header.put("app_LawId", AppGlobal.mUser.SignKey);
+			header.put("app_Uid", AppGlobal.mUser.ID + "");
+			header.put("app_LawId", AppGlobal.mUser.LawId + "");
 		} else {
 			header.put("app_Uid", "0");
 			header.put("app_LawId", "0");
@@ -108,8 +108,8 @@ public class AppRequest {
 
 	public void signWithJson() {
 		if (AppGlobal.mUser != null) {
-			header.put("app_Uid", AppGlobal.mUser.WUid + "");
-			header.put("app_LawId", AppGlobal.mUser.SignKey);
+			header.put("app_Uid", AppGlobal.mUser.ID + "");
+			header.put("app_LawId", AppGlobal.mUser.LawId + "");
 		} else {
 			header.put("app_Uid", "0");
 			header.put("app_LawId", "0");

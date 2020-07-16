@@ -18,20 +18,37 @@ import org.greenrobot.eventbus.EventBus;
  * Created by Administrator on 2016/4/11.
  */
 public class User {
-    public int Wid;         //    律所ID
-    public int WUid;        //  律师编号
-    public String Mobile;   // 手机号码
-    public String FullName; //  律师名称
-    public int Stat;        //   用户状态  0禁用 1启动         个人版用户 -1 未认证  0待审核  1认证已通过   2认证未通过
-    public String LawyerName;// 律所名称
-    public String SignKey;  // 动态密钥
-    public int Attestation; // 认证状态  0未认证  1认证通过
+    public int ID;
+    public int LawId;         // 律所ID
+    public String Mobile;     //
+    public String FullName;   //
+    public int Sexs;          // 性别
+    public String Phone;      // 电话号码
+    public String UNums;      // 身份证号
+    public String UserCode;   // 执业证号
+    public int ProvinceId;
+    public int CityId;
+    public int AreaId;
+    public int GroupsId;      // 权限组
+    public int IsActive;      // 是否在职 离职后禁止通过页面修改成在职
+    public int Stat;          // 审核状态
+    public String Addtime;    // 入库时间
 
     public transient UserRole mRole;
     private transient boolean onLoadUserRole = false; // 角色权限加载状态
 
     public void loadUserRole(Context context) {
         if (mRole != null && onLoadUserRole) {
+            return;
+        }
+        UserRole roles = new UserRole();
+        roles.Power2 = "";
+        roles.Power3 = "61,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20";
+        AppGlobal.mUser.mRole = roles;
+        AppGlobal.mUser.mRole.parseRoles();
+        EventBus.getDefault().post(new UserRoleEvent(200));
+
+        /*if (mRole != null && onLoadUserRole) {
             return;
         }
         onLoadUserRole = true;
@@ -63,7 +80,7 @@ public class User {
                         EventBus.getDefault().post(new UserRoleEvent(-1));
                     }
                 })
-                .execute();
+                .execute();*/
 
     }
 

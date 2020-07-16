@@ -37,4 +37,22 @@
     <color name="title_color">#333333</color>
     <color name="rad">#FF6464</color>
 
+
+    <color name="mainColor">#238EF0</color>
+    <color name="minorColor">#1479D5</color>
+    <color name="disableColor">#DCDCDC</color>
+    <color name="grayBgColor">#EDEDED</color>
+    <color name="dividerColor">#E6E6E6</color>
+    <color name="yellow">#FFDF21</color>
+    <color name="textColorDark">#333333</color>
+    <color name="textColorGray">#515151</color>
+    <color name="textColorHit">#A9A9A9</color>
+    <color name="textColorDes">#767676</color>
+    <color name="textColorLight">#999999</color>
+    <color name="green">#23F04D</color>
+    <color name="golden">#f2ca60</color>
+    <color name="blue">#171a1f</color>
+
+    <color name="linkColor">#2bf33d</color>
+    <color name="black">#000000</color>
 </resources>

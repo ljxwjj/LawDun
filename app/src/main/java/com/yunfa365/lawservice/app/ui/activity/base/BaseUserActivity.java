@@ -53,7 +53,7 @@ public class BaseUserActivity extends BaseActivity {
         }
     }
 
-    protected void logout() {
+    public void logout() {
         AppGlobal.mUser = null;
         SpUtil.setCurrentUser(this, "");
         PushManager.stopWork(this); // 关闭推送

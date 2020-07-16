@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string-array name="office_icons">
+        <item>@mipmap/office_1</item>
+        <item>@mipmap/office_2</item>
+        <item>@mipmap/office_3</item>
+        <item>@mipmap/office_4</item>
+        <item>@mipmap/office_5</item>
+        <item>@mipmap/office_6</item>
+        <item>@mipmap/office_7</item>
+        <item>@mipmap/office_8</item>
+        <item>@mipmap/office_9</item>
+        <item>@mipmap/office_10</item>
+        <item>@mipmap/office_11</item>
+        <item>@mipmap/office_12</item>
+        <item>@mipmap/office_13</item>
+        <item>@mipmap/office_14</item>
+        <item>@mipmap/office_15</item>
+        <item>@mipmap/office_16</item>
+        <item>@mipmap/office_17</item>
+        <item>@mipmap/office_18</item>
+        <item>@mipmap/office_19</item>
+        <item>@mipmap/office_20</item>
+        <item>@mipmap/office_21</item>
+        <item>@mipmap/office_22</item>
+        <item>@mipmap/office_23</item>
+        <item>@mipmap/office_24</item>
+        <item>@mipmap/office_25</item>
+        <item>@mipmap/office_26</item>
+        <item>@mipmap/office_27</item>
+    </string-array>
+</resources>

@@ -111,10 +111,9 @@ public class AppApplication extends Application {
      */
     private boolean testLogin() {
         User user = new User();
-        user.Wid = 0;
-        user.WUid = 0;  //对应数据库的id字段
+        user.ID = 0;
+        user.LawId = 0;  //对应数据库的id字段
         user.Mobile = "";
-        user.SignKey = "";
         AppGlobal.mUser = user;
         AppUtil.showToast(this, "测试模拟登录用户");
         EventBus.getDefault().post(new LoginEvent());
