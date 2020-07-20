@@ -37,23 +37,4 @@
             android:layout_weight="0" >
         </FrameLayout>
     </androidx.fragment.app.FragmentTabHost>
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="77dp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true">
-
-        <ImageView
-            android:layout_width="49dp"
-            android:layout_height="17dp"
-            android:src="@mipmap/home_button_top"/>
-        <ImageView
-            android:id="@+id/logoImage"
-            android:layout_width="43dp"
-            android:layout_height="43dp"
-            android:layout_marginTop="4dp"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/ic_jin_selector"/>
-    </RelativeLayout>
 </RelativeLayout>

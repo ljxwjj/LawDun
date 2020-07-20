@@ -316,4 +316,12 @@ public class AppUtil {
 		return true;
 	}
 
+	public static String generateMid() {
+		if (AppGlobal.mUser == null) return "";
+
+		String time = DateUtil.formatDate(new Date(), "yyyyMMddHHmmssSSS");
+		int random = (int)(Math.random() * 100000);
+		return String.format("%d_%d_%s_%d", AppGlobal.mUser.LawId, AppGlobal.mUser.ID, time, random);
+	}
+
 }

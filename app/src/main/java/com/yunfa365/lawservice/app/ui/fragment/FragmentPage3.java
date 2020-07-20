@@ -33,6 +33,8 @@ import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
 import com.yunfa365.lawservice.app.ui.activity.HomeActivity;
 import com.yunfa365.lawservice.app.ui.activity.office.ChongTuActivity_;
+import com.yunfa365.lawservice.app.ui.activity.office.CustomListActivity_;
+import com.yunfa365.lawservice.app.ui.activity.office.Office41Activity_;
 import com.yunfa365.lawservice.app.ui.adapter.BannerAdapter;
 import com.yunfa365.lawservice.app.ui.fragment.base.BaseFragment;
 import com.yunfa365.lawservice.app.ui.view.loopview.BaseViewPager;
@@ -254,6 +256,12 @@ class FragmentPage3 extends BaseFragment {
         switch (item.id) {
             case 1:
                 ChongTuActivity_.intent(this).start();
+                break;
+            case 2:
+                Office41Activity_.intent(this).start();
+                break;
+            case 3:
+                CustomListActivity_.intent(this).start();
                 break;
             default:
                 break;

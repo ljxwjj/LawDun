@@ -99,9 +99,11 @@ public class AppRequest {
 		if (AppGlobal.mUser != null) {
 			header.put("app_Uid", AppGlobal.mUser.ID + "");
 			header.put("app_LawId", AppGlobal.mUser.LawId + "");
+			header.put("app_key", AppGlobal.mUser.app_key);
 		} else {
 			header.put("app_Uid", "0");
 			header.put("app_LawId", "0");
+			header.put("app_key", "");
 		}
 		header.put("app_code", generateSign().toLowerCase());
 	}
@@ -110,9 +112,11 @@ public class AppRequest {
 		if (AppGlobal.mUser != null) {
 			header.put("app_Uid", AppGlobal.mUser.ID + "");
 			header.put("app_LawId", AppGlobal.mUser.LawId + "");
+			header.put("app_key", AppGlobal.mUser.app_key);
 		} else {
 			header.put("app_Uid", "0");
 			header.put("app_LawId", "0");
+			header.put("app_key", "");
 		}
 		header.put("app_code", generateSign().toLowerCase());
 	}

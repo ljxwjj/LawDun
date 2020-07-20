@@ -21,7 +21,14 @@
     <string name="relogin_message">您的帐号已在其它设备上登录。如非本人操作，则密码可能已泄露，建议修改密码，如有疑问请联系客服。</string>
     <string name="network_exception_message">网络异常，请重试</string>
 
+    <string name="header_hint_refresh_normal">下拉刷新</string>
+    <string name="header_hint_refresh_ready">释放立即刷新</string>
+    <string name="header_hint_refresh_loading">正在刷新&#8230;</string>
+    <string name="header_hint_refresh_time">时间：</string>
+    <string name="footer_hint_load_normal">加载更多</string>
+    <string name="footer_hint_load_ready">释放立即加载更多</string>
+
     <string name="contacts_icon">&#xe605;</string>
-    <string name="icon_fonts">&#xe601;,&#xe603;,,&#xe602;,&#xe604;</string>
+    <string name="icon_fonts">&#xe601;,&#xe603;,&#xe602;,&#xe604;</string>
     <string name="xxx">xxx</string>
 </resources>

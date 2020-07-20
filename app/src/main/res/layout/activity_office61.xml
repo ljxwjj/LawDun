@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <include layout="@layout/action_bar"/>
+
+    <LinearLayout
+        android:id="@+id/search_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="34dp"
+        android:paddingRight="34dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/action_bar">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textSize="@dimen/common_size_normal"
+            android:textColor="@color/common_color_gray"
+            android:text="请输入关键字"/>
+
+        <EditText
+            android:id="@android:id/text1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/input_search"
+            android:hint="委托人/当事人"
+            android:textColorHint="@color/common_text_color_hint"
+            android:textSize="@dimen/common_size_normal"
+            android:textColor="@color/common_text_color"
+            android:imeOptions="actionNext"
+            android:singleLine="true"/>
+
+        <EditText
+            android:id="@android:id/text2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/input_search"
+            android:hint="对方当事人"
+            android:textColorHint="@color/common_text_color_hint"
+            android:textSize="@dimen/common_size_normal"
+            android:textColor="@color/common_text_color"
+            android:imeOptions="actionSearch"
+            android:singleLine="true"/>
+
+        <TextView
+            android:id="@android:id/button1"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/common_round_blue_select_bg"
+            android:textColor="@color/common_color_white"
+            android:textSize="@dimen/common_size_small"
+            android:gravity="center"
+            android:text="下一步"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/search_result_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/action_bar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_weight="1"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@android:id/button2"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:background="@drawable/common_round_blue_select_bg"
+                android:textColor="@color/common_color_white"
+                android:textSize="@dimen/common_size_small"
+                android:gravity="center"
+                android:text="重新检索"/>
+
+            <TextView
+                android:id="@android:id/button3"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="47dp"
+                android:background="@drawable/common_round_blue_select_bg"
+                android:textColor="@color/common_color_white"
+                android:textSize="@dimen/common_size_small"
+                android:gravity="center"
+                android:text="添加案件"/>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

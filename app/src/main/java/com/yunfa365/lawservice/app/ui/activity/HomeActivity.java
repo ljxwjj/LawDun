@@ -45,14 +45,12 @@ public class HomeActivity extends BaseUserActivity {
     @ViewById(android.R.id.tabhost)
     FragmentTabHost fragmentTabHost;
 
-    @ViewById
-    ImageView logoImage;
 
     @StringRes(R.string.icon_fonts)
     String iconFonts;
     private String[] iconFontArray;
 
-    private String texts[] = { "消息", "案源", "办公", "应用", "我" };
+    private String texts[] = { "消息", "办公", "应用", "我" };
     private Class fragmentArray[];
     private TextView fontIcons[] = new TextView[5];
 
@@ -84,7 +82,7 @@ public class HomeActivity extends BaseUserActivity {
             gotoLogin();
             return;
         }
-        fragmentArray = new Class[]{ FragmentPage1_.class, FragmentPage2_.class, FragmentPage3_.class,
+        fragmentArray = new Class[]{ FragmentPage1_.class, FragmentPage3_.class,
                 FragmentPage4_.class, FragmentPage5_.class };
         iconFontArray = iconFonts.split(",");
         fragmentTabHost.setup(this, getSupportFragmentManager(), R.id.maincontent);
@@ -96,14 +94,8 @@ public class HomeActivity extends BaseUserActivity {
             //fragmentTabHost.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.bt_selector);
         }
         fragmentTabHost.getTabWidget().setDividerDrawable(null);
-        fragmentTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
-            @Override
-            public void onTabChanged(String tabId) {
-                logoImage.setSelected(tabId.equals(texts[2]));
-            }
-        });
 
-        if (mDefaultTab >=0 || mDefaultTab <=4) {
+        if (mDefaultTab >=0 || mDefaultTab <=3) {
             fragmentTabHost.setCurrentTab(mDefaultTab);
         }
         // 请求检查更新

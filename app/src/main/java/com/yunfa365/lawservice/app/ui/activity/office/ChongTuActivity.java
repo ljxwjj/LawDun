@@ -219,7 +219,7 @@ class ChongTuActivity extends BaseUserActivity {
                 itemViewHolder.text3.setText("委　托　人：" + item.CustName);
                 itemViewHolder.text4.setText("对方当事人：" + item.DCustName);
                 itemViewHolder.text5.setText("主办律师　：" + item.UsersListName);
-                itemViewHolder.text6.setText("结案状态  ：" + item.EndStatTxt);
+                itemViewHolder.text6.setText("结案状态　：" + item.EndStatTxt);
             }
         }
 

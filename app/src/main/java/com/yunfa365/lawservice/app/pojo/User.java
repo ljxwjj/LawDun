@@ -33,6 +33,7 @@ public class User {
     public int IsActive;      // 是否在职 离职后禁止通过页面修改成在职
     public int Stat;          // 审核状态
     public String Addtime;    // 入库时间
+    public String app_key;
 
     public transient UserRole mRole;
     private transient boolean onLoadUserRole = false; // 角色权限加载状态

@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                     this.sendEmptyMessageDelayed(GO_HOME_CODE, 1000);
                 } else {
                     if (AppGlobal.mUser != null) {
-                        HomeActivity_.intent(MainActivity.this).mDefaultTab(2).start();
+                        HomeActivity_.intent(MainActivity.this).mDefaultTab(1).start();
                     } else {
                         LoginActivity_.intent(MainActivity.this).start();
                     }
