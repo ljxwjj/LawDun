@@ -7,13 +7,20 @@ import java.io.Serializable;
  * 案件分类
  */
 public class CaseCols implements Serializable {
-    public String ID;
+    public int ID;
+    public int Fid; // 父级ID
     public String Title;
-    public String FTitle;
-    public String TempID;
+    public String STitle;
+    public int Sort;
+    public int IsChongTu;
 
-    public String Fid; // 父级ID
-    public CaseCols[] Children;
+    /**
+     * MS：诉讼类模板
+     * FS：非诉类模板
+     * GW：顾问类模板
+     * DS：咨询代写文书模板
+     */
+    public String TempCols;
 
 
     @Override

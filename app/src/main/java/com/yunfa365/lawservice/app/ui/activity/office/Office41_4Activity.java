@@ -438,8 +438,8 @@ public class Office41_4Activity extends BaseUserActivity {
 
     private void doCommit() {
         AppRequest.Build build = new AppRequest.Build("Case/UpdateCaseFSS")
-                .addParam("Cols", selectedCaseCols.Fid)
-                .addParam("Ay", selectedCaseCols.ID)
+                .addParam("Cols", selectedCaseCols.Fid + "")
+                .addParam("Ay", selectedCaseCols.ID + "")
                 .addParam("BegTime", sarq.getText().toString())         // 收案日期
                 .addParam("AyMake", ay.getText().toString())            // 案由
                 .addParam("Wtr", ((Custom)wtr.getTag()).ID + "")        // 委托人

@@ -249,8 +249,8 @@ public class Office41_5Activity extends BaseUserActivity {
 
     private void doCommit() {
         AppRequest.Build build = new AppRequest.Build("Case/UpdateCaseZXWS")
-                .addParam("Cols", selectedCaseCols.Fid)
-                .addParam("Ay", selectedCaseCols.ID)
+                .addParam("Cols", selectedCaseCols.Fid + "")
+                .addParam("Ay", selectedCaseCols.ID + "")
                 .addParam("BegTime", fwsj.getText().toString())     //服务时间
                 .addParam("Ssbd", fwrc.getText().toString())        //服务人次
                 .addParam("AyMake", dssx.getText().toString())      //咨询/代书事项

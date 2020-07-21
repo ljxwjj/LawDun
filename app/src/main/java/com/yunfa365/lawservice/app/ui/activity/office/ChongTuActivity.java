@@ -71,10 +71,6 @@ class ChongTuActivity extends BaseUserActivity {
         });
         mTitleTxt.setText("利益冲突预测");
 
-
-      /*  if (selectedCaseCols == null) {
-            mButton2.setVisibility(View.GONE);
-        }*/
         mData = new ArrayList();
         mAdapter = new MyAdapter();
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -88,14 +84,6 @@ class ChongTuActivity extends BaseUserActivity {
 
         return headerView;
     }
-
-    /*@OnActivityResult(REQUEST_CODE)
-    void onResult(int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            setResult(RESULT_OK);
-            finish();
-        }
-    }*/
 
     private void hideKeyBord(View v) {
         InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -114,9 +102,6 @@ class ChongTuActivity extends BaseUserActivity {
 
         hideKeyBord(mHeaderViewHolder.mInput1);
         doSearch();
-        /*if (selectedCaseCols != null) {
-            mButton2.setEnabled(true);
-        }*/
     }
 
     private void doSearch() {
@@ -247,7 +232,7 @@ class ChongTuActivity extends BaseUserActivity {
     class HeaderViewHolder extends RecyclerView.ViewHolder {
 
         private EditText mInput1, mInput2;
-        private View mButton1, mButton2;
+        private View mButton1;
 
         public HeaderViewHolder(View itemView) {
             super(itemView);
@@ -257,7 +242,6 @@ class ChongTuActivity extends BaseUserActivity {
             mInput1 = itemView.findViewById(android.R.id.text1);
             mInput2 = itemView.findViewById(android.R.id.text2);
             mButton1 = itemView.findViewById(android.R.id.button1);
-            mButton2 = itemView.findViewById(android.R.id.button2);
             mInput2.setOnEditorActionListener(new TextView.OnEditorActionListener(){
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -267,20 +251,7 @@ class ChongTuActivity extends BaseUserActivity {
                     return true;
                 }
             });
-            mButton1.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    onClickOk();
-                }
-            });
-            mButton2.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-//                Intent intent = new Intent(ChongTuActivity.this, Office41_1Activity_.class);
-//                intent.putExtra("selectedCaseCols", selectedCaseCols);
-//                startActivityForResult(intent, REQUEST_CODE);
-                }
-            });
+            mButton1.setOnClickListener(v -> onClickOk());
         }
     }
 
@@ -304,7 +275,6 @@ class ChongTuActivity extends BaseUserActivity {
     private class DividerItemDecoration extends RecyclerView.ItemDecoration {
         private int dividerHeight;
         private Drawable mDivider;
-        Drawable whiteDrawable;
 
         public DividerItemDecoration(float dividerHeight) {
             this.dividerHeight = ScreenUtil.dip2px(dividerHeight);
@@ -342,7 +312,6 @@ class ChongTuActivity extends BaseUserActivity {
                     mDivider.setBounds(left, top, right, top+dividerHeight);
                     mDivider.draw(c);
                 }
-
             }
         }
     }

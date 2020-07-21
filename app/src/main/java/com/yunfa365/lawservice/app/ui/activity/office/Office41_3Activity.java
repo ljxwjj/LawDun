@@ -443,8 +443,8 @@ public class Office41_3Activity extends BaseUserActivity {
 
     private void doCommit() {
         AppRequest.Build build = new AppRequest.Build("Case/UpdateCaseFLGW")
-                .addParam("Cols", selectedCaseCols.Fid)
-                .addParam("Ay", selectedCaseCols.ID)
+                .addParam("Cols", selectedCaseCols.Fid + "")
+                .addParam("Ay", selectedCaseCols.ID + "")
                 .addParam("BegTime", sarq.getText().toString())    // 收案日期
                 .addParam("Wtr", ((Custom)wtr.getTag()).ID + "")   // 委托人
                 .addParam("LxRen", dsr.getText().toString())        //当事人

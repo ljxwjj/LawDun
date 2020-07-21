@@ -16,12 +16,17 @@ import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
 import com.yunfa365.lawservice.app.ui.activity.base.BaseUserActivity;
 import com.yunfa365.lawservice.app.ui.dialog.SpinnerDialog;
+import com.yunfa365.lawservice.app.utils.ListUtils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
+
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/4/20.
@@ -31,6 +36,7 @@ import org.androidannotations.annotations.ViewById;
 public class Office41Activity extends BaseUserActivity {
     private static final int REQUEST_CODE = 1;
 
+    private List<CaseCols> allCaseCols;
     private CaseCols[] types;
     private CaseCols[] categorys;
     private CaseCols selectedCaseCols;
@@ -63,13 +69,12 @@ public class Office41Activity extends BaseUserActivity {
         });
         mTitleTxt.setText("新增案件");
         loadData();
-        //String casecolsStr = FileUtil.getRawFileContent(getResources(), R.raw.case_cols);
-
     }
 
     private void loadData() {
         // 获取案件类型
-        AppRequest request = new AppRequest.Build("Case/GetCaseColsList")
+        AppRequest request = new AppRequest.Build("api/Case/Cols_Get")
+                .addParam("Fid", "-1")
                 .create();
         new HttpFormFuture.Builder(this)
                 .setData(request)
@@ -84,14 +89,8 @@ public class Office41Activity extends BaseUserActivity {
                         hideLoading();
                         AppResponse resp = (AppResponse)result.getAttach();
                         if (resp.flag) {
-                            types = resp.resultsToArray(CaseCols.class);
-                            for (CaseCols cc : types) {
-                                for (CaseCols child : cc.Children) {
-                                    child.Fid = cc.ID;
-                                    //child.TempID = cc.TempID;
-                                    child.FTitle = cc.Title;
-                                }
-                            }
+                            allCaseCols = resp.resultsToList(CaseCols.class);
+                            initCaseCols_types();
                         }
                     }
 
@@ -103,6 +102,27 @@ public class Office41Activity extends BaseUserActivity {
                 .execute();
     }
 
+    private Comparator<CaseCols> caseColsComparator = (o1, o2) -> o1.Sort - o2.Sort;
+
+    private void initCaseCols_types() {
+        types = ListUtils.filter(allCaseCols, caseCols -> caseCols.Fid == 0)
+                .toArray(new CaseCols[0]);
+        Arrays.sort(types, caseColsComparator);
+    }
+
+    private void initCaseCols_categorys(CaseCols fCaseCols) {
+        categorys = ListUtils.filter(allCaseCols, caseCols -> {
+            boolean result = caseCols.Fid == fCaseCols.ID;
+            if (result) {
+                caseCols.TempCols = fCaseCols.TempCols;
+                caseCols.IsChongTu = fCaseCols.IsChongTu;
+            }
+            return result;
+        })
+                .toArray(new CaseCols[0]);
+        Arrays.sort(categorys, caseColsComparator);
+    }
+
     @Click(android.R.id.text1)
     void text1OnClick(View view) {
         if (types == null)
@@ -112,7 +132,7 @@ public class Office41Activity extends BaseUserActivity {
             public void onClick(DialogInterface dialog, int which) {
                 CaseCols cc = types[which];
                 text1.setText(cc.toString());
-                categorys = cc.Children;
+                initCaseCols_categorys(cc);
 
                 selectedCaseCols = categorys[0];
                 text2.setText(selectedCaseCols.toString());
@@ -140,23 +160,23 @@ public class Office41Activity extends BaseUserActivity {
             showToast("请选择案件类型");
             return;
         }
-        if ("1".equals(selectedCaseCols.TempID)) {
+        if (selectedCaseCols.IsChongTu == 1) {
             Intent intent = new Intent(this, Office61Activity_.class);
             intent.putExtra("selectedCaseCols", selectedCaseCols);
             startActivityForResult(intent, REQUEST_CODE);
-        } else if ("2".equals(selectedCaseCols.TempID)) {
-            Intent intent = new Intent(this, Office41_2Activity_.class);
+        } else if ("ms".equals(selectedCaseCols.TempCols)) {
+            Intent intent = new Intent(this, Office41_1Activity_.class);
             intent.putExtra("selectedCaseCols", selectedCaseCols);
             startActivityForResult(intent, REQUEST_CODE);
-        } else if ("3".equals(selectedCaseCols.TempID)) {
+        } else if ("fs".equals(selectedCaseCols.TempCols)) {
             Intent intent = new Intent(this, Office41_3Activity_.class);
             intent.putExtra("selectedCaseCols", selectedCaseCols);
             startActivityForResult(intent, REQUEST_CODE);
-        } else if ("4".equals(selectedCaseCols.TempID)) {
+        } else if ("gw".equals(selectedCaseCols.TempCols)) {
             Intent intent = new Intent(this, Office41_4Activity_.class);
             intent.putExtra("selectedCaseCols", selectedCaseCols);
             startActivityForResult(intent, REQUEST_CODE);
-        } else if ("5".equals(selectedCaseCols.TempID)) {
+        } else if ("ds".equals(selectedCaseCols.TempCols)) {
             Intent intent = new Intent(this, Office41_5Activity_.class);
             intent.putExtra("selectedCaseCols", selectedCaseCols);
             startActivityForResult(intent, REQUEST_CODE);

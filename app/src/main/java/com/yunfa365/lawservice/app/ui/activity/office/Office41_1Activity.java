@@ -343,8 +343,8 @@ public class Office41_1Activity extends BaseUserActivity {
         // 获取诉讼阶段 诉讼地位
         AppRequest request = new AppRequest.Build("Case/GetLawyerWebColList")
                 .addParam("Fid", "2")
-                .addParam("CaseCols", selectedCaseCols.Fid) // 案件类型
-                .addParam("Ay", selectedCaseCols.ID)
+                .addParam("CaseCols", selectedCaseCols.Fid + "") // 案件类型
+                .addParam("Ay", selectedCaseCols.ID + "")
                 .create();
         new HttpFormFuture.Builder(this)
                 .setData(request)
@@ -376,7 +376,7 @@ public class Office41_1Activity extends BaseUserActivity {
         // 诉讼地位
         AppRequest request = new AppRequest.Build("Case/GetLawyerWebColList")
                 .addParam("Fid", "3")
-                .addParam("CaseCols", selectedCaseCols.Fid) // 案件类型
+                .addParam("CaseCols", selectedCaseCols.Fid + "") // 案件类型
                 .create();
         new HttpFormFuture.Builder(this)
                 .setData(request)
@@ -637,8 +637,8 @@ public class Office41_1Activity extends BaseUserActivity {
         String ssjdStr = StringUtil.implode(ids, ",");
 
         AppRequest.Build build = new AppRequest.Build("Case/UpdateCaseMS")
-                .addParam("Cols", selectedCaseCols.Fid)
-                .addParam("Ay", selectedCaseCols.ID)
+                .addParam("Cols", selectedCaseCols.Fid + "")
+                .addParam("Ay", selectedCaseCols.ID + "")
                 .addParam("AyMake", ay.getText().toString())
                 .addParam("BegTime", sarq.getText().toString())
                 .addParam("TDfdsr", dfdsr.getText().toString())

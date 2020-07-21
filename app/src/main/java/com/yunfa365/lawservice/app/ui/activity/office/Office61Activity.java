@@ -92,7 +92,6 @@ public class Office61Activity extends BaseUserActivity {
     List<ShenCha> mData;
 
     private String keyword1, keyword2;
-//    private int currentPage;
 
     @AfterViews
     void init(){
@@ -146,9 +145,9 @@ public class Office61Activity extends BaseUserActivity {
     }
 
     private void gotoOffice41() {
-        /*Intent intent = new Intent(this, Office41_1Activity_.class);
+        Intent intent = new Intent(this, Office41_1Activity_.class);
         intent.putExtra("selectedCaseCols", selectedCaseCols);
-        startActivityForResult(intent, REQUEST_CODE);*/
+        startActivityForResult(intent, REQUEST_CODE);
     }
 
     @OnActivityResult(REQUEST_CODE)
@@ -179,9 +178,9 @@ public class Office61Activity extends BaseUserActivity {
     }
 
     private void doSearch() {
-        AppRequest request = new AppRequest.Build("Case/CaseExamine")
+        AppRequest request = new AppRequest.Build("api/Case/Case_ChongTu")
                 .addParam("Custom", keyword1)
-                .addParam("Tdcustom", keyword2)
+                .addParam("DCustom", keyword2)
                 .create();
         new HttpFormFuture.Builder(this)
                 .setData(request)
@@ -288,9 +287,9 @@ public class Office61Activity extends BaseUserActivity {
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            if (holder instanceof ChongTuActivity.ContentViewHolder) {
+            if (holder instanceof ContentViewHolder) {
                 ShenCha item = getItem(position);
-                ChongTuActivity.ContentViewHolder itemViewHolder = (ChongTuActivity.ContentViewHolder) holder;
+                ContentViewHolder itemViewHolder = (ContentViewHolder) holder;
                 itemViewHolder.text1.setText(item.AyMake);
                 itemViewHolder.text2.setText("案　　　号：" + item.CaseIdTxt);
                 itemViewHolder.text3.setText("委　托　人：" + item.CustName);
