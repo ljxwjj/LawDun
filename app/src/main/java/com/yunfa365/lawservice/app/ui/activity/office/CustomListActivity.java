@@ -178,10 +178,10 @@ public class CustomListActivity extends BaseUserActivity {
     void doSearch() {
         LogUtil.d("doSearch page:" + currentPage);
 
-        AppRequest request = new AppRequest.Build("Customer/GetCustomerList")
+        AppRequest request = new AppRequest.Build("api/Custom/list_My")
                 .addParam("Title", keyword1)
                 .addParam("SearchType", keyword2)
-                .addParam("Pages", currentPage+"")
+                .addParam("PageIndex", currentPage+"")
                 .create();
         new HttpFormFuture.Builder(this)
                 .setData(request)
@@ -258,7 +258,7 @@ public class CustomListActivity extends BaseUserActivity {
 
             text1.setText(item.Title);
             text3.setText("联系电话：" + item.Phone);
-            text4.setText("地　　区：" + item.Province + item.City);
+            text4.setText("地　　区：" + item.ProvinceIdTxt + item.CityIdTxt);
             text5.setText("入库时间：" + item.Addtime);
             return convertView;
         }

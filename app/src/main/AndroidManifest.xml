@@ -95,6 +95,10 @@
             android:screenOrientation="portrait"></activity>
         <activity android:name=".ui.activity.mycase.CustomInfoActivity_"
             android:screenOrientation="portrait"></activity>
+        <activity android:name=".ui.activity.seal.ScanSealActivity_"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".ui.activity.seal.SealAddActivity_"
+            android:screenOrientation="portrait"></activity>
 
     </application>
 

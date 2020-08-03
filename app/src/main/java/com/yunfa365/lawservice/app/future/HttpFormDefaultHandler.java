@@ -68,10 +68,10 @@ public class HttpFormDefaultHandler extends HttpFormHandler {
             response = response.replaceAll("\\\\\\\\", "\\\\");
             JSONObject json = new JSONObject(response);
             AppResponse res = new AppResponse();
-            res.flag = json.getBoolean("flag");
-            res.Code = json.getString("Code");
-            res.Message = json.getString("Message");
-            res.RData = json.getString("RData");
+            res.flag = json.optBoolean("flag");
+            res.Code = json.optString("Code");
+            res.Message = json.optString("Message");
+            res.RData = json.optString("RData");
             res.response = response;
 
             if ("-1".equals(res.Code)) {

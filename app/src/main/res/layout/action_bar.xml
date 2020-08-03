@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/common_color_white"
         android:textSize="@dimen/common_size_big" />
 
     <LinearLayout
@@ -53,7 +53,7 @@
             android:paddingLeft="8dp"
             android:gravity="center"
             android:text="搜索"
-            android:textColor="#2A89F2"
+            android:textColor="@color/common_color_white"
             android:textSize="@dimen/common_size_normal"
             android:visibility="gone" />
     </LinearLayout>

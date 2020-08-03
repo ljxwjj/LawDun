@@ -20,6 +20,8 @@
 
     <attr name="labelStr" format="string" />
     <attr name="valueStr" format="string" />
+    <attr name="hintStr" format="string" />
+    <attr name="isSelect" format="boolean" />
     <declare-styleable name="LabelTextView">
         <attr name="labelStr" />
         <attr name="valueStr" />
@@ -28,8 +30,8 @@
     <declare-styleable name="TitleEditText">
         <attr name="labelStr" />
         <attr name="valueStr" />
-        <attr name="hintStr" format="string" />
-        <attr name="isSelect" format="boolean" />
+        <attr name="hintStr" />
+        <attr name="isSelect" />
         <attr name="android:inputType"/>
         <attr name="android:maxLength"/>
     </declare-styleable>
@@ -39,5 +41,14 @@
         <attr name="ClipSquareIV_BorderWidth" format="dimension"/>
         <attr name="ClipSquareIV_BorderColor" format="color"/>
         <attr name="ClipSquareIV_OutsideColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="SingleInputField">
+        <attr name="labelStr" />
+        <attr name="valueStr" />
+        <attr name="hintStr" />
+        <attr name="isSelect" />
+        <attr name="android:inputType"/>
+        <attr name="android:maxLength"/>
     </declare-styleable>
 </resources>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#EEEEEE</color><!--Appbar背景色-->
-    <color name="colorPrimaryDark">#EEEEEE</color><!--状态栏颜色-->
+    <color name="colorPrimary">#333333</color><!--Appbar背景色-->
+    <color name="colorPrimaryDark">#333333</color><!--状态栏颜色-->
     <color name="colorAccent">#2A89F2</color><!--控制各个控件被选中时的颜色-->
 
     <color name="common_color_transparent">#00000000</color>

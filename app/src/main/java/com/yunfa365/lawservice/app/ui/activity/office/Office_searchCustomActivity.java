@@ -95,7 +95,7 @@ public class Office_searchCustomActivity extends BaseUserActivity {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH){
                     keyword1 = mInput1.getText().toString();
                     if (TextUtils.isEmpty(keyword1)) {
-                        AppUtil.showToast(Office_searchCustomActivity.this, "请输入检索条件");
+                        showToast("请输入检索条件");
                         return false;
                     }
                     currentPage = 1;
@@ -127,7 +127,7 @@ public class Office_searchCustomActivity extends BaseUserActivity {
             public void onClick(View v) {
                 keyword1 = mInput1.getText().toString();
                 if (TextUtils.isEmpty(keyword1)) {
-                    AppUtil.showToast(Office_searchCustomActivity.this, "请输入检索条件");
+                    showToast("请输入检索条件");
                     return;
                 }
                 currentPage = 1;
@@ -214,7 +214,7 @@ public class Office_searchCustomActivity extends BaseUserActivity {
                             }
                         } else {
                             mListView.setPullLoadEnable(false);
-                            AppUtil.showToast(Office_searchCustomActivity.this, resp.Message);
+                            showToast(resp.Message);
                         }
                     }
 
@@ -257,7 +257,7 @@ public class Office_searchCustomActivity extends BaseUserActivity {
 
             text1.setText(item.Title);
             text3.setText("联系电话：" + item.Phone);
-            text4.setText("地　　区：" + item.Province + item.City);
+            text4.setText("地　　区：" + item.ProvinceIdTxt + item.CityIdTxt);
             text5.setText("入库时间：" + item.Addtime);
             button1.setOnClickListener(this);
             button1.setTag(item);

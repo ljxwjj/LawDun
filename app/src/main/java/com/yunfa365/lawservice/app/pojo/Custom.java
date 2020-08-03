@@ -15,25 +15,22 @@ public class Custom implements Serializable {
     @Deprecated // 可能要被删掉
     public String LxRen;
     public String Phone;
-    public String Province;
-    public String City;
-    public int CustCols;
-    public String Model;
-    public String Make;
-    public String FilePath;
+    public String Mobile;
+    public int ProvinceId;
+    public String ProvinceIdTxt;
+    public int CityId;
+    public String CityIdTxt;
+    public int CustCols;              // 客户类型 公民个人、公司企业……
+    public String CustColsTxt;
     public String Addtime;
-    public String Sign;
-    public String IdCard;
-    public String UNums;
+    public String UNums;              // 身份证号/营业执照号
+    public String Model = "";
 
     public String YwRen;              // 业务联系人
     public String YwRenZhiWu;         // 职务
     public String FzRen;              //   主要负责人
     public String YingXiangLi;        //  地区影响力
-    public String Phone2;             //   固定电话
     public String Email;              //     邮件
     public String Address;            //   详细地址
-
-
-    public String CustColsName;
+    public String Make;               // 备注
 }

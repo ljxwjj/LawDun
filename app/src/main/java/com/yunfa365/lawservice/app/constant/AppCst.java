@@ -24,4 +24,6 @@ public class AppCst extends BaseCst {
 
 
     public static final String WEIXIN_APP_ID = "wxa1b2e2836d3fb682";
+    public static final String BH_SDK_APP_KEY = "200611845681";
+    public static final String BH_SDK_SECRET = "fbeac04a00d73e1ab3a3548b4d141b1a";
 }

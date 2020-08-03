@@ -370,23 +370,23 @@ public class Office_addCustomActivity extends BaseUserActivity {
             wtr.setText(customItem.Title);
             // Model to see : initDefaultKhnx();
             sjhm.setText(customItem.Phone);
-            sheng.setText(customItem.Province);
-            shi.setText(customItem.City);
+            sheng.setText(customItem.ProvinceIdTxt);
+            shi.setText(customItem.CityIdTxt);
             ajbz.setText(customItem.Make);
             xgzj.setText(customItem.UNums);
-            sfzh.setText(customItem.IdCard);
+            sfzh.setText(customItem.UNums);
 
             ywlxr.setText(customItem.YwRen);
             zw.setText(customItem.YwRenZhiWu);
             zyfzr.setText(customItem.FzRen);
             dqyxl.setText(customItem.YingXiangLi);
-            gddh.setText(customItem.Phone2);
+            gddh.setText(customItem.Phone);
             yx.setText(customItem.Email);
             xxdz.setText(customItem.Address);
 
-            if (!TextUtils.isEmpty(customItem.Province)) {
+            if (!TextUtils.isEmpty(customItem.ProvinceIdTxt)) {
                 for (DiQu sheng : shengs) {
-                    if (sheng.text.equals(customItem.Province)) {
+                    if (sheng.text.equals(customItem.ProvinceIdTxt)) {
                         shis = sheng.children;
                         break;
                     }
@@ -737,21 +737,21 @@ public class Office_addCustomActivity extends BaseUserActivity {
         }
         final Custom custom = new Custom();
         custom.CustCols = ((CusTomCols) khnx.getTag()).ID;
-        custom.CustColsName = ((CusTomCols) khnx.getTag()).toString();
+//        custom.CustColsName = ((CusTomCols) khnx.getTag()).toString();
         custom.Title = wtr.getText().toString();
         custom.Model = khsx;
         custom.Phone = sjhm.getText().toString();
-        custom.Province = sheng.getText().toString();
-        custom.City = shi.getText().toString();
+//        custom.Province = sheng.getText().toString();
+//        custom.City = shi.getText().toString();
         custom.Make = ajbz.getText().toString();
         custom.UNums = xgzj.getText().toString();
-        custom.IdCard = sfzh.getText().toString();
+//        custom.IdCard = sfzh.getText().toString();
 
         custom.YwRen = ywlxr.getText().toString();
         custom.YwRenZhiWu = zw.getText().toString();
         custom.FzRen = zyfzr.getText().toString();
         custom.YingXiangLi = dqyxl.getText().toString();
-        custom.Phone2 = gddh.getText().toString();
+//        custom.Phone2 = gddh.getText().toString();
         custom.Email = yx.getText().toString();
         custom.Address = xxdz.getText().toString();
 
@@ -760,16 +760,16 @@ public class Office_addCustomActivity extends BaseUserActivity {
                 .addParam("Title", custom.Title)              // 客户名称
                 .addParam("Model", custom.Model)       // 客户属性
                 .addParam("Phone", custom.Phone)       // 手机号码
-                .addParam("TProvince", custom.Province)   // 省
-                .addParam("TCapital", custom.City)    // 市
+                .addParam("TProvince", custom.ProvinceIdTxt)   // 省
+                .addParam("TCapital", custom.CityIdTxt)    // 市
                 .addParam("Make", custom.Make)        // 备注
                 .addParam("UNums", custom.UNums)       // 身份证号
-                .addParam("IdCard", custom.IdCard)
+                .addParam("IdCard", custom.UNums)
                 .addParam("YwRen", custom.YwRen)
                 .addParam("YwRenZhiWu", custom.YwRenZhiWu)
                 .addParam("FzRen", custom.FzRen)
                 .addParam("YingXiangLi", custom.YingXiangLi)
-                .addParam("Phone2", custom.Phone2)
+                .addParam("Phone2", custom.Phone)
                 .addParam("Email", custom.Email)
                 .addParam("Adress", custom.Address)
                 .addParam("Mid", Mid);

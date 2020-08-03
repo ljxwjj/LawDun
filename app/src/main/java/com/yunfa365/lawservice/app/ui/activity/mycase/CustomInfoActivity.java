@@ -220,20 +220,20 @@ public class CustomInfoActivity extends BaseUserActivity {
     }
 
     private void initDefaultValue() {
-        khnx.setText(customItem.CustColsName);
+        khnx.setText(customItem.CustColsTxt);
         wtr.setText(customItem.Title);
-        sjhm.setText(customItem.Phone);
-        sheng.setText(customItem.Province);
-        shi.setText(customItem.City);
-        ajbz.setText(customItem.Make);
+        sjhm.setText(customItem.Mobile);
+        sheng.setText(customItem.ProvinceIdTxt);
+        shi.setText(customItem.CityIdTxt);
+        ajbz.setText("");
         xgzj.setText(customItem.UNums);
-        sfzh.setText(customItem.IdCard);
+        sfzh.setText(customItem.UNums);
 
         ywlxr.setText(customItem.YwRen);
         zw.setText(customItem.YwRenZhiWu);
         zyfzr.setText(customItem.FzRen);
         dqyxl.setText(customItem.YingXiangLi);
-        gddh.setText(customItem.Phone2);
+        gddh.setText(customItem.Phone);
         yx.setText(customItem.Email);
         xxdz.setText(customItem.Address);
     }
@@ -345,7 +345,7 @@ public class CustomInfoActivity extends BaseUserActivity {
             return;
         }
         Intent intent = new Intent(this, CommonLocationActivity_.class);
-        intent.putExtra("targetCity", customItem.City);
+        intent.putExtra("targetCity", customItem.CityIdTxt);
         intent.putExtra("targetAddress", address);
         startActivity(intent);
     }
