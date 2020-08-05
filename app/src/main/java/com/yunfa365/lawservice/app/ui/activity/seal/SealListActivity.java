@@ -1,7 +1,6 @@
 package com.yunfa365.lawservice.app.ui.activity.seal;
 
-import android.bluetooth.BluetoothAdapter;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -15,32 +14,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.agnetty.core.AgnettyFutureListener;
 import com.android.agnetty.core.AgnettyResult;
-import com.android.agnetty.utils.LogUtil;
-import com.baihe.bhsdk.util.BleHelper;
-import com.polidea.rxandroidble2.scan.ScanResult;
 import com.yunfa365.lawservice.app.R;
-import com.yunfa365.lawservice.app.constant.AppCst;
 import com.yunfa365.lawservice.app.future.HttpFormFuture;
 import com.yunfa365.lawservice.app.pojo.BhSeal;
+import com.yunfa365.lawservice.app.pojo.FieldItem;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
 import com.yunfa365.lawservice.app.ui.activity.base.BaseUserActivity;
+import com.yunfa365.lawservice.app.ui.dialog.BottomMenuDialog;
 import com.yunfa365.lawservice.app.ui.view.holder.EmptyViewHolder;
 import com.yunfa365.lawservice.app.utils.ScreenUtil;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.Extra;
-import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@EActivity(R.layout.activity_scan_seal)
-public class ScanSealActivity extends BaseUserActivity {
-    private final int REQUEST_CODE_ENABLE_BLE = 2;
-    private final int REQUEST_CODE_SEAL_ADD = 1;
+@EActivity(R.layout.common_list_activity)
+public class SealListActivity extends BaseUserActivity {
 
     @ViewById(R.id.base_id_back)
     View mBackView;
@@ -57,36 +50,10 @@ public class ScanSealActivity extends BaseUserActivity {
     @ViewById
     RecyclerView listView;
     MyAdapter mAdapter;
-    List<ScanResult> mData = new ArrayList<>();
-
-    @Extra
-    int action;  // 1: 添加印章  2: 启动印章
-
-    private List<BhSeal> allData;
-    private List<ScanResult> scanResultsList = new ArrayList<>();
-    private List<String> scanMacList = new ArrayList<>();
-    private boolean bleCanCan = false;
-    private boolean isBleOnScan = false;
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (bleCanCan) {
-            if (!isBleOnScan) startScan();
-        } else {
-            //获取定位权限
-            initCheck();
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (isBleOnScan) stopScan();
-    }
+    List<BhSeal> mData;
 
     @AfterViews
-    void init() {
+    void init(){
         mBackView.setVisibility(View.VISIBLE);
         mBackView.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -94,7 +61,7 @@ public class ScanSealActivity extends BaseUserActivity {
                 finish();
             }
         });
-        mTitleTxt.setText("添加印章");
+        mTitleTxt.setText("印章管理");
 
         mData = new ArrayList();
         mAdapter = new MyAdapter();
@@ -104,64 +71,6 @@ public class ScanSealActivity extends BaseUserActivity {
         listView.setAdapter(mAdapter);
 
         loadData();
-    }
-
-    /**
-     * 动态获取定位权限，Android6.0以上操作蓝牙需要动态获取系统定位权限
-     */
-    private void initCheck() {
-        /*if (Build.VERSION.SDK_INT >= 23) {
-            int checkCallPhonePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
-            if (checkCallPhonePermission != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
-                return;
-            }
-        }*/
-        //请求打开蓝牙
-        Intent requestBluetoothOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        //请求开启蓝牙
-        this.startActivityForResult(requestBluetoothOn, REQUEST_CODE_ENABLE_BLE);
-    }
-
-    @OnActivityResult(REQUEST_CODE_ENABLE_BLE)
-    void enableBleOnResult(int result, Intent data) {
-        if (result == RESULT_OK) {
-            bleCanCan = true;
-            startScan();
-        }
-    }
-
-    @OnActivityResult(REQUEST_CODE_SEAL_ADD)
-    void sealAddOnResult(int result, Intent data) {
-        if (result == RESULT_OK) {
-            BhSeal item = (BhSeal) data.getSerializableExtra("item");
-            allData.add(item);
-            filterData();
-        }
-    }
-
-    private void startScan() {
-        LogUtil.d("startScan ---------------------------");
-        isBleOnScan = true;
-        //搜索印章设备，参数值传递你的app key和密钥
-        BleHelper.getBleHelper(this).startScan(AppCst.BH_SDK_APP_KEY,AppCst.BH_SDK_SECRET).subscribe(
-                scanResult -> {
-                    String name = scanResult.getBleDevice().getName();
-                    String mac = scanResult.getBleDevice().getMacAddress();
-                    LogUtil.d("onScanResult =======================\n "+ "name:" + scanResult.getBleDevice().getName() + "   mac:" + scanResult.getBleDevice().getMacAddress());
-//                        mList.add("name:" + scanResult.getBleDevice().getName() + "   mac:" + scanResult.getBleDevice().getMacAddress());
-                    if (!scanMacList.contains(mac)) {
-                        scanMacList.add(mac);
-                        scanResultsList.add(scanResult);
-                        filterData();
-                    }
-                }
-        );
-    }
-
-    private void stopScan() {
-        isBleOnScan = false;
-        BleHelper.getBleHelper(this).stopScan();
     }
 
     private void loadData() {
@@ -180,13 +89,11 @@ public class ScanSealActivity extends BaseUserActivity {
                         hideLoading();
                         AppResponse resp = (AppResponse)result.getAttach();
                         if (resp.flag) {
-                            List<BhSeal> list = resp.resultsToList(BhSeal.class);
-                            if (list == null) {
-                                allData = new ArrayList<>();
-                            } else {
-                                allData = list;
+                            mData = resp.resultsToList(BhSeal.class);
+                            if (mData == null) {
+                                mData = new ArrayList<>();
                             }
-                            filterData();
+                            mAdapter.notifyDataSetChanged();
                         } else {
                             showToast(resp.Message);
                         }
@@ -199,35 +106,6 @@ public class ScanSealActivity extends BaseUserActivity {
                     }
                 })
                 .execute();
-    }
-
-    private void filterData() {
-        mData.clear();
-        if (allData == null) {
-
-        } else if (action == 1) {
-            for (ScanResult item : scanResultsList) {
-                String itemMac = item.getBleDevice().getMacAddress();
-                boolean addItem = true;
-                for (BhSeal seal : allData) {
-                    if (seal.ZMac.equals(itemMac)) {
-                        addItem = false;
-                        break;
-                    }
-                }
-                if (addItem) mData.add(item);
-            }
-        } else if (action == 2){
-            if (allData == null || allData.isEmpty() || scanResultsList.isEmpty()) {
-
-            } else {
-                for (BhSeal item : allData) {
-
-                }
-            }
-        }
-
-        mAdapter.notifyDataSetChanged();
     }
 
     class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -274,11 +152,11 @@ public class ScanSealActivity extends BaseUserActivity {
             } else if (viewType == ITEM_TYPE_FOOTER) {
                 return null;
             } else if (viewType == ITEM_TYPE_CONTENT){
-                View view = View.inflate(ScanSealActivity.this, R.layout.item_scan_seal_list, null);
+                View view = View.inflate(SealListActivity.this, R.layout.item_seal_list, null);
                 ContentViewHolder viewHolder = new ContentViewHolder(view);
                 return viewHolder;
             } else if (viewType == ITEM_TYPE_EMPTY) {
-                View view = View.inflate(ScanSealActivity.this, R.layout.common_list_item_empty, null);
+                View view = View.inflate(SealListActivity.this, R.layout.common_list_item_empty, null);
                 return new EmptyViewHolder(view);
             }
             return null;
@@ -287,12 +165,10 @@ public class ScanSealActivity extends BaseUserActivity {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             if (holder instanceof ContentViewHolder) {
-                ScanResult item = getItem(position);
-                String name = item.getBleDevice().getName();
-                String mac = item.getBleDevice().getMacAddress();
+                BhSeal item = getItem(position);
                 ContentViewHolder itemViewHolder = (ContentViewHolder) holder;
-                itemViewHolder.text.setText(String.format("%s->%s", name, mac));
-                itemViewHolder.itemMac = mac;
+                itemViewHolder.text.setText(item.ZTitle);
+                itemViewHolder.item = item;
             }
         }
 
@@ -301,7 +177,7 @@ public class ScanSealActivity extends BaseUserActivity {
             return mHeaderCount + getContentItemCount() + getFooterCount();
         }
 
-        private ScanResult getItem(int position) {
+        private BhSeal getItem(int position) {
             return mData.get(position - mHeaderCount);
         }
 
@@ -318,8 +194,8 @@ public class ScanSealActivity extends BaseUserActivity {
     }
 
     class ContentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        String itemMac;
         TextView text;
+        BhSeal item;
 
         public ContentViewHolder(View itemView) {
             super(itemView);
@@ -331,9 +207,57 @@ public class ScanSealActivity extends BaseUserActivity {
 
         @Override
         public void onClick(View v) {
-            SealAddActivity_.intent(ScanSealActivity.this).mac(itemMac)
-                    .startForResult(REQUEST_CODE_SEAL_ADD);
+            showMenuDialog(item);
         }
+    }
+
+    private void showMenuDialog(BhSeal item) {
+        final FieldItem items[] = {new FieldItem(1, "删除")};
+        new BottomMenuDialog(this, items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == 0) {
+                    doDeleteSeal(item);
+                }
+            }
+        }).show();
+    }
+
+    private void doDeleteSeal(BhSeal item) {
+        AppRequest request = new AppRequest.Build("api/WebSet/Zhang_Delete")
+                .addParam("Zid", item.ID + "")
+                .create();
+        new HttpFormFuture.Builder(this)
+                .setData(request)
+                .setListener(new AgnettyFutureListener(){
+                    @Override
+                    public void onStart(AgnettyResult result) {
+                        showLoading();
+                    }
+
+                    @Override
+                    public void onComplete(AgnettyResult result) {
+                        hideLoading();
+                        AppResponse resp = (AppResponse)result.getAttach();
+                        if (resp.flag) {
+                            showToast(resp.Message);
+                            int index = mData.indexOf(item);
+                            if (index != -1) {
+                                mData.remove(index);
+                                mAdapter.notifyItemRemoved(index);
+                            }
+                        } else {
+                            showToast(resp.Message);
+                        }
+                    }
+
+                    @Override
+                    public void onException(AgnettyResult result) {
+                        hideLoading();
+                        result.getException().printStackTrace();
+                    }
+                })
+                .execute();
     }
 
     private class DividerItemDecoration extends RecyclerView.ItemDecoration {

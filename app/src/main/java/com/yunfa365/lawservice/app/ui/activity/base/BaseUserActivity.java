@@ -1,19 +1,15 @@
 package com.yunfa365.lawservice.app.ui.activity.base;
 
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 
 import com.baidu.android.pushservice.PushManager;
 import com.yunfa365.lawservice.app.R;
 import com.yunfa365.lawservice.app.pojo.AppGlobal;
 import com.yunfa365.lawservice.app.pojo.event.LogoutEvent;
 import com.yunfa365.lawservice.app.ui.activity.LoginActivity_;
-import com.yunfa365.lawservice.app.utils.AppUtil;
 import com.yunfa365.lawservice.app.utils.SpUtil;
 
 import org.greenrobot.eventbus.EventBus;

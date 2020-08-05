@@ -51,4 +51,9 @@
         <attr name="android:inputType"/>
         <attr name="android:maxLength"/>
     </declare-styleable>
+    <declare-styleable name="TextViewField">
+        <attr name="labelStr" />
+        <attr name="valueStr" />
+        <attr name="hintStr" />
+    </declare-styleable>
 </resources>
