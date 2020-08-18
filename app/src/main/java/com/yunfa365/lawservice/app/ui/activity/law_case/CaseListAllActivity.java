@@ -1,11 +1,10 @@
-package com.yunfa365.lawservice.app.ui.activity.office;
+package com.yunfa365.lawservice.app.ui.activity.law_case;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,12 +20,13 @@ import com.android.agnetty.utils.LogUtil;
 import com.nineoldandroids.view.ViewHelper;
 import com.yunfa365.lawservice.app.R;
 import com.yunfa365.lawservice.app.future.HttpFormFuture;
+import com.yunfa365.lawservice.app.pojo.Case;
 import com.yunfa365.lawservice.app.pojo.Custom;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
-import com.yunfa365.lawservice.app.ui.activity.base.BaseUserActivity;
 import com.yunfa365.lawservice.app.ui.activity.base.DrawerActivity;
 import com.yunfa365.lawservice.app.ui.activity.mycase.CustomInfoActivity_;
+import com.yunfa365.lawservice.app.ui.activity.office.Office_addCustomActivity_;
 import com.yunfa365.lawservice.app.ui.adapter.CommonListAdapter;
 import com.yunfa365.lawservice.app.ui.view.holder.CommonFooterViewHolder;
 
@@ -37,12 +37,8 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
 
-/**
- * Created by Administrator on 2016/5/18.
- * 客户
- */
 @EActivity(R.layout.common_search_list)
-public class CustomListActivity extends DrawerActivity {
+public class CaseListAllActivity extends DrawerActivity {
     private String FUTURE_TAG = "custom_list";
     private static final int ADD_REQUEST_CODE = 1;
 
@@ -71,9 +67,15 @@ public class CustomListActivity extends DrawerActivity {
     @ViewById(R.id.id_drawerLayout)
     DrawerLayout mDrawerLayout;
 
-    private CustomMenuRightFragment menuRightFragment;
+    private MenuRightFragment menuRightFragment;
 
     private String keyword1 = "";
+    private String keyword2 = "";
+    private String keyword3 = "";
+    private String keyword4 = "";
+    private String keyword5 = "";
+    private String keyword6 = "";
+    private String keyword7 = "";
 
     private CommonFooterViewHolder mFooterViewHolder;
 
@@ -88,18 +90,19 @@ public class CustomListActivity extends DrawerActivity {
                 finish();
             }
         });
-        mTitleTxt.setText("我的客户");
+        mTitleTxt.setText("全所案件");
+
         mRightImage.setVisibility(View.VISIBLE);
         mRightImage.setImageResource(R.mipmap.add_btn);
         mRightImage.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CustomListActivity.this, Office_addCustomActivity_.class);
+                Intent intent = new Intent(CaseListAllActivity.this, Office_addCustomActivity_.class);
                 startActivityForResult(intent, ADD_REQUEST_CODE);
             }
         });
 
-        menuRightFragment = CustomMenuRightFragment_.builder().build();
+        menuRightFragment = MenuRightFragment_.builder().build();
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.id_right_menu, menuRightFragment)
                 .commit();
@@ -152,7 +155,7 @@ public class CustomListActivity extends DrawerActivity {
             {
                 mDrawerLayout.setDrawerLockMode(
                         DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
-                hideKeyBord(menuRightFragment.gjc);
+                menuRightFragment.hideKeyBord();
             }
         });
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
@@ -182,8 +185,14 @@ public class CustomListActivity extends DrawerActivity {
         mFooterViewHolder.setLoadingStart();
         final int loadPage = mPage + 1;
 
-        AppRequest request = new AppRequest.Build("api/Custom/list_My")
-                .addParam("CustName", keyword1)
+        AppRequest request = new AppRequest.Build("api/Case/list_All")
+                .addParam("FullName", keyword1)
+                .addParam("CaseIdTxt", keyword2)
+                .addParam("CustName", keyword3)
+                .addParam("DCustName", keyword4)
+                .addParam("BegTime", keyword5)
+                .addParam("EndTime", keyword6)
+                .addParam("Stat", keyword7)
                 .addParam("PageIndex", loadPage+"")
                 .create();
         new HttpFormFuture.Builder(this)
@@ -196,7 +205,7 @@ public class CustomListActivity extends DrawerActivity {
                         swipeRefreshLayout.setRefreshing(false);
                         AppResponse resp = (AppResponse)result.getAttach();
                         if (resp.flag) {
-                            List<Custom> data = resp.resultsToList(Custom.class);
+                            List<Case> data = resp.resultsToList(Case.class);
                             if (loadPage == 1) {
                                 mAdapter.mData.clear();
                                 mAdapter.notifyDataSetChanged();
@@ -232,8 +241,14 @@ public class CustomListActivity extends DrawerActivity {
 
     //String title, String type, String cols, String caseYear, String auditStat
     public void reLoadData(String... params) {
-        if (params != null && params.length == 1) {
-            this.keyword1 = params[0];
+        if (params != null && params.length == 7) {
+            keyword1 = params[0];
+            keyword2 = params[1];
+            keyword3 = params[2];
+            keyword4 = params[3];
+            keyword5 = params[4];
+            keyword6 = params[5];
+            keyword7 = params[6];
         }
         mPage = 0;
         mAdapter.mData.clear();
@@ -246,7 +261,7 @@ public class CustomListActivity extends DrawerActivity {
             @Override
             public void onRefresh() {
                 if (mFooterViewHolder.mLoadingStatus == 1) {
-                    AgnettyManager manager = AgnettyManager.getInstance(CustomListActivity.this);
+                    AgnettyManager manager = AgnettyManager.getInstance(CaseListAllActivity.this);
                     manager.cancelFutureByTag(FUTURE_TAG);
                 }
                 reLoadData();
@@ -301,8 +316,8 @@ public class CustomListActivity extends DrawerActivity {
         public void onClick(View v) {
             Object obj = v.getTag();
             if (obj != null) {
-                Custom item = (Custom) obj;
-                CustomInfoActivity_.intent(CustomListActivity.this).customItem(item).start();
+                Case item = (Case) obj;
+                CustomInfoActivity_.intent(CaseListAllActivity.this).start();
             }
         }
 
@@ -328,8 +343,4 @@ public class CustomListActivity extends DrawerActivity {
         }
     }
 
-    private void hideKeyBord(View v) {
-        InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-    }
 }

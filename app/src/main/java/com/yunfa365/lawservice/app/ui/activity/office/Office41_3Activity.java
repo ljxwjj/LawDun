@@ -201,7 +201,7 @@ public class Office41_3Activity extends BaseUserActivity {
             wtr.setText(caseItem.TWtr);
             dsr.setText(caseItem.LxRen);
             Custom custom = new Custom();
-            custom.ID = caseItem.Wtr;
+            custom.ID = caseItem.CustId;
             wtr.setTag(custom);
 
             gwf.setText(caseItem.Price + "");

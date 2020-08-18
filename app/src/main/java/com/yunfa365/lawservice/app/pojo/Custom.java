@@ -1,25 +1,26 @@
 package com.yunfa365.lawservice.app.pojo;
 
-import com.google.gson.annotations.JsonAdapter;
+import com.yunfa365.lawservice.app.pojo.base.CommonItem;
 
 import java.io.Serializable;
 
 /**
  * Created by Administrator on 2016/4/21.
  */
-public class Custom implements Serializable {
+public class Custom implements Serializable, CommonItem {
 
     public int ID;
     public int Uid;
     public String Title;
-    @Deprecated // 可能要被删掉
-    public String LxRen;
+    public String CaseUName;
     public String Phone;
     public String Mobile;
     public int ProvinceId;
     public String ProvinceIdTxt;
     public int CityId;
     public String CityIdTxt;
+    public int AreaId;
+    public String AreaIdTxt;
     public int CustCols;              // 客户类型 公民个人、公司企业……
     public String CustColsTxt;
     public String Addtime;
@@ -33,4 +34,20 @@ public class Custom implements Serializable {
     public String Email;              //     邮件
     public String Address;            //   详细地址
     public String Make;               // 备注
+
+    @Override
+    public String getTitle() {
+        return Title;
+    }
+
+    @Override
+    public String getDesc() {
+        String desc = "当事人：%s\n手机号码：%s\n所属区域：%s-%s-%s\n入库时间：%s";
+        return String.format(desc, CaseUName, Mobile, ProvinceIdTxt, CityIdTxt, AreaIdTxt, Addtime);
+    }
+
+    @Override
+    public String getStatus() {
+        return "";
+    }
 }

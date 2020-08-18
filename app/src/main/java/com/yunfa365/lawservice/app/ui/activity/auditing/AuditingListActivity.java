@@ -1,4 +1,4 @@
-package com.yunfa365.lawservice.app.ui.activity.office;
+package com.yunfa365.lawservice.app.ui.activity.auditing;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,12 +21,14 @@ import com.android.agnetty.utils.LogUtil;
 import com.nineoldandroids.view.ViewHelper;
 import com.yunfa365.lawservice.app.R;
 import com.yunfa365.lawservice.app.future.HttpFormFuture;
+import com.yunfa365.lawservice.app.pojo.Audit;
 import com.yunfa365.lawservice.app.pojo.Custom;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
 import com.yunfa365.lawservice.app.ui.activity.base.BaseUserActivity;
 import com.yunfa365.lawservice.app.ui.activity.base.DrawerActivity;
 import com.yunfa365.lawservice.app.ui.activity.mycase.CustomInfoActivity_;
+import com.yunfa365.lawservice.app.ui.activity.office.Office_addCustomActivity_;
 import com.yunfa365.lawservice.app.ui.adapter.CommonListAdapter;
 import com.yunfa365.lawservice.app.ui.view.holder.CommonFooterViewHolder;
 
@@ -37,12 +39,8 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
 
-/**
- * Created by Administrator on 2016/5/18.
- * 客户
- */
 @EActivity(R.layout.common_search_list)
-public class CustomListActivity extends DrawerActivity {
+public class AuditingListActivity extends DrawerActivity {
     private String FUTURE_TAG = "custom_list";
     private static final int ADD_REQUEST_CODE = 1;
 
@@ -71,7 +69,7 @@ public class CustomListActivity extends DrawerActivity {
     @ViewById(R.id.id_drawerLayout)
     DrawerLayout mDrawerLayout;
 
-    private CustomMenuRightFragment menuRightFragment;
+    private MenuRightFragment menuRightFragment;
 
     private String keyword1 = "";
 
@@ -88,18 +86,18 @@ public class CustomListActivity extends DrawerActivity {
                 finish();
             }
         });
-        mTitleTxt.setText("我的客户");
+        mTitleTxt.setText("业务审批");
         mRightImage.setVisibility(View.VISIBLE);
         mRightImage.setImageResource(R.mipmap.add_btn);
         mRightImage.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CustomListActivity.this, Office_addCustomActivity_.class);
+                Intent intent = new Intent(AuditingListActivity.this, Office_addCustomActivity_.class);
                 startActivityForResult(intent, ADD_REQUEST_CODE);
             }
         });
 
-        menuRightFragment = CustomMenuRightFragment_.builder().build();
+        menuRightFragment = MenuRightFragment_.builder().build();
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.id_right_menu, menuRightFragment)
                 .commit();
@@ -182,8 +180,8 @@ public class CustomListActivity extends DrawerActivity {
         mFooterViewHolder.setLoadingStart();
         final int loadPage = mPage + 1;
 
-        AppRequest request = new AppRequest.Build("api/Custom/list_My")
-                .addParam("CustName", keyword1)
+        AppRequest request = new AppRequest.Build("api/Audit/list_no")
+                .addParam("UsersFullName", keyword1)
                 .addParam("PageIndex", loadPage+"")
                 .create();
         new HttpFormFuture.Builder(this)
@@ -196,7 +194,7 @@ public class CustomListActivity extends DrawerActivity {
                         swipeRefreshLayout.setRefreshing(false);
                         AppResponse resp = (AppResponse)result.getAttach();
                         if (resp.flag) {
-                            List<Custom> data = resp.resultsToList(Custom.class);
+                            List<Audit> data = resp.resultsToList(Audit.class);
                             if (loadPage == 1) {
                                 mAdapter.mData.clear();
                                 mAdapter.notifyDataSetChanged();
@@ -246,7 +244,7 @@ public class CustomListActivity extends DrawerActivity {
             @Override
             public void onRefresh() {
                 if (mFooterViewHolder.mLoadingStatus == 1) {
-                    AgnettyManager manager = AgnettyManager.getInstance(CustomListActivity.this);
+                    AgnettyManager manager = AgnettyManager.getInstance(AuditingListActivity.this);
                     manager.cancelFutureByTag(FUTURE_TAG);
                 }
                 reLoadData();
@@ -302,7 +300,7 @@ public class CustomListActivity extends DrawerActivity {
             Object obj = v.getTag();
             if (obj != null) {
                 Custom item = (Custom) obj;
-                CustomInfoActivity_.intent(CustomListActivity.this).customItem(item).start();
+                CustomInfoActivity_.intent(AuditingListActivity.this).customItem(item).start();
             }
         }
 

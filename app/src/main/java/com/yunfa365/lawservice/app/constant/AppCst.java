@@ -13,7 +13,7 @@ public class AppCst extends BaseCst {
     public static final boolean DEBUG = true;
     //API接口地址
     private final static String HTTP_ROOT = "https://api.lawdun.com/";
-    private final static String HTTP_ROOT_DEBUG = "http://api.lawdun.com/";
+    private final static String HTTP_ROOT_DEBUG = "https://api.lawdun.com/";
     static {
 		AgnettyCst.DEBUG = DEBUG;
     }

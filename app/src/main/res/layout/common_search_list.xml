@@ -13,18 +13,18 @@
 
         <include layout="@layout/action_bar" />
 
-        <com.yunfa365.lawservice.app.ui.view.pulltorefresh.XListView
-            android:id="@android:id/list"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:scrollbars="none"
-            android:divider="@drawable/list_left_right_padding_divider_a0"
-            android:dividerHeight="1px"
-            android:layout_weight="1"
-            android:cacheColorHint="@android:color/transparent"
-            android:listSelector="@android:color/transparent"
-            android:headerDividersEnabled="false"
-            android:footerDividersEnabled="false"></com.yunfa365.lawservice.app.ui.view.pulltorefresh.XListView>
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
 
     <FrameLayout
@@ -34,12 +34,5 @@
         android:layout_gravity="right"
         android:tag="RIGHT">
     </FrameLayout>
-
-    <!--<fragment
-        android:id="@+id/id_right_menu"
-        android:layout_width="300dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="right"
-        android:tag="RIGHT" />-->
 
 </androidx.drawerlayout.widget.DrawerLayout>

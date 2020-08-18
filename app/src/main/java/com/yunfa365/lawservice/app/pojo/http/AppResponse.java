@@ -3,6 +3,8 @@ package com.yunfa365.lawservice.app.pojo.http;
 
 import com.yunfa365.lawservice.app.utils.StringUtil;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AppResponse {
@@ -26,15 +28,39 @@ public class AppResponse {
 	public String response;
 
 	public <T> T resultsToObject(Class<T> t) {
-		return StringUtil.toObject(RData, t);
+		try {
+			return StringUtil.toObject(RData, t);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			return t.newInstance();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public <T> List<T> resultsToList(Class<T> t) {
-		return StringUtil.toObjectList(RData, t);
+		List list = null;
+		try {
+			list = StringUtil.toObjectList(RData, t);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (list == null) {
+			list = new ArrayList();
+		}
+		return list;
 	}
 
 	public <T> T[] resultsToArray(Class<T> t) {
-		return StringUtil.toObjectArray(RData, t);
+		try {
+			return StringUtil.toObjectArray(RData, t);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return (T[]) Array.newInstance(t.getComponentType(), 0);
 	}
 
 	public <T> T getFirstObject(Class<T> t) {

@@ -231,7 +231,7 @@ public class Office41_4Activity extends BaseUserActivity {
             wtr.setText(caseItem.TWtr);
             dsr.setText(caseItem.LxRen);
             Custom custom = new Custom();
-            custom.ID = caseItem.Wtr;
+            custom.ID = caseItem.CustId;
             wtr.setTag(custom);
 
             dfdsr.setText(caseItem.TDfdsr);

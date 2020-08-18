@@ -22,6 +22,7 @@ import com.nineoldandroids.view.ViewHelper;
 import com.yunfa365.lawservice.app.R;
 import com.yunfa365.lawservice.app.future.HttpFormFuture;
 import com.yunfa365.lawservice.app.pojo.Custom;
+import com.yunfa365.lawservice.app.pojo.DfCustom;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
 import com.yunfa365.lawservice.app.ui.activity.base.BaseUserActivity;
@@ -42,8 +43,8 @@ import java.util.List;
  * 客户
  */
 @EActivity(R.layout.common_search_list)
-public class CustomListActivity extends DrawerActivity {
-    private String FUTURE_TAG = "custom_list";
+public class DfCustomListActivity extends DrawerActivity {
+    private String FUTURE_TAG = "df_custom_list";
     private static final int ADD_REQUEST_CODE = 1;
 
     private int pageSize = 10;
@@ -88,13 +89,13 @@ public class CustomListActivity extends DrawerActivity {
                 finish();
             }
         });
-        mTitleTxt.setText("我的客户");
+        mTitleTxt.setText("对方当事人");
         mRightImage.setVisibility(View.VISIBLE);
         mRightImage.setImageResource(R.mipmap.add_btn);
         mRightImage.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CustomListActivity.this, Office_addCustomActivity_.class);
+                Intent intent = new Intent(DfCustomListActivity.this, Office_addCustomActivity_.class);
                 startActivityForResult(intent, ADD_REQUEST_CODE);
             }
         });
@@ -182,8 +183,9 @@ public class CustomListActivity extends DrawerActivity {
         mFooterViewHolder.setLoadingStart();
         final int loadPage = mPage + 1;
 
-        AppRequest request = new AppRequest.Build("api/Custom/list_My")
+        AppRequest request = new AppRequest.Build("api/Custom/list_d")
                 .addParam("CustName", keyword1)
+                .addParam("GetCase", "1")
                 .addParam("PageIndex", loadPage+"")
                 .create();
         new HttpFormFuture.Builder(this)
@@ -196,7 +198,7 @@ public class CustomListActivity extends DrawerActivity {
                         swipeRefreshLayout.setRefreshing(false);
                         AppResponse resp = (AppResponse)result.getAttach();
                         if (resp.flag) {
-                            List<Custom> data = resp.resultsToList(Custom.class);
+                            List<DfCustom> data = resp.resultsToList(DfCustom.class);
                             if (loadPage == 1) {
                                 mAdapter.mData.clear();
                                 mAdapter.notifyDataSetChanged();
@@ -246,7 +248,7 @@ public class CustomListActivity extends DrawerActivity {
             @Override
             public void onRefresh() {
                 if (mFooterViewHolder.mLoadingStatus == 1) {
-                    AgnettyManager manager = AgnettyManager.getInstance(CustomListActivity.this);
+                    AgnettyManager manager = AgnettyManager.getInstance(DfCustomListActivity.this);
                     manager.cancelFutureByTag(FUTURE_TAG);
                 }
                 reLoadData();
@@ -285,6 +287,7 @@ public class CustomListActivity extends DrawerActivity {
 
         public MyAdapter(Context context) {
             super(context);
+            hasDetail = false;
         }
 
         public boolean isOnLoading() {
@@ -302,7 +305,7 @@ public class CustomListActivity extends DrawerActivity {
             Object obj = v.getTag();
             if (obj != null) {
                 Custom item = (Custom) obj;
-                CustomInfoActivity_.intent(CustomListActivity.this).customItem(item).start();
+                CustomInfoActivity_.intent(DfCustomListActivity.this).customItem(item).start();
             }
         }
 

@@ -1,4 +1,4 @@
-package com.yunfa365.lawservice.app.ui.activity.office;
+package com.yunfa365.lawservice.app.ui.activity.auditing;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,10 +9,10 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-
 import com.yunfa365.lawservice.app.R;
 import com.yunfa365.lawservice.app.pojo.TSearchType;
 import com.yunfa365.lawservice.app.ui.activity.base.DrawerActivity;
+import com.yunfa365.lawservice.app.ui.activity.office.CustomListActivity;
 import com.yunfa365.lawservice.app.ui.dialog.SpinnerDialog;
 
 import org.androidannotations.annotations.AfterViews;
@@ -24,7 +24,7 @@ import org.androidannotations.annotations.ViewById;
  * Created by Administrator on 2016/5/9.
  */
 @EFragment(R.layout.fragment_custom_list_right_menu)
-public class CustomMenuRightFragment extends Fragment {
+public class MenuRightFragment extends Fragment {
     private static final TSearchType[] jsfss = {new TSearchType(1, "根据委托人"), new TSearchType(4, "根据电话")};
 
     @ViewById(R.id.base_id_back)

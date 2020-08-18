@@ -4,13 +4,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Canvas;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -29,8 +25,8 @@ import com.yunfa365.lawservice.app.pojo.ShenCha;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
 import com.yunfa365.lawservice.app.ui.activity.base.BaseUserActivity;
-import com.yunfa365.lawservice.app.ui.view.holder.EmptyViewHolder;
-import com.yunfa365.lawservice.app.utils.ScreenUtil;
+import com.yunfa365.lawservice.app.ui.adapter.CommonListAdapter;
+import com.yunfa365.lawservice.app.ui.view.holder.CommonFooterViewHolder;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -38,7 +34,6 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -89,7 +84,6 @@ public class Office61Activity extends BaseUserActivity {
     @ViewById
     RecyclerView listView;
     MyAdapter mAdapter;
-    List<ShenCha> mData;
 
     private String keyword1, keyword2;
 
@@ -136,10 +130,8 @@ public class Office61Activity extends BaseUserActivity {
             mButton2.setVisibility(View.GONE);
         }
 
-        mData = new ArrayList();
-        mAdapter = new MyAdapter();
+        mAdapter = new MyAdapter(this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        listView.addItemDecoration(new DividerItemDecoration(1));
         listView.setLayoutManager(layoutManager);
         listView.setAdapter(mAdapter);
     }
@@ -170,7 +162,7 @@ public class Office61Activity extends BaseUserActivity {
             showToast("请输入委托人/当事人和对方当事人");
             return;
         }
-        mData.clear();
+        mAdapter.mData.clear();
         mAdapter.notifyDataSetChanged();
 
         hideKeyBord(mInput1);
@@ -199,7 +191,7 @@ public class Office61Activity extends BaseUserActivity {
                             resultLayout.setVisibility(View.VISIBLE);
 
                             List<ShenCha> shenChas = resp.resultsToList(ShenCha.class);
-                            mData.addAll(shenChas);
+                            mAdapter.mData.addAll(shenChas);
                             mAdapter.notifyDataSetChanged();
                         } else {
                             showAddDialog();
@@ -231,157 +223,21 @@ public class Office61Activity extends BaseUserActivity {
                 }).show();
     }
 
-    class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-        static final int ITEM_TYPE_HEADER = 0;
-        static final int ITEM_TYPE_CONTENT = 1;
-        static final int ITEM_TYPE_FOOTER = 2;
-        static final int ITEM_TYPE_EMPTY = 3;
+    class MyAdapter extends CommonListAdapter {
 
-        private int mHeaderCount = 0;
-        private int mFooterCount = 0;
+        public MyAdapter(Context context) {
+            super(context);
 
-        public int getContentItemCount() {
-            return mData.size();
-        }
-
-        public int getFooterCount() {
-            return mFooterCount;
-        }
-
-        public boolean isHeaderView(int position) {
-            return mHeaderCount > 0 && position < mHeaderCount;
-        }
-
-        public boolean isFooterView(int position) {
-            return mFooterCount > 0 && position >= (mHeaderCount + getContentItemCount());
-        }
-
-        public boolean isLastContentView(int position) {
-            return position + 1 == mHeaderCount + getContentItemCount();
-        }
-
-        public boolean isEmptyView(int position) {
-            return isEmpty() && position == 0;
-        }
-
-        public boolean isEmpty() {
-            return mData == null || mData.isEmpty();
+            mHeaderCount = 0;
+            mFooterCount = 0;
+            hasDetail = false;
         }
 
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            if (viewType == ITEM_TYPE_HEADER) {
-                return null;
-            } else if (viewType == ITEM_TYPE_FOOTER) {
-                return null;
-            } else if (viewType == ITEM_TYPE_CONTENT){
-                View view = View.inflate(Office61Activity.this, R.layout.item_chongtu_list, null);
-                ContentViewHolder viewHolder = new ContentViewHolder(view);
-                return viewHolder;
-            } else if (viewType == ITEM_TYPE_EMPTY) {
-                View view = View.inflate(Office61Activity.this, R.layout.common_list_item_empty, null);
-                return new EmptyViewHolder(view);
-            }
+        protected CommonFooterViewHolder getFooterViewHolder() {
             return null;
         }
 
-        @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            if (holder instanceof ContentViewHolder) {
-                ShenCha item = getItem(position);
-                ContentViewHolder itemViewHolder = (ContentViewHolder) holder;
-                itemViewHolder.text1.setText(item.AyMake);
-                itemViewHolder.text2.setText("案　　　号：" + item.CaseIdTxt);
-                itemViewHolder.text3.setText("委　托　人：" + item.CustName);
-                itemViewHolder.text4.setText("对方当事人：" + item.DCustName);
-                itemViewHolder.text5.setText("主办律师　：" + item.UsersListName);
-                itemViewHolder.text6.setText("结案状态　：" + item.EndStatTxt);
-            }
-        }
-
-        @Override
-        public int getItemCount() {
-            return mHeaderCount + getContentItemCount() + getFooterCount();
-        }
-
-        private ShenCha getItem(int position) {
-            return mData.get(position - mHeaderCount);
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            if (isHeaderView(position)) {
-                return ITEM_TYPE_HEADER;
-            } else if (isFooterView(position)) {
-                return ITEM_TYPE_FOOTER;
-            } else {
-                return ITEM_TYPE_CONTENT;
-            }
-        }
-
     }
 
-
-    class ContentViewHolder extends RecyclerView.ViewHolder {
-        TextView text1, text2, text3, text4, text5, text6;
-
-        public ContentViewHolder(View itemView) {
-            super(itemView);
-            RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
-            itemView.setLayoutParams(params);
-
-            text1 = itemView.findViewById(R.id.text1);
-            text2 = itemView.findViewById(R.id.text2);
-            text3 = itemView.findViewById(R.id.text3);
-            text4 = itemView.findViewById(R.id.text4);
-            text5 = itemView.findViewById(R.id.text5);
-            text6 = itemView.findViewById(R.id.text6);
-        }
-    }
-
-    private class DividerItemDecoration extends RecyclerView.ItemDecoration {
-        private int dividerHeight;
-        private Drawable mDivider;
-        Drawable whiteDrawable;
-
-        public DividerItemDecoration(float dividerHeight) {
-            this.dividerHeight = ScreenUtil.dip2px(dividerHeight);
-            mDivider = getResources().getDrawable(R.color.status_color);
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            super.getItemOffsets(outRect, view, parent, state);
-            int position = parent.getChildAdapterPosition(view);
-            if (mAdapter.isHeaderView(position)) {
-
-            } else if (mAdapter.isFooterView(position)) {
-
-            } else {
-                outRect.bottom = dividerHeight;//类似加了一个bottom padding
-            }
-        }
-
-        @Override
-        public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-            final int left = 0;
-            final int right = parent.getWidth() - left;
-
-            final int childCount = parent.getChildCount();
-            for (int i = 0; i < childCount; i++) {
-                final View child = parent.getChildAt(i);
-                final int top = child.getBottom();
-
-                if (mAdapter.isHeaderView(i)) {
-
-                } else if (mAdapter.isFooterView(i)) {
-
-                } else {
-                    mDivider.setBounds(left, top, right, top+dividerHeight);
-                    mDivider.draw(c);
-                }
-
-            }
-        }
-    }
 }

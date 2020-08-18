@@ -32,9 +32,18 @@ import com.yunfa365.lawservice.app.pojo.event.UserRoleEvent;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
 import com.yunfa365.lawservice.app.ui.activity.HomeActivity;
+import com.yunfa365.lawservice.app.ui.activity.auditing.AuditedListActivity_;
+import com.yunfa365.lawservice.app.ui.activity.auditing.AuditingListActivity_;
+import com.yunfa365.lawservice.app.ui.activity.finance.BillListAllActivity_;
+import com.yunfa365.lawservice.app.ui.activity.finance.BillListMyActivity_;
+import com.yunfa365.lawservice.app.ui.activity.law_case.CaseListAllActivity_;
+import com.yunfa365.lawservice.app.ui.activity.law_case.CaseListMyActivity_;
 import com.yunfa365.lawservice.app.ui.activity.office.ChongTuActivity_;
 import com.yunfa365.lawservice.app.ui.activity.office.CustomListActivity_;
+import com.yunfa365.lawservice.app.ui.activity.office.DfCustomListActivity_;
 import com.yunfa365.lawservice.app.ui.activity.office.Office41Activity_;
+import com.yunfa365.lawservice.app.ui.activity.official.OfficialListAllActivity_;
+import com.yunfa365.lawservice.app.ui.activity.official.OfficialListMyActivity_;
 import com.yunfa365.lawservice.app.ui.activity.seal.ScanSealActivity_;
 import com.yunfa365.lawservice.app.ui.activity.seal.SealListActivity_;
 import com.yunfa365.lawservice.app.ui.activity.user.UserBindSealActivity_;
@@ -263,8 +272,23 @@ class FragmentPage3 extends BaseFragment {
             case 2:
                 Office41Activity_.intent(this).start();
                 break;
-            case 3:
+            case 4:
+                CaseListMyActivity_.intent(this).start();
+                break;
+            case 5:
                 CustomListActivity_.intent(this).start();
+                break;
+            case 6:
+                DfCustomListActivity_.intent(this).start();
+                break;
+            case 8:
+                OfficialListMyActivity_.intent(this).start();
+                break;
+            case 14:
+                BillListMyActivity_.intent(this).isDone(false).start();
+                break;
+            case 15:
+                BillListMyActivity_.intent(this).isDone(true).start();
                 break;
             case 16:
                 ScanSealActivity_.intent(this).action(2).start();
@@ -277,6 +301,24 @@ class FragmentPage3 extends BaseFragment {
                 break;
             case 20:
                 UserBindSealActivity_.intent(this).start();
+                break;
+            case 9991:
+                AuditingListActivity_.intent(this).start();
+                break;
+            case 9992:
+                AuditedListActivity_.intent(this).start();
+                break;
+            case 9993:
+                BillListAllActivity_.intent(this).isDone(false).start();
+                break;
+            case 9994:
+                CaseListAllActivity_.intent(this).start();
+                break;
+            case 9995:
+                OfficialListAllActivity_.intent(this).start();
+                break;
+            case 9996:
+                BillListAllActivity_.intent(this).isDone(true).start();
                 break;
             default:
                 break;
