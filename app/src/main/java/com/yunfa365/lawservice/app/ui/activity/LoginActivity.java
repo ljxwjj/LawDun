@@ -193,7 +193,7 @@ class LoginActivity extends BaseActivity {
 
 
                             HomeActivity_.intent(LoginActivity.this)
-                                    .mDefaultTab(2)
+                                    .mDefaultTab(1)
                                     .start();
 
                             finish();

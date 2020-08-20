@@ -25,10 +25,8 @@ import com.yunfa365.lawservice.app.pojo.Audit;
 import com.yunfa365.lawservice.app.pojo.Custom;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
-import com.yunfa365.lawservice.app.ui.activity.base.BaseUserActivity;
 import com.yunfa365.lawservice.app.ui.activity.base.DrawerActivity;
 import com.yunfa365.lawservice.app.ui.activity.mycase.CustomInfoActivity_;
-import com.yunfa365.lawservice.app.ui.activity.office.Office_addCustomActivity_;
 import com.yunfa365.lawservice.app.ui.adapter.CommonListAdapter;
 import com.yunfa365.lawservice.app.ui.view.holder.CommonFooterViewHolder;
 
@@ -87,15 +85,6 @@ public class AuditedListActivity extends DrawerActivity {
             }
         });
         mTitleTxt.setText("审批记录");
-        mRightImage.setVisibility(View.VISIBLE);
-        mRightImage.setImageResource(R.mipmap.add_btn);
-        mRightImage.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AuditedListActivity.this, Office_addCustomActivity_.class);
-                startActivityForResult(intent, ADD_REQUEST_CODE);
-            }
-        });
 
         menuRightFragment = MenuRightFragment_.builder().build();
         getSupportFragmentManager().beginTransaction()

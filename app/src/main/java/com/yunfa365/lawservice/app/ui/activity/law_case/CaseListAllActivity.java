@@ -92,16 +92,6 @@ public class CaseListAllActivity extends DrawerActivity {
         });
         mTitleTxt.setText("全所案件");
 
-        mRightImage.setVisibility(View.VISIBLE);
-        mRightImage.setImageResource(R.mipmap.add_btn);
-        mRightImage.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(CaseListAllActivity.this, Office_addCustomActivity_.class);
-                startActivityForResult(intent, ADD_REQUEST_CODE);
-            }
-        });
-
         menuRightFragment = MenuRightFragment_.builder().build();
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.id_right_menu, menuRightFragment)
@@ -317,7 +307,6 @@ public class CaseListAllActivity extends DrawerActivity {
             Object obj = v.getTag();
             if (obj != null) {
                 Case item = (Case) obj;
-                CustomInfoActivity_.intent(CaseListAllActivity.this).start();
             }
         }
 

@@ -98,15 +98,6 @@ public class BillListAllActivity extends DrawerActivity {
         } else {
             mTitleTxt.setText("待开发票");
         }
-        mRightImage.setVisibility(View.VISIBLE);
-        mRightImage.setImageResource(R.mipmap.add_btn);
-        mRightImage.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(BillListAllActivity.this, Office_addCustomActivity_.class);
-                startActivityForResult(intent, ADD_REQUEST_CODE);
-            }
-        });
 
         menuRightFragment = MenuRightFragment_.builder().build();
         getSupportFragmentManager().beginTransaction()
@@ -319,8 +310,7 @@ public class BillListAllActivity extends DrawerActivity {
         public void onClick(View v) {
             Object obj = v.getTag();
             if (obj != null) {
-                Custom item = (Custom) obj;
-                CustomInfoActivity_.intent(BillListAllActivity.this).customItem(item).start();
+                Bill item = (Bill) obj;
             }
         }
 

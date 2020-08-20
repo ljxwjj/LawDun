@@ -90,15 +90,6 @@ public class DfCustomListActivity extends DrawerActivity {
             }
         });
         mTitleTxt.setText("对方当事人");
-        mRightImage.setVisibility(View.VISIBLE);
-        mRightImage.setImageResource(R.mipmap.add_btn);
-        mRightImage.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DfCustomListActivity.this, Office_addCustomActivity_.class);
-                startActivityForResult(intent, ADD_REQUEST_CODE);
-            }
-        });
 
         menuRightFragment = CustomMenuRightFragment_.builder().build();
         getSupportFragmentManager().beginTransaction()
@@ -302,11 +293,7 @@ public class DfCustomListActivity extends DrawerActivity {
 
         @Override
         public void onClick(View v) {
-            Object obj = v.getTag();
-            if (obj != null) {
-                Custom item = (Custom) obj;
-                CustomInfoActivity_.intent(DfCustomListActivity.this).customItem(item).start();
-            }
+
         }
 
         public CommonFooterViewHolder getFooterViewHolder() {

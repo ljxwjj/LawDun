@@ -93,16 +93,6 @@ public class OfficialListMyActivity extends DrawerActivity {
 
         mTitleTxt.setText("用印记录");
 
-        mRightImage.setVisibility(View.VISIBLE);
-        mRightImage.setImageResource(R.mipmap.add_btn);
-        mRightImage.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(OfficialListMyActivity.this, Office_addCustomActivity_.class);
-                startActivityForResult(intent, ADD_REQUEST_CODE);
-            }
-        });
-
         menuRightFragment = MenuRightFragment_.builder().build();
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.id_right_menu, menuRightFragment)
@@ -313,8 +303,7 @@ public class OfficialListMyActivity extends DrawerActivity {
         public void onClick(View v) {
             Object obj = v.getTag();
             if (obj != null) {
-                Custom item = (Custom) obj;
-                CustomInfoActivity_.intent(OfficialListMyActivity.this).customItem(item).start();
+                OfficialRecord item = (OfficialRecord) obj;
             }
         }
 

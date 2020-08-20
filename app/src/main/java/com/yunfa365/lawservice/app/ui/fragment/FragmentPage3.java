@@ -2,8 +2,6 @@ package com.yunfa365.lawservice.app.ui.fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -21,8 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.agnetty.core.AgnettyFutureListener;
 import com.android.agnetty.core.AgnettyResult;
 import com.android.agnetty.utils.LogUtil;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.yunfa365.lawservice.app.GlideApp;
 import com.yunfa365.lawservice.app.R;
 import com.yunfa365.lawservice.app.future.HttpFormFuture;
 import com.yunfa365.lawservice.app.pojo.AppGlobal;
@@ -86,7 +82,6 @@ class FragmentPage3 extends BaseFragment {
     private List<GridItem> mGridItems = new ArrayList<>();
 
     private HomeActivity mActivity;
-    private int[] officeIcons;
     private LoopViewPagerAdapter mLoopPagerAdapter;
     private List<BannerInfo> mBannerInfo;
 
@@ -166,13 +161,6 @@ class FragmentPage3 extends BaseFragment {
         }
         mTitleTxt.setText(title);
         mActivity = (HomeActivity)getActivity();
-        TypedArray ar = getResources().obtainTypedArray(R.array.office_icons);
-        int len = ar.length();
-        officeIcons = new int[len];
-        for (int i=0; i < len; i++) {
-            officeIcons[i] = ar.getResourceId(i, 0);
-        }
-        ar.recycle();
 
         String homeBannerInfo = SpUtil.getHomeBannerInfo(mActivity);
         if (TextUtils.isEmpty(homeBannerInfo)) {
@@ -264,7 +252,6 @@ class FragmentPage3 extends BaseFragment {
     }
 
     private void onItemClick(GridItem item) {
-        Intent intent = null;
         switch (item.id) {
             case 1:
                 ChongTuActivity_.intent(this).start();
@@ -376,25 +363,8 @@ class FragmentPage3 extends BaseFragment {
                 itemViewHolder.textView.setText(item.name);
                 itemViewHolder.itemView.setTag(item);
 
-                List<String> icons = AppGlobal.mUser.mRole.getIcons(item.pid + "");
-                if (icons == null || icons.isEmpty()) {
-                    GlideApp.with(mActivity).load(officeIcons[item.image])
-                            .into(itemViewHolder.imageView);
-                    GlideApp.with(mActivity).load(0)
-                            .into(itemViewHolder.flagView);
-                } else {
-                    GlideApp.with(mActivity).load(icons.get(0))
-                            .diskCacheStrategy(DiskCacheStrategy.ALL)
-                            .into(itemViewHolder.imageView);
-                    if (icons.size() == 1) {
-                        GlideApp.with(mActivity).load(0)
-                                .into(itemViewHolder.flagView);
-                    } else {
-                        GlideApp.with(mActivity).load(icons.get(1))
-                                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                .into(itemViewHolder.flagView);
-                    }
-                }
+                String image = StringUtil.unescape(item.image);
+                itemViewHolder.imageView.setText(image);
             }
         }
 
@@ -429,7 +399,7 @@ class FragmentPage3 extends BaseFragment {
     }
 
     class ItemViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageView;
+        TextView imageView;
         TextView textView;
         ImageView flagView;
 

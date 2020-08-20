@@ -9,6 +9,6 @@ public class GridItem implements Serializable {
     public int id;
     public int pid;
     public String name;
-    public int image;
+    public String image;
     public String url;
 }

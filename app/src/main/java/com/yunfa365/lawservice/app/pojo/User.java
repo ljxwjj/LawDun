@@ -2,13 +2,7 @@ package com.yunfa365.lawservice.app.pojo;
 
 import android.content.Context;
 
-import com.android.agnetty.core.AgnettyFutureListener;
-import com.android.agnetty.core.AgnettyResult;
-import com.yunfa365.lawservice.app.constant.AppCst;
-import com.yunfa365.lawservice.app.future.HttpJsonFuture;
 import com.yunfa365.lawservice.app.pojo.event.UserRoleEvent;
-import com.yunfa365.lawservice.app.pojo.http.AppRequest;
-import com.yunfa365.lawservice.app.pojo.http.AppResponse;
 import com.yunfa365.lawservice.app.utils.SpUtil;
 import com.yunfa365.lawservice.app.utils.StringUtil;
 
@@ -34,6 +28,22 @@ public class User {
     public int Stat;          // 审核状态
     public String Addtime;    // 入库时间
     public String app_key;
+
+    // 我的基本资料
+    public String weixin_key;
+    public String WOpenID;
+    public int WGuanZhu;
+    public String TongJi_Case;
+    public String TongJi_Off;
+    public String TongJi_Bill;
+    public String LawIdTxt;
+    public String SexsTxt;
+    public String ProvinceIdTxt;
+    public String CityIdTxt;
+    public String AreaIdTxt;
+    public String GroupsIdTxt;
+    public String IsActiveTxt;
+    public String StatTxt;
 
     public transient UserRole mRole;
     private transient boolean onLoadUserRole = false; // 角色权限加载状态
