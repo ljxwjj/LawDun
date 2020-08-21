@@ -35,6 +35,8 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
 
+import static com.yunfa365.lawservice.app.constant.BaseCst.DETAIL_REQUEST_CODE;
+
 @EActivity(R.layout.common_search_list)
 public class BillListMyActivity extends DrawerActivity {
     private String FUTURE_TAG = "custom_list";
@@ -307,6 +309,7 @@ public class BillListMyActivity extends DrawerActivity {
             Object obj = v.getTag();
             if (obj != null) {
                 Bill item = (Bill) obj;
+                gotoDetail(item);
             }
         }
 
@@ -314,6 +317,10 @@ public class BillListMyActivity extends DrawerActivity {
             return mFooterViewHolder;
         }
 
+    }
+
+    private void gotoDetail(Bill item) {
+        BillDetailActivity_.intent(this).ID(item.ID).startForResult(DETAIL_REQUEST_CODE);
     }
 
     @OnActivityResult(ADD_REQUEST_CODE)

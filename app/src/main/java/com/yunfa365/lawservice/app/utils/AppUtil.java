@@ -22,6 +22,7 @@ import androidx.core.content.FileProvider;
 import com.yunfa365.lawservice.app.BuildConfig;
 import com.yunfa365.lawservice.app.R;
 import com.yunfa365.lawservice.app.pojo.AppGlobal;
+import com.yunfa365.lawservice.app.ui.activity.law_case.CaseDetailActivity_;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -325,6 +326,11 @@ public class AppUtil {
 	}
 
 	public static void appUriForword(Context context, String host, String Id) {
+		if ("case".equalsIgnoreCase(host)) {
+			int ID = Integer.parseInt(Id);
+			CaseDetailActivity_.intent(context).ID(ID).start();
+		} else if ("image".equalsIgnoreCase(host)) {
 
+		}
 	}
 }

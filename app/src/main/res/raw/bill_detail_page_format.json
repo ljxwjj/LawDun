@@ -1,0 +1,20 @@
+[
+  {"field":"CaseIdTxt", "label":"案件", "forwordHost":"case", "forwordId":"CaseId"},
+  {"field":"UidTxt", "label":"审请人"},
+  {"field":"BTitle", "label":"发票抬头"},
+  {"field":"Price", "label":"开票金额", "valueFormat": "%.0f元"},
+  {"field":"BillTypeTxt", "label":"开票项目"},
+  {"field":"BComTypeTxt", "label":"开具类型"},
+  {"field":"BillColsTxt", "label":"发票类型"},
+  {"field":"SwNums", "label":"纳税人识别号"},
+  {"field":"FilePath", "label":"税务登记证副本", "value":"预览副本", "forwordHost":"image", "forwordId": "FilePath"},
+  {"field":"BankName", "label":"基本户开户银行"},
+  {"field":"BankNums", "label":"基本户开户帐号"},
+  {"field":"RegionAddress", "label":"注册场所地址"},
+  {"field":"RegionPhone", "label":"注册固定电话"},
+  {"field":"LxRen", "label":"收件人"},
+  {"field":"Address", "label":"收件地址"},
+  {"field":"LxPhone", "label":"联系电话"},
+  {"field":"Make", "label":"申请备注"},
+  {"field":"Addtime", "label":"申请时间"}
+]

@@ -5,7 +5,7 @@
   {"field":"Phone", "label":"固定电话"},
   {"field":"CustColsTxt", "label":"客户类型"},
   {"field":"UNums", "label":"证件号"},
-  {"field":"FilePath", "label":"相关证件", "value":"预览证件", "forwordHost":"image"},
+  {"field":"FilePath", "label":"相关证件", "value":"预览证件", "forwordHost":"image", "forwordId": "FilePath"},
   {"field":"YwRen", "label":"业务联系人"},
   {"field":"YwRenZhiWu", "label":"职务"},
   {"field":"FzRen", "label":"主要负责人"},

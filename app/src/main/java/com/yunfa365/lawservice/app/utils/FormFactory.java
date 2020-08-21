@@ -58,27 +58,31 @@ public class FormFactory {
         String style = jsonObject.optString("style", "text");
         String valueFormat = jsonObject.optString("valueFormat");
         String forwordHost = jsonObject.optString("forwordHost");
+        String forwordId = jsonObject.optString("forwordId");
         String valueStr = jsonObject.optString("value");
 
         if (StringUtil.isNotEmpty(valueStr)) {
 
         } else if (StringUtil.isEmpty(valueFormat)) {
-            valueStr = (String) RefUtil.getField(object, field);
+            valueStr = (String)RefUtil.getField(object, field);
         } else {
-            valueStr = valueFormat;
+
             String[] fields = field.split(",");
-            for (String f : fields) {
-                String fStr = (String) RefUtil.getField(object, f);
-                valueStr = valueStr.replaceFirst("%s", fStr);
+            Object[] agrs = new Object[fields.length];
+            for (int i = 0; i < fields.length; i++) {
+                String f = fields[i];
+                Object fStr = RefUtil.getField(object, f);
+                agrs[i] = fStr;
             }
+            valueStr = String.format(valueFormat, agrs);;
         }
         View view = null;
         if (StringUtil.isNotEmpty(forwordHost)) {
-            String forwordId = (String) RefUtil.getField(object, field);
+            String fId = RefUtil.getField(object, forwordId).toString();
             view = createForwordTextField(context, label + "：", valueStr, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AppUtil.appUriForword(context, forwordHost, forwordId);
+                    AppUtil.appUriForword(context, forwordHost, fId);
                 }
             });
         } else if ("text".equalsIgnoreCase(style)) {

@@ -117,6 +117,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.finance.BillListAllActivity_"
             android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.finance.BillDetailActivity_"
+            android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.law_case.CaseListAllActivity_"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.law_case.CaseListMyActivity_"
