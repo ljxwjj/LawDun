@@ -22,6 +22,7 @@ import androidx.core.content.FileProvider;
 import com.yunfa365.lawservice.app.BuildConfig;
 import com.yunfa365.lawservice.app.R;
 import com.yunfa365.lawservice.app.pojo.AppGlobal;
+import com.yunfa365.lawservice.app.ui.activity.common.PhotoPagerActivity;
 import com.yunfa365.lawservice.app.ui.activity.law_case.CaseDetailActivity_;
 
 import java.io.File;
@@ -330,7 +331,9 @@ public class AppUtil {
 			int ID = Integer.parseInt(Id);
 			CaseDetailActivity_.intent(context).ID(ID).start();
 		} else if ("image".equalsIgnoreCase(host)) {
-
+			Intent intent = new Intent(context, PhotoPagerActivity.class);
+			intent.putExtra("images", new String[]{Id});
+			context.startActivity(intent);
 		}
 	}
 }
