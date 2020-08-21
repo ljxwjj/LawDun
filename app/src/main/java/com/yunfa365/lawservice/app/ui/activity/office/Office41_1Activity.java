@@ -34,6 +34,7 @@ import com.yunfa365.lawservice.app.pojo.GetWebColName;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
 import com.yunfa365.lawservice.app.ui.activity.base.BaseUserActivity;
+import com.yunfa365.lawservice.app.ui.activity.custom.Office_searchCustomActivity_;
 import com.yunfa365.lawservice.app.ui.adapter.AyAdapter;
 import com.yunfa365.lawservice.app.ui.dialog.MultiSelectDialog;
 import com.yunfa365.lawservice.app.ui.dialog.SpinnerDialog;
@@ -243,7 +244,7 @@ public class Office41_1Activity extends BaseUserActivity {
             zfbz.setText(zfbzs[1]);
             initLocation();
         } else {
-            Mid = caseItem.ID;
+            Mid = caseItem.ID + "";
             anh.setText(caseItem.CaseID);
 
             ay.setText(caseItem.AyMake);
@@ -662,7 +663,7 @@ public class Office41_1Activity extends BaseUserActivity {
                 .addParam("IsBuTie", zfbz.getText().toString())
                 .addParam("Mid", Mid);
         if (caseItem != null) {
-            build.addParam("CaseId", caseItem.ID);
+            build.addParam("CaseId", caseItem.ID + "");
         }
         AppRequest request = build.create();
         new HttpFormFuture.Builder(this)

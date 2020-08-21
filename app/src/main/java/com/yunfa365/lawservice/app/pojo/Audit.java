@@ -11,7 +11,7 @@ public class Audit implements CommonItem {
     public int Sid;
     public int CaseId;
     public int Gdid;
-    public String UsersList;
+    public String UsersList;   // 授权审批人员
     public String Make;
     public String AddTime;
     public int Stat;
@@ -19,7 +19,7 @@ public class Audit implements CommonItem {
     public String SMake;
     public String STime;
     public String UsersFullName;
-    public String UsersListTxt;
+    public String UsersListTxt;   // 授权审批人员
     public String CaseIdTxt;
     public String GidTxt;
     public String StatTxt;

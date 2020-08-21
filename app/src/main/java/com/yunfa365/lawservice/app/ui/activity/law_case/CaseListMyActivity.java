@@ -24,8 +24,6 @@ import com.yunfa365.lawservice.app.pojo.Case;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
 import com.yunfa365.lawservice.app.ui.activity.base.DrawerActivity;
-import com.yunfa365.lawservice.app.ui.activity.mycase.CustomInfoActivity_;
-import com.yunfa365.lawservice.app.ui.activity.office.Office_addCustomActivity_;
 import com.yunfa365.lawservice.app.ui.adapter.CommonListAdapter;
 import com.yunfa365.lawservice.app.ui.view.holder.CommonFooterViewHolder;
 
@@ -35,6 +33,8 @@ import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
+
+import static com.yunfa365.lawservice.app.constant.BaseCst.DETAIL_REQUEST_CODE;
 
 @EActivity(R.layout.common_search_list)
 public class CaseListMyActivity extends DrawerActivity {
@@ -306,6 +306,7 @@ public class CaseListMyActivity extends DrawerActivity {
             Object obj = v.getTag();
             if (obj != null) {
                 Case item = (Case) obj;
+                gotoDetail(item);
             }
         }
 
@@ -313,6 +314,10 @@ public class CaseListMyActivity extends DrawerActivity {
             return mFooterViewHolder;
         }
 
+    }
+
+    private void gotoDetail(Case item) {
+        CaseDetailActivity_.intent(this).ID(item.ID).startForResult(DETAIL_REQUEST_CODE);
     }
 
     @OnActivityResult(ADD_REQUEST_CODE)

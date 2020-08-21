@@ -1,0 +1,19 @@
+[
+  {"field":"Title", "label":"委托人"},
+  {"field":"CaseUName", "label":"当事人"},
+  {"field":"Mobile", "label":"手机号码"},
+  {"field":"Phone", "label":"固定电话"},
+  {"field":"CustColsTxt", "label":"客户类型"},
+  {"field":"UNums", "label":"证件号"},
+  {"field":"FilePath", "label":"相关证件", "value":"预览证件", "forwordHost":"image"},
+  {"field":"YwRen", "label":"业务联系人"},
+  {"field":"YwRenZhiWu", "label":"职务"},
+  {"field":"FzRen", "label":"主要负责人"},
+  {"field":"YingXiangLi", "label":"地区影响力"},
+  {"field":"Email", "label":"邮箱"},
+  {"field":"ProvinceIdTxt,CityIdTxt,AreaIdTxt", "label":"所属地区", "valueFormat":"%s-%s-%s"},
+  {"field":"Address", "label":"详细地址"},
+  {"field":"UsersFullName", "label":"执业人员"},
+  {"field":"Addtime", "label":"入库时间"},
+  {"field":"Make", "label":"备注"}
+]

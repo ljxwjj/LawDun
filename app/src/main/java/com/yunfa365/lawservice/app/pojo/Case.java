@@ -1,6 +1,5 @@
 package com.yunfa365.lawservice.app.pojo;
 
-import com.google.gson.annotations.JsonAdapter;
 import com.yunfa365.lawservice.app.pojo.base.CommonItem;
 
 import java.io.Serializable;
@@ -11,7 +10,7 @@ import java.io.Serializable;
 public class Case implements Serializable, CommonItem {
 
     // 主要信息  （在列表中显示）
-    public String ID;
+    public int ID;
     public String CaseIdTxt;
     public int ColsV1;
     public String AyMake;

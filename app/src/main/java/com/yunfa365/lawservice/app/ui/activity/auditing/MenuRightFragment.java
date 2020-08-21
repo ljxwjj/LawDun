@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import com.yunfa365.lawservice.app.R;
 import com.yunfa365.lawservice.app.pojo.TSearchType;
 import com.yunfa365.lawservice.app.ui.activity.base.DrawerActivity;
-import com.yunfa365.lawservice.app.ui.activity.office.CustomListActivity;
 import com.yunfa365.lawservice.app.ui.dialog.SpinnerDialog;
 
 import org.androidannotations.annotations.AfterViews;

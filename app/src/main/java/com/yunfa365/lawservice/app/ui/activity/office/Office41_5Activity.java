@@ -139,7 +139,7 @@ public class Office41_5Activity extends BaseUserActivity {
             Mid = AppUtil.generateMid();
             fwlx.setText(selectedCaseCols.Title);
         } else {
-            Mid = caseItem.ID;
+            Mid = caseItem.ID + "";
             loadCaseFiles();
             fwsj.setText(caseItem.Begtime);
             fwrc.setText(caseItem.Ssbd);
@@ -261,7 +261,7 @@ public class Office41_5Activity extends BaseUserActivity {
                 .addParam("AnYuanRen", ayr.getText().toString())    // 案源人
                 .addParam("Des", bzsm.getText().toString())         //备注说明
                 .addParam("Mid", Mid);
-        if (caseItem != null) build.addParam("CaseId", caseItem.ID);
+        if (caseItem != null) build.addParam("CaseId", caseItem.ID + "");
         AppRequest request = build.create();
         new HttpFormFuture.Builder(this)
                 .setData(request)

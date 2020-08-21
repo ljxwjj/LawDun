@@ -7,9 +7,7 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yunfa365.lawservice.app.R;
-import com.yunfa365.lawservice.app.pojo.Custom;
 import com.yunfa365.lawservice.app.pojo.base.CommonItem;
-import com.yunfa365.lawservice.app.ui.activity.office.CustomListActivity;
 import com.yunfa365.lawservice.app.ui.view.holder.CommonFooterViewHolder;
 import com.yunfa365.lawservice.app.ui.view.holder.CommonItemViewHolder;
 import com.yunfa365.lawservice.app.ui.view.holder.EmptyViewHolder;

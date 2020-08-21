@@ -1,4 +1,4 @@
-package com.yunfa365.lawservice.app.ui.activity.office;
+package com.yunfa365.lawservice.app.ui.activity.custom;
 
 import android.content.Context;
 import android.content.Intent;
@@ -24,9 +24,7 @@ import com.yunfa365.lawservice.app.future.HttpFormFuture;
 import com.yunfa365.lawservice.app.pojo.Custom;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
-import com.yunfa365.lawservice.app.ui.activity.base.BaseUserActivity;
 import com.yunfa365.lawservice.app.ui.activity.base.DrawerActivity;
-import com.yunfa365.lawservice.app.ui.activity.mycase.CustomInfoActivity_;
 import com.yunfa365.lawservice.app.ui.adapter.CommonListAdapter;
 import com.yunfa365.lawservice.app.ui.view.holder.CommonFooterViewHolder;
 
@@ -302,7 +300,7 @@ public class CustomListActivity extends DrawerActivity {
             Object obj = v.getTag();
             if (obj != null) {
                 Custom item = (Custom) obj;
-                CustomInfoActivity_.intent(CustomListActivity.this).customItem(item).start();
+                CustomInfoActivity_.intent(CustomListActivity.this).ID(item.ID).start();
             }
         }
 

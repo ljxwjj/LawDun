@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,14 +20,10 @@ import com.android.agnetty.utils.LogUtil;
 import com.nineoldandroids.view.ViewHelper;
 import com.yunfa365.lawservice.app.R;
 import com.yunfa365.lawservice.app.future.HttpFormFuture;
-import com.yunfa365.lawservice.app.pojo.Audit;
 import com.yunfa365.lawservice.app.pojo.Bill;
-import com.yunfa365.lawservice.app.pojo.Custom;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
 import com.yunfa365.lawservice.app.ui.activity.base.DrawerActivity;
-import com.yunfa365.lawservice.app.ui.activity.mycase.CustomInfoActivity_;
-import com.yunfa365.lawservice.app.ui.activity.office.Office_addCustomActivity_;
 import com.yunfa365.lawservice.app.ui.adapter.CommonListAdapter;
 import com.yunfa365.lawservice.app.ui.view.holder.CommonFooterViewHolder;
 

@@ -20,6 +20,7 @@ import com.android.agnetty.core.AgnettyResult;
 import com.android.agnetty.utils.LogUtil;
 import com.nineoldandroids.view.ViewHelper;
 import com.yunfa365.lawservice.app.R;
+import com.yunfa365.lawservice.app.constant.AppCst;
 import com.yunfa365.lawservice.app.future.HttpFormFuture;
 import com.yunfa365.lawservice.app.pojo.Audit;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
@@ -35,10 +36,11 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
 
+import static com.yunfa365.lawservice.app.constant.BaseCst.DETAIL_REQUEST_CODE;
+
 @EActivity(R.layout.common_search_list)
 public class AuditingListActivity extends DrawerActivity {
     private String FUTURE_TAG = "custom_list";
-    private static final int ADD_REQUEST_CODE = 1;
 
     private int pageSize = 10;
 
@@ -287,16 +289,20 @@ public class AuditingListActivity extends DrawerActivity {
             Object obj = v.getTag();
             if (obj != null) {
                 Audit item = (Audit) obj;
+                gotoDetail(item);
             }
         }
 
         public CommonFooterViewHolder getFooterViewHolder() {
             return mFooterViewHolder;
         }
-
     }
 
-    @OnActivityResult(ADD_REQUEST_CODE)
+    private void gotoDetail(Audit item) {
+        AuditingDetailActivity_.intent(this).ID(item.ID).startForResult(DETAIL_REQUEST_CODE);
+    }
+
+    @OnActivityResult(DETAIL_REQUEST_CODE)
     void addOnResult(int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             reLoadData();

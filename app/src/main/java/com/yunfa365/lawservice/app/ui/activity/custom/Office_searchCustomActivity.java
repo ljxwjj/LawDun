@@ -1,4 +1,4 @@
-package com.yunfa365.lawservice.app.ui.activity.office;
+package com.yunfa365.lawservice.app.ui.activity.custom;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -26,7 +26,6 @@ import com.yunfa365.lawservice.app.pojo.http.AppResponse;
 import com.yunfa365.lawservice.app.ui.activity.base.BaseUserActivity;
 import com.yunfa365.lawservice.app.ui.dialog.SpinnerDialog;
 import com.yunfa365.lawservice.app.ui.view.pulltorefresh.XListView;
-import com.yunfa365.lawservice.app.utils.AppUtil;
 import com.yunfa365.lawservice.app.utils.ViewHolder;
 
 import org.androidannotations.annotations.AfterViews;

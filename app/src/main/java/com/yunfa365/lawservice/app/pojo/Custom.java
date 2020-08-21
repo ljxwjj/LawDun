@@ -26,7 +26,12 @@ public class Custom implements Serializable, CommonItem {
     public String Addtime;
     public String UNums;              // 身份证号/营业执照号
     public String Model = "";
+    public String Model1;
+    public String Model2;
+    public String Model3;
+    public String FilePath;
 
+    public String UsersFullName;
     public String YwRen;              // 业务联系人
     public String YwRenZhiWu;         // 职务
     public String FzRen;              //   主要负责人

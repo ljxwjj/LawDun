@@ -324,4 +324,7 @@ public class AppUtil {
 		return String.format("%d_%d_%s_%d", AppGlobal.mUser.LawId, AppGlobal.mUser.ID, time, random);
 	}
 
+	public static void appUriForword(Context context, String host, String Id) {
+
+	}
 }

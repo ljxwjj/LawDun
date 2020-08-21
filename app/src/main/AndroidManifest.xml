@@ -85,17 +85,17 @@
             android:screenOrientation="portrait"></activity>
         <activity android:name=".ui.activity.office.Office41_5Activity_"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".ui.activity.office.Office_addCustomActivity_"
+        <activity android:name=".ui.activity.custom.Office_addCustomActivity_"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".ui.activity.office.Office_searchCustomActivity_"
+        <activity android:name=".ui.activity.custom.Office_searchCustomActivity_"
             android:screenOrientation="portrait"></activity>
         <activity android:name=".ui.activity.CommonLocationActivity_"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".ui.activity.office.CustomListActivity_"
+        <activity android:name=".ui.activity.custom.CustomListActivity_"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".ui.activity.office.DfCustomListActivity_"
+        <activity android:name=".ui.activity.custom.DfCustomListActivity_"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".ui.activity.mycase.CustomInfoActivity_"
+        <activity android:name=".ui.activity.custom.CustomInfoActivity_"
             android:screenOrientation="portrait"></activity>
         <activity android:name=".ui.activity.seal.ScanSealActivity_"
             android:screenOrientation="portrait"></activity>
@@ -110,6 +110,9 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.auditing.AuditedListActivity_"
             android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.auditing.AuditingDetailActivity_"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".ui.activity.finance.BillListMyActivity_"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.finance.BillListAllActivity_"
@@ -117,6 +120,8 @@
         <activity android:name=".ui.activity.law_case.CaseListAllActivity_"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.law_case.CaseListMyActivity_"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.law_case.CaseDetailActivity_"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.official.OfficialListAllActivity_"
             android:screenOrientation="portrait"/>

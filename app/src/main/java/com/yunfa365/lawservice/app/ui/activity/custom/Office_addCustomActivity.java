@@ -1,4 +1,4 @@
-package com.yunfa365.lawservice.app.ui.activity.office;
+package com.yunfa365.lawservice.app.ui.activity.custom;
 
 import android.Manifest;
 import android.content.Context;

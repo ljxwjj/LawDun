@@ -22,11 +22,9 @@ import com.nineoldandroids.view.ViewHelper;
 import com.yunfa365.lawservice.app.R;
 import com.yunfa365.lawservice.app.future.HttpFormFuture;
 import com.yunfa365.lawservice.app.pojo.Audit;
-import com.yunfa365.lawservice.app.pojo.Custom;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
 import com.yunfa365.lawservice.app.ui.activity.base.DrawerActivity;
-import com.yunfa365.lawservice.app.ui.activity.mycase.CustomInfoActivity_;
 import com.yunfa365.lawservice.app.ui.adapter.CommonListAdapter;
 import com.yunfa365.lawservice.app.ui.view.holder.CommonFooterViewHolder;
 
@@ -37,10 +35,12 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
 
+import static com.yunfa365.lawservice.app.constant.BaseCst.ADD_REQUEST_CODE;
+import static com.yunfa365.lawservice.app.constant.BaseCst.DETAIL_REQUEST_CODE;
+
 @EActivity(R.layout.common_search_list)
 public class AuditedListActivity extends DrawerActivity {
     private String FUTURE_TAG = "custom_list";
-    private static final int ADD_REQUEST_CODE = 1;
 
     private int pageSize = 10;
 
@@ -288,15 +288,17 @@ public class AuditedListActivity extends DrawerActivity {
         public void onClick(View v) {
             Object obj = v.getTag();
             if (obj != null) {
-                Custom item = (Custom) obj;
-                CustomInfoActivity_.intent(AuditedListActivity.this).customItem(item).start();
+                Audit item = (Audit) obj;
+                gotoDetail(item);
             }
         }
-
         public CommonFooterViewHolder getFooterViewHolder() {
             return mFooterViewHolder;
         }
+    }
 
+    private void gotoDetail(Audit item) {
+        AuditingDetailActivity_.intent(this).ID(item.ID).startForResult(DETAIL_REQUEST_CODE);
     }
 
     @OnActivityResult(ADD_REQUEST_CODE)
