@@ -75,6 +75,42 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:minWidth="84dp"
+                    android:text="当事人："
+                    android:textColor="@color/common_color_dark_gray"
+                    android:textSize="@dimen/common_size_small" />
+
+                <EditText
+                    android:id="@+id/dsr"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@null"
+                    android:hint="请填写当事人"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:textColor="@color/common_text_color"
+                    android:textColorHint="@color/common_text_color_hint"
+                    android:textSize="@dimen/common_size_small" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginLeft="23dp"
+                android:layout_marginRight="23dp"
+                android:background="@color/common_text_color_hint" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginLeft="23dp"
+                android:layout_marginRight="23dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="84dp"
                     android:text="手机号码："
                     android:textColor="@color/common_color_dark_gray"
                     android:textSize="@dimen/common_size_small" />
@@ -131,8 +167,15 @@
                     android:textColorHint="@color/common_text_color_hint"
                     android:textSize="@dimen/common_size_small" />
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginLeft="23dp"
+                android:layout_marginRight="23dp"
+                android:background="@color/common_text_color_hint" />
+
             <LinearLayout
-                android:id="@+id/khnx1layout"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 android:layout_marginLeft="23dp"
@@ -140,120 +183,21 @@
                 android:gravity="center_vertical">
 
                 <TextView
-                    android:id="@+id/khnx1label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:minWidth="84dp"
-                    android:text="客户类型："
+                    android:text="证件号码："
                     android:textColor="@color/common_color_dark_gray"
                     android:textSize="@dimen/common_size_small" />
 
                 <EditText
-                    android:id="@+id/khnx_1"
+                    android:id="@+id/xgzj"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@null"
-                    android:drawableRight="@mipmap/right_arrow"
-                    android:focusable="false"
-                    android:hint="请选择"
+                    android:hint="请填写证件号码(选填)"
                     android:imeOptions="actionNext"
-                    android:inputType="none"
-                    android:singleLine="true"
-                    android:textColor="@color/common_text_color"
-                    android:textColorHint="@color/common_text_color_hint"
-                    android:textSize="@dimen/common_size_small" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/khnx2layout"
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:layout_marginLeft="23dp"
-                android:layout_marginRight="23dp"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/khnx2label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minWidth="84dp"
-                    android:text="客户类型："
-                    android:textColor="@color/common_color_dark_gray"
-                    android:textSize="@dimen/common_size_small" />
-
-                <EditText
-                    android:id="@+id/khnx_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@null"
-                    android:drawableRight="@mipmap/right_arrow"
-                    android:focusable="false"
-                    android:hint="请选择"
-                    android:imeOptions="actionNext"
-                    android:inputType="none"
-                    android:singleLine="true"
-                    android:textColor="@color/common_text_color"
-                    android:textColorHint="@color/common_text_color_hint"
-                    android:textSize="@dimen/common_size_small" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/khnx3layout"
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:layout_marginLeft="23dp"
-                android:layout_marginRight="23dp"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/khnx3label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minWidth="84dp"
-                    android:text="客户类型："
-                    android:textColor="@color/common_color_dark_gray"
-                    android:textSize="@dimen/common_size_small" />
-
-                <EditText
-                    android:id="@+id/khnx_3"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@null"
-                    android:drawableRight="@mipmap/right_arrow"
-                    android:focusable="false"
-                    android:hint="请选择"
-                    android:imeOptions="actionNext"
-                    android:inputType="none"
-                    android:singleLine="true"
-                    android:textColor="@color/common_text_color"
-                    android:textColorHint="@color/common_text_color_hint"
-                    android:textSize="@dimen/common_size_small" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/khnx4layout"
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:layout_marginLeft="23dp"
-                android:layout_marginRight="23dp"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/khnx4label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minWidth="84dp"
-                    android:text="客户类型："
-                    android:textColor="@color/common_color_dark_gray"
-                    android:textSize="@dimen/common_size_small" />
-
-                <EditText
-                    android:id="@+id/khnx_4"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@null"
-                    android:drawableRight="@mipmap/right_arrow"
-                    android:focusable="false"
-                    android:hint="请选择"
-                    android:imeOptions="actionNext"
-                    android:inputType="none"
+                    android:inputType="text"
                     android:singleLine="true"
                     android:textColor="@color/common_text_color"
                     android:textColorHint="@color/common_text_color_hint"
@@ -265,7 +209,40 @@
                 android:layout_height="1px"
                 android:layout_marginLeft="23dp"
                 android:layout_marginRight="23dp"
+                android:background="@color/common_text_color_hint"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:layout_marginLeft="23dp"
+                android:layout_marginRight="23dp"
+                android:gravity="center_vertical"
+                android:minWidth="84dp"
+                android:text="备注："
+                android:textColor="@color/common_color_dark_gray"
+                android:textSize="@dimen/common_size_small" />
+
+            <EditText
+                android:id="@+id/ajbz"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginLeft="23dp"
+                android:layout_marginRight="23dp"
+                android:background="@drawable/round_stroke_gray_shap_bg"
+                android:gravity="top"
+                android:hint="请填写备注(选填)"
+                android:inputType="textMultiLine"
+                android:textColor="@color/common_text_color"
+                android:textColorHint="@color/common_text_color_hint"
+                android:textSize="@dimen/common_size_small" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginLeft="23dp"
+                android:layout_marginRight="23dp"
                 android:background="@color/common_text_color_hint" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -306,44 +283,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="gone">
-
-                <LinearLayout
-                    android:id="@+id/xgzj_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:layout_marginLeft="23dp"
-                    android:layout_marginRight="23dp"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minWidth="84dp"
-                        android:text="证件号码："
-                        android:textColor="@color/common_color_dark_gray"
-                        android:textSize="@dimen/common_size_small" />
-
-                    <EditText
-                        android:id="@+id/xgzj"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="@null"
-                        android:hint="请填写证件号码(选填)"
-                        android:imeOptions="actionNext"
-                        android:inputType="text"
-                        android:singleLine="true"
-                        android:textColor="@color/common_text_color"
-                        android:textColorHint="@color/common_text_color_hint"
-                        android:textSize="@dimen/common_size_small" />
-                </LinearLayout>
-
-                <View
-                    android:id="@+id/xgzj_line"
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:layout_marginLeft="23dp"
-                    android:layout_marginRight="23dp"
-                    android:background="@color/common_text_color_hint" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -622,41 +561,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minWidth="84dp"
-                        android:text="身份证号："
-                        android:textColor="@color/common_color_dark_gray"
-                        android:textSize="@dimen/common_size_small" />
-
-                    <EditText
-                        android:id="@+id/sfzh"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="@null"
-                        android:hint="请填写身份证号(选填)"
-                        android:inputType="text"
-                        android:singleLine="true"
-                        android:textColor="@color/common_text_color"
-                        android:textColorHint="@color/common_text_color_hint"
-                        android:textSize="@dimen/common_size_small" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:layout_marginLeft="23dp"
-                    android:layout_marginRight="23dp"
-                    android:background="@color/common_text_color_hint" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:layout_marginLeft="23dp"
-                    android:layout_marginRight="23dp"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minWidth="84dp"
                         android:text="详细地址："
                         android:textColor="@color/common_color_dark_gray"
                         android:textSize="@dimen/common_size_small" />
@@ -713,37 +617,6 @@
                         android:textSize="@dimen/common_size_small"
                         android:gravity="center_vertical"/>
                 </LinearLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:layout_marginLeft="23dp"
-                    android:layout_marginRight="23dp"
-                    android:background="@color/common_text_color_hint"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="44dp"
-                    android:layout_marginLeft="23dp"
-                    android:layout_marginRight="23dp"
-                    android:gravity="center_vertical"
-                    android:minWidth="84dp"
-                    android:text="备注："
-                    android:textColor="@color/common_color_dark_gray"
-                    android:textSize="@dimen/common_size_small" />
-
-                <EditText
-                    android:id="@+id/ajbz"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:layout_marginLeft="23dp"
-                    android:layout_marginRight="23dp"
-                    android:background="@drawable/round_stroke_gray_shap_bg"
-                    android:gravity="top"
-                    android:hint="请填写备注(选填)"
-                    android:inputType="textMultiLine"
-                    android:textColor="@color/common_text_color"
-                    android:textColorHint="@color/common_text_color_hint"
-                    android:textSize="@dimen/common_size_small" />
 
             </LinearLayout>
 

@@ -28,9 +28,7 @@ import com.yunfa365.lawservice.app.pojo.DiQu;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
 import com.yunfa365.lawservice.app.ui.activity.base.BaseUserActivity;
-import com.yunfa365.lawservice.app.ui.validation.NotEmptyQuickRule;
 import com.yunfa365.lawservice.app.ui.validation.OptionalEmail;
-import com.yunfa365.lawservice.app.ui.validation.OptionalIdCard;
 import com.yunfa365.lawservice.app.ui.validation.OptionalPhone;
 import com.yunfa365.lawservice.app.ui.dialog.SpinnerDialog;
 import com.yunfa365.lawservice.app.utils.AppUtil;
@@ -42,10 +40,8 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
-import org.androidannotations.annotations.TextChange;
 import org.androidannotations.annotations.ViewById;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -76,6 +72,9 @@ public class Office_addCustomActivity extends BaseUserActivity {
     @ViewById
     EditText wtr;
 
+    @ViewById
+    EditText dsr;
+
     @OptionalPhone(message = "手机号码格式不正确")
     @Order(2)
     @ViewById
@@ -89,12 +88,6 @@ public class Office_addCustomActivity extends BaseUserActivity {
     @Order(4)
     @ViewById
     EditText xgzj;
-
-    @ViewById
-    View xgzj_layout;
-
-    @ViewById
-    View xgzj_line;
 
     @ViewById
     EditText zyfzr;
@@ -124,11 +117,6 @@ public class Office_addCustomActivity extends BaseUserActivity {
     @ViewById
     EditText shi;
 
-    @OptionalIdCard(message = "身份证号格式不正确")
-    @Order(7)
-    @ViewById
-    EditText sfzh;
-
     @Order(8)
     @ViewById
     EditText xxdz;
@@ -138,42 +126,6 @@ public class Office_addCustomActivity extends BaseUserActivity {
 
     @ViewById
     EditText ajbz;
-
-    @ViewById
-    EditText khnx_1;
-
-    @ViewById
-    EditText khnx_2;
-
-    @ViewById
-    EditText khnx_3;
-
-    @ViewById
-    EditText khnx_4;
-
-    @ViewById
-    TextView khnx1label;
-
-    @ViewById
-    TextView khnx2label;
-
-    @ViewById
-    TextView khnx3label;
-
-    @ViewById
-    TextView khnx4label;
-
-    @ViewById
-    View khnx1layout;
-
-    @ViewById
-    View khnx2layout;
-
-    @ViewById
-    View khnx3layout;
-
-    @ViewById
-    View khnx4layout;
 
     @ViewById
     TextView moreBtn;
@@ -188,16 +140,11 @@ public class Office_addCustomActivity extends BaseUserActivity {
     String customName;
 
     private CusTomCols[] khnxs;
-    private CusTomCols[][] khnxMap;
-    private int maxLevel;
 
     private DiQu[] shengs;
     private DiQu[] shis;
     private String Mid;
 
-    private EditText[] khnxViews;
-    private TextView[] khnxLabels;
-    private View[] khnxLayouts;
 
     private Validator validator;
     private QuickRule requiredXgzjRule;
@@ -220,24 +167,13 @@ public class Office_addCustomActivity extends BaseUserActivity {
         shengs = StringUtil.toObjectArray(diquStr, DiQu.class);
         loadCustomType();
 
-        khnxViews = new EditText[]{khnx_1, khnx_2, khnx_3, khnx_4};
-        khnxLabels = new TextView[]{khnx1label, khnx2label, khnx3label, khnx4label};
-        khnxLayouts = new View[]{khnx1layout, khnx2layout, khnx3layout, khnx4layout};
-        khnxMap = new CusTomCols[5][];
-
-        khnx1layout.setVisibility(View.GONE);
-        khnx2layout.setVisibility(View.GONE);
-        khnx3layout.setVisibility(View.GONE);
-        khnx4layout.setVisibility(View.GONE);
-
         initValidate();
-        loadRequiredFields();
         initDefaultValue();
     }
 
     private void loadCustomType() {
         // 获取诉讼阶段 诉讼地位
-        AppRequest request = new AppRequest.Build("Customer/GetCustomerCol")
+        AppRequest request = new AppRequest.Build("api/Custom/Cols_Get")
                 .create();
         new HttpFormFuture.Builder(this)
                 .setData(request)
@@ -253,7 +189,6 @@ public class Office_addCustomActivity extends BaseUserActivity {
                         AppResponse resp = (AppResponse) result.getAttach();
                         if (resp.flag) {
                             khnxs = resp.resultsToArray(CusTomCols.class);
-                            khnxMap[0] = khnxs;
                             if (customItem != null) {
                                 initDefaultKhnx();
                             }
@@ -374,7 +309,6 @@ public class Office_addCustomActivity extends BaseUserActivity {
             shi.setText(customItem.CityIdTxt);
             ajbz.setText(customItem.Make);
             xgzj.setText(customItem.UNums);
-            sfzh.setText(customItem.UNums);
 
             ywlxr.setText(customItem.YwRen);
             zw.setText(customItem.YwRenZhiWu);
@@ -438,7 +372,7 @@ public class Office_addCustomActivity extends BaseUserActivity {
     private void initDefaultKhnx() {
         String khsxStr = customItem.Model;
         String sxs[] = khsxStr.split("♀");
-        for (int i = 0; i < sxs.length; i++) {
+        /*for (int i = 0; i < sxs.length; i++) {
             String sx = sxs[i];
             if (TextUtils.isEmpty(sx)) {
                 continue;
@@ -455,51 +389,9 @@ public class Office_addCustomActivity extends BaseUserActivity {
             khnxLabels[i].setTag(labelTag);
             khnxViews[i].setText(kvs[1]);
             khnxViews[i].setTag(viewTag);
-        }
+        }*/
 
-        LogUtil.d("---------------------");
-        for (CusTomCols ctc : khnxMap[0]) {
-            if (ctc.ID == customItem.CustCols) {
-                if (ctc.Children != null) {
-                    maxLevel = ctc.Children.length;
-                } else {
-                    maxLevel = 1;
-                }
-
-                khnx.setTag(ctc);
-                khnx.setText(ctc.Title);
-                initKunx(ctc, 0);
-                break;
-            }
-        }
-        LogUtil.d("--------************-------------");
     }
-
-    private void initKunx(CusTomCols ctc, int level) {
-        if (ctc.Children != null && ctc.Children.length > 0) {
-            for (int i = 0; i < ctc.Children.length; i++) {
-                CusTomCols child = ctc.Children[i];
-                khnxMap[i + 1] = child.Item;
-
-                CusTomCols viewTag = (CusTomCols) khnxViews[i].getTag();
-                if (viewTag == null) {
-                    continue;
-                }
-                LogUtil.d("has Children i:" + i + "  " + viewTag.Title);
-                for (int j = 0; j < child.Item.length; j++) {
-                    if (child.Item[j].Title.equals(viewTag.Title)) {
-                        initKunx(khnxMap[i + 1][j], i + 1);
-                        break;
-                    }
-                }
-            }
-
-        } else if (ctc.Item != null && ctc.Item.length > 0) {
-            LogUtil.d("has Item: level" + level);
-            khnxMap[level + 1] = ctc.Item;
-        }
-    }
-
 
     private void setShis(DiQu[] diqus) {
         shis = diqus;
@@ -507,168 +399,13 @@ public class Office_addCustomActivity extends BaseUserActivity {
         shi.setTag(shis[0]);
     }
 
-    private void setKunx(CusTomCols ctc, int level) {
-
-        if (ctc.Children != null && ctc.Children.length > 0) {
-            for (int i = 0; i < ctc.Children.length; i++) {
-                CusTomCols child = ctc.Children[i];
-
-                khnxLayouts[i].setVisibility(View.VISIBLE);
-                khnxLabels[i].setText(child.toString() + "：");
-                khnxLabels[i].setTag(child);
-                khnxMap[i + 1] = child.Item;
-                khnxViews[i].setText(khnxMap[i + 1][0].toString());
-                khnxViews[i].setTag(khnxMap[i + 1][0]);
-                setKunx(khnxMap[i + 1][0], i + 1);
-            }
-
-        } else if (ctc.Item != null && ctc.Item.length > 0) {
-            khnxLayouts[level].setVisibility(View.VISIBLE);
-            khnxLabels[level].setText("");
-            khnxLabels[level].setTag(null);
-            khnxMap[level + 1] = ctc.Item;
-            khnxViews[level].setText(khnxMap[level + 1][0].toString());
-            khnxViews[level].setTag(khnxMap[level + 1][0]);
-            setKunx(khnxMap[level + 1][0], level + 1);
-        }
-    }
-
-//    private void setKhnxNote(CusTomCols ctc) {
-//        CusTomCols[] nexts = getNextLevel(ctc);
-//        if (nexts.length == 0) {
-//            if (khnxMap[2] == null) {
-//                khnxLayouts[1].setVisibility(View.GONE);
-//            }
-//            return;
-//        }
-//
-//        khnxLayouts[1].setVisibility(View.VISIBLE);
-//        khnxLabels[1].setText("");
-//        khnxMap[2] = nexts;
-//
-//        khnxViews[1].setText(khnxMap[2][0].toString());
-//        khnxViews[1].setTag(khnxMap[2][0]);
-//    }
-
-    private CusTomCols[] getNextLevel(CusTomCols ctc) {
-        List<CusTomCols> ctcList = new ArrayList<CusTomCols>();
-        for (CusTomCols c : khnxs) {
-            if (ctc.ID == c.Fid)
-                ctcList.add(c);
-        }
-        return ctcList.toArray(new CusTomCols[ctcList.size()]);
-    }
-
     @Click(R.id.khnx)
     void khnxOnClick(View view) {
-        new SpinnerDialog(this, "请选择", khnxMap[0], new DialogInterface.OnClickListener() {
+        new SpinnerDialog(this, "请选择", khnxs, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                khnx.setTag(khnxMap[0][which]);
-                khnx.setText(khnxMap[0][which].toString());
-
-                for (int i = 0; i < 4; i++) {
-                    khnxLayouts[i].setVisibility(View.GONE);
-                    khnxMap[i + 1] = null;
-                }
-                if (khnxMap[0][which].Children != null) {
-                    maxLevel = khnxMap[0][which].Children.length;
-                } else {
-                    maxLevel = 1;
-                }
-
-                setKunx(khnxMap[0][which], 0);
-            }
-        }).show();
-    }
-
-    @TextChange(R.id.khnx)
-    void khnxTextChange(TextView tv, CharSequence text) {
-        if (khnxs == null || khnxs.length < 1) {
-            return;
-        }
-        if (text.toString().equals(khnxs[0].Title)) {
-            xgzj_layout.setVisibility(View.GONE);
-            xgzj_line.setVisibility(View.GONE);
-        } else {
-            xgzj_layout.setVisibility(View.VISIBLE);
-            xgzj_line.setVisibility(View.VISIBLE);
-        }
-    }
-
-    @Click(R.id.khnx_1)
-    void khnx1OnClick(View view) {
-        if (khnxMap[1] == null) {
-            return;
-        }
-        new SpinnerDialog(this, "请选择", khnxMap[1], new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                khnx_1.setTag(khnxMap[1][which]);
-                khnx_1.setText(khnxMap[1][which].toString());
-
-                if (maxLevel == 1 && khnxMap[1][which].Item == null) {
-                    for (int i = 1; i < 4; i++) {
-                        khnxLayouts[i].setVisibility(View.GONE);
-                    }
-                }
-                setKunx(khnxMap[1][which], 1);
-            }
-        }).show();
-    }
-
-    @Click(R.id.khnx_2)
-    void khnx2OnClick(View view) {
-        if (khnxMap[2] == null) {
-            return;
-        }
-        new SpinnerDialog(this, "请选择", khnxMap[2], new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                khnx_2.setTag(khnxMap[2][which]);
-                khnx_2.setText(khnxMap[2][which].toString());
-
-                if (maxLevel == 1 && khnxMap[2][which].Item == null) {
-                    for (int i = 2; i < 4; i++) {
-                        khnxLayouts[i].setVisibility(View.GONE);
-                    }
-                }
-                setKunx(khnxMap[2][which], 2);
-            }
-        }).show();
-    }
-
-    @Click(R.id.khnx_3)
-    void khnx3OnClick(View view) {
-        if (khnxMap[3] == null) {
-            return;
-        }
-        new SpinnerDialog(this, "请选择", khnxMap[3], new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                khnx_3.setTag(khnxMap[3][which]);
-                khnx_3.setText(khnxMap[3][which].toString());
-
-                if (khnxMap[3][which].Item == null) {
-                    for (int i = 3; i < 4; i++) {
-                        khnxLayouts[i].setVisibility(View.GONE);
-                    }
-                }
-                setKunx(khnxMap[3][which], 3);
-            }
-        }).show();
-    }
-
-    @Click(R.id.khnx_4)
-    void khnx4OnClick(View view) {
-        if (khnxMap[4] == null) {
-            return;
-        }
-        new SpinnerDialog(this, "请选择", khnxMap[4], new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                khnx_4.setTag(khnxMap[4][which]);
-                khnx_4.setText(khnxMap[4][which].toString());
+                khnx.setTag(khnxs[which]);
+                khnx.setText(khnxs[which].toString());
             }
         }).show();
     }
@@ -717,63 +454,46 @@ public class Office_addCustomActivity extends BaseUserActivity {
         }
     }
 
-    private void showMoreLayout() {
-        moreLayout.setVisibility(View.VISIBLE);
-        moreBtn.setText("收起");
-    }
-
     private void doCommit() {
         LogUtil.d("+++++++++++doCommit+++");
-        String khsx = "";
-        for (int i = 0; i < khnxLayouts.length; i++) {
-            if (khnxLayouts[i].getVisibility() == View.VISIBLE) {
-                Object tag = khnxLabels[i].getTag();
-                String label = tag == null ? "" : tag.toString();
-                String value = ((CusTomCols) khnxViews[i].getTag()).Title;
-                khsx += label + "|" + value + "♀";
-            } else {
-                break;
-            }
-        }
         final Custom custom = new Custom();
-        custom.CustCols = ((CusTomCols) khnx.getTag()).ID;
-//        custom.CustColsName = ((CusTomCols) khnx.getTag()).toString();
         custom.Title = wtr.getText().toString();
-        custom.Model = khsx;
-        custom.Phone = sjhm.getText().toString();
-//        custom.Province = sheng.getText().toString();
-//        custom.City = shi.getText().toString();
-        custom.Make = ajbz.getText().toString();
+        custom.CaseUName = dsr.getText().toString();
+        custom.Mobile = sjhm.getText().toString();
+        custom.CustCols = ((CusTomCols) khnx.getTag()).ID;
         custom.UNums = xgzj.getText().toString();
-//        custom.IdCard = sfzh.getText().toString();
-
+        custom.Make = ajbz.getText().toString();
         custom.YwRen = ywlxr.getText().toString();
         custom.YwRenZhiWu = zw.getText().toString();
         custom.FzRen = zyfzr.getText().toString();
         custom.YingXiangLi = dqyxl.getText().toString();
-//        custom.Phone2 = gddh.getText().toString();
+        custom.Phone = sjhm.getText().toString();
         custom.Email = yx.getText().toString();
+
+        custom.ProvinceIdTxt = sheng.getText().toString();
+        custom.CityIdTxt = shi.getText().toString();
+//        custom.AreaIdTxt = qu.gettext().toString();
         custom.Address = xxdz.getText().toString();
 
-        AppRequest.Build build = new AppRequest.Build("Customer/UpdateCustomer")
-                .addParam("TCustCols", custom.CustCols + "")          // 客户类型
+        AppRequest.Build build = new AppRequest.Build("api/Custom/Add")
                 .addParam("Title", custom.Title)              // 客户名称
-                .addParam("Model", custom.Model)       // 客户属性
-                .addParam("Phone", custom.Phone)       // 手机号码
-                .addParam("TProvince", custom.ProvinceIdTxt)   // 省
-                .addParam("TCapital", custom.CityIdTxt)    // 市
-                .addParam("Make", custom.Make)        // 备注
+                .addParam("CaseUName", custom.CaseUName)       // 当事人名称
+                .addParam("Mobile", custom.Mobile)
+                .addParam("CustCols", custom.CustCols + "")          // 客户类型
                 .addParam("UNums", custom.UNums)       // 身份证号
-                .addParam("IdCard", custom.UNums)
+                .addParam("Make", custom.Make)        // 备注
                 .addParam("YwRen", custom.YwRen)
                 .addParam("YwRenZhiWu", custom.YwRenZhiWu)
                 .addParam("FzRen", custom.FzRen)
                 .addParam("YingXiangLi", custom.YingXiangLi)
-                .addParam("Phone2", custom.Phone)
+                .addParam("Phone", custom.Phone)       // 手机号码
                 .addParam("Email", custom.Email)
+                .addParam("ProvinceId", custom.ProvinceIdTxt)   // 省
+                .addParam("CityId", custom.CityIdTxt)    // 市
+                .addParam("AreaId", custom.AreaIdTxt)
                 .addParam("Adress", custom.Address)
                 .addParam("Mid", Mid);
-        if (customItem != null) build.addParam("ObjID", customItem.ID + "");
+        if (customItem != null) build.addParam("Cid", customItem.ID + "");
         AppRequest request = build.create();
         new HttpFormFuture.Builder(this)
                 .setData(request)
@@ -796,53 +516,6 @@ public class Office_addCustomActivity extends BaseUserActivity {
                             finish();
                         } else {
                             AppUtil.showToast(Office_addCustomActivity.this, resp.Message);
-                        }
-                    }
-
-                    @Override
-                    public void onException(AgnettyResult result) {
-                        hideLoading();
-                    }
-                })
-                .execute();
-    }
-
-    private void loadRequiredFields() {
-        AppRequest request = new AppRequest.Build("Case/FieldIsRequired")
-                .create();
-        new HttpFormFuture.Builder(this)
-                .setData(request)
-                .setListener(new AgnettyFutureListener(){
-                    @Override
-                    public void onStart(AgnettyResult result) {
-                        showLoading();
-                    }
-
-                    @Override
-                    public void onComplete(AgnettyResult result) {
-                        hideLoading();
-                        AppResponse resp = (AppResponse)result.getAttach();
-                        if (resp.flag) {
-                            List<String> requiredFields = resp.resultsToList(String.class);
-                            if (requiredFields.contains("Phone")) {
-                                validator.put(sjhm, new NotEmptyQuickRule("不能为空"));
-                                sjhm.setHint("请填写手机号");
-                            }
-                            if (requiredFields.contains("CustCardNums")) {
-                                validator.put(xgzj, requiredXgzjRule);
-                                xgzj.setHint("请填写证件号码");
-                                showMoreLayout();
-                            }
-                            if (requiredFields.contains("IdCard")) {
-                                validator.put(sfzh, new NotEmptyQuickRule("不能为空"));
-                                sfzh.setHint("请填写身份证号");
-                                showMoreLayout();
-                            }
-                            if (requiredFields.contains("Address")) {
-                                validator.put(xxdz, new NotEmptyQuickRule("不能为空"));
-                                xxdz.setHint("请填写详细地址");
-                                showMoreLayout();
-                            }
                         }
                     }
 
