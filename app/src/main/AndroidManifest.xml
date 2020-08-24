@@ -135,6 +135,11 @@
         <activity android:name=".ui.activity.common.PhotoPagerActivity"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".ui.activity.personal.ProfileActivity_"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.personal.ModifyPasswordActivity_"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>

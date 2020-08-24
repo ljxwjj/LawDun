@@ -1,0 +1,14 @@
+[
+  {"field":"LawIdTxt", "label":"所名称"},
+  {"field":"Mobile", "label":"手机号码"},
+  {"field":"FullName", "label":"姓名"},
+  {"field":"SexsTxt", "label":"性别"},
+  {"field":"Phone", "label":"固定电话"},
+  {"field":"UNums", "label":"身份证号"},
+  {"field":"UserCode", "label":"执业证号"},
+  {"field":"ProvinceIdTxt,CityIdTxt,AreaIdTxt", "label":"所属区域", "valueFormat":"%s-%s-%s"},
+  {"field":"GroupsIdTxt", "label":"角色"},
+  {"field":"WOpenID", "label":"微信绑定"},
+  {"field":"IsActiveTxt", "label":"在职状态"},
+  {"field":"Addtime", "label":"注册时间"}
+]

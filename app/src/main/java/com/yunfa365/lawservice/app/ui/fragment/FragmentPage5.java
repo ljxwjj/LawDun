@@ -21,11 +21,14 @@ import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
 import com.yunfa365.lawservice.app.ui.activity.LoginActivity_;
 import com.yunfa365.lawservice.app.ui.activity.base.BaseUserActivity;
+import com.yunfa365.lawservice.app.ui.activity.personal.ModifyPasswordActivity_;
+import com.yunfa365.lawservice.app.ui.activity.personal.ProfileActivity_;
 import com.yunfa365.lawservice.app.ui.fragment.base.BaseFragment;
 import com.yunfa365.lawservice.app.utils.AppUtil;
 import com.yunfa365.lawservice.app.utils.SpUtil;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
@@ -104,6 +107,26 @@ class FragmentPage5 extends BaseFragment {
         });
 
         loadData();
+    }
+
+    @Click(R.id.jbzl)
+    void jbzlOnClick() {
+        ProfileActivity_.intent(this).start();
+    }
+
+    @Click(R.id.xgmm)
+    void xgmmOnClick() {
+        ModifyPasswordActivity_.intent(this).start();
+    }
+
+    @Click(R.id.lxwm)
+    void lxwmOnClick() {
+
+    }
+
+    @Click(R.id.gywm)
+    void gywmOnClick() {
+
     }
 
     public void logout() {

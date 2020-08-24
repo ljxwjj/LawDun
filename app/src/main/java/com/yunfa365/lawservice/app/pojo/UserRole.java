@@ -14,11 +14,12 @@ import java.util.Map;
  * Created by Administrator on 2016/4/19.
  */
 public class UserRole {
+    public String Title;
+    public String Power1;
     public String Power2;
     public String Power3;
 
     public int[] roleIds = new int[0];
-    public Map<String, List<String>> roleIcons = new HashMap<>();
 
     public void parseRoles() {
         if (!TextUtils.isEmpty(Power3)) {
@@ -33,20 +34,10 @@ public class UserRole {
             }
             Arrays.sort(roleIds);
         }
-
-        if (!TextUtils.isEmpty(Power2)) {
-            roleIcons = StringUtil.toObject(Power2, Map.class);
-        }
     }
 
     public boolean checkRole(int roleId) {
         return Arrays.binarySearch(roleIds, roleId) >= 0;
     }
 
-    public List<String> getIcons(String pid) {
-        if (roleIcons.containsKey(pid)) {
-            return roleIcons.get(pid);
-        }
-        return null;
-    }
 }

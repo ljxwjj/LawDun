@@ -2,7 +2,12 @@ package com.yunfa365.lawservice.app.pojo;
 
 import android.content.Context;
 
+import com.android.agnetty.core.AgnettyFutureListener;
+import com.android.agnetty.core.AgnettyResult;
+import com.yunfa365.lawservice.app.future.HttpFormFuture;
 import com.yunfa365.lawservice.app.pojo.event.UserRoleEvent;
+import com.yunfa365.lawservice.app.pojo.http.AppRequest;
+import com.yunfa365.lawservice.app.pojo.http.AppResponse;
 import com.yunfa365.lawservice.app.utils.SpUtil;
 import com.yunfa365.lawservice.app.utils.StringUtil;
 
@@ -52,30 +57,19 @@ public class User {
         if (mRole != null && onLoadUserRole) {
             return;
         }
-        UserRole roles = new UserRole();
-        roles.Power2 = "";
-        roles.Power3 = "61,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20";
-        AppGlobal.mUser.mRole = roles;
-        AppGlobal.mUser.mRole.parseRoles();
-        EventBus.getDefault().post(new UserRoleEvent(200));
-
-        /*if (mRole != null && onLoadUserRole) {
-            return;
-        }
         onLoadUserRole = true;
 
-        AppRequest request = new AppRequest.Build("Home/NewGetUserPowerList")
-                .addParam("Uid", AppGlobal.mUser.WUid + "")
+        AppRequest request = new AppRequest.Build("api/Users/Users_Power")
                 .create();
 
-        new HttpJsonFuture.Builder(context)
+        new HttpFormFuture.Builder(context)
                 .setData(request)
                 .setListener(new AgnettyFutureListener() {
                     @Override
                     public void onComplete(AgnettyResult result) {
                         AppResponse resp = (AppResponse) result.getAttach();
                         if (resp != null && resp.flag) {
-                            UserRole roles = resp.resultsToObject(UserRole.class);
+                            UserRole roles = resp.getFirstObject(UserRole.class);
                             AppGlobal.mUser.mRole = roles;
                             AppGlobal.mUser.mRole.parseRoles();
                             EventBus.getDefault().post(new UserRoleEvent(200));
@@ -91,7 +85,7 @@ public class User {
                         EventBus.getDefault().post(new UserRoleEvent(-1));
                     }
                 })
-                .execute();*/
+                .execute();
 
     }
 
