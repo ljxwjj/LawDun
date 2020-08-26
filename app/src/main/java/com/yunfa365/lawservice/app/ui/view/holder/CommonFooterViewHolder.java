@@ -12,9 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yunfa365.lawservice.app.R;
-import com.yunfa365.lawservice.app.pojo.base.CommonItem;
-
-import kotlin.collections.EmptyList;
 
 public class CommonFooterViewHolder extends RecyclerView.ViewHolder {
     private ImageView image;

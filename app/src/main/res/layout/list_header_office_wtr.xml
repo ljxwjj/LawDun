@@ -29,22 +29,6 @@
         android:imeOptions="actionSearch"
         android:singleLine="true"/>
 
-    <EditText
-        android:id="@android:id/text2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginLeft="14dp"
-        android:layout_marginRight="14dp"
-        android:background="@drawable/spinner_bg"
-        android:hint="根据委托人"
-        android:textColorHint="@color/common_text_color_hint"
-        android:textSize="@dimen/common_size_normal"
-        android:textColor="@color/common_text_color"
-        android:singleLine="true"
-        android:inputType="none"
-        android:focusable="false" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -13,7 +14,12 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.agnetty.core.AgnettyFutureListener;
 import com.android.agnetty.core.AgnettyResult;
@@ -21,10 +27,15 @@ import com.yunfa365.lawservice.app.R;
 import com.yunfa365.lawservice.app.future.HttpFormFuture;
 import com.yunfa365.lawservice.app.pojo.Custom;
 import com.yunfa365.lawservice.app.pojo.YesNo;
+import com.yunfa365.lawservice.app.pojo.base.CommonItem;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
 import com.yunfa365.lawservice.app.ui.activity.base.BaseUserActivity;
+import com.yunfa365.lawservice.app.ui.adapter.CommonListAdapter;
 import com.yunfa365.lawservice.app.ui.dialog.SpinnerDialog;
+import com.yunfa365.lawservice.app.ui.view.holder.CommonFooterViewHolder;
+import com.yunfa365.lawservice.app.ui.view.holder.CommonItemViewHolder;
+import com.yunfa365.lawservice.app.ui.view.holder.EmptyViewHolder;
 import com.yunfa365.lawservice.app.ui.view.pulltorefresh.XListView;
 import com.yunfa365.lawservice.app.utils.ViewHolder;
 
@@ -44,7 +55,6 @@ import java.util.List;
 @EActivity(R.layout.activity_office_search_custom)
 public class Office_searchCustomActivity extends BaseUserActivity {
     private static final int ADD_WTR_REQUEST_CODE = 1;
-    private static final YesNo[] jstjs = {new YesNo(1, "根据委托人"), new YesNo(4, "根据电话")};
 
     private int pageSize = 10;
 
@@ -60,16 +70,17 @@ public class Office_searchCustomActivity extends BaseUserActivity {
     @ViewById(R.id.base_right_txt)
     TextView mRightTxt;
 
-    @ViewById(android.R.id.list)
-    XListView mListView;
+    @ViewById
+    RecyclerView listView;
     MyAdapter mAdapter;
-    List<Custom> mData;
+    private int mPage;
 
-    private EditText mInput1, mInput2;
+    private EditText mInput1;
     private View mButton1, mButton2;
     private String keyword1;
-    private int keyword2 = 1;
-    private int currentPage;
+
+    private HeaderViewHolder mHeaderViewHolder;
+    private CommonFooterViewHolder mFooterViewHolder;
 
     @AfterViews
     void init(){
@@ -83,58 +94,29 @@ public class Office_searchCustomActivity extends BaseUserActivity {
         mTitleTxt.setText("选择委托人");
 
         View headerView = LinearLayout.inflate(this, R.layout.list_header_office_wtr, null);
+        mHeaderViewHolder = new HeaderViewHolder(headerView);
         mInput1 = (EditText) headerView.findViewById(android.R.id.text1);
-        mInput2 = (EditText) headerView.findViewById(android.R.id.text2);
         mButton1 = headerView.findViewById(android.R.id.button1);
         mButton2 = headerView.findViewById(android.R.id.button2);
-        mListView.addHeaderView(headerView);
+
         mInput1.setOnEditorActionListener(new TextView.OnEditorActionListener(){
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH){
-                    keyword1 = mInput1.getText().toString();
-                    if (TextUtils.isEmpty(keyword1)) {
-                        showToast("请输入检索条件");
-                        return false;
-                    }
-                    currentPage = 1;
-                    mData.clear();
-                    mAdapter.notifyDataSetChanged();
-
                     hideKeyBord(v);
-                    doSearch();
+                    String keyword1 = mInput1.getText().toString();
+                    reLoadData(keyword1);
                 }
                 return true;
-            }
-        });
-        mInput2.setText(jstjs[1].toString());
-        mInput2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new SpinnerDialog(Office_searchCustomActivity.this, "请选择", jstjs, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        keyword2 = jstjs[which].id;
-                        mInput2.setText(jstjs[which].toString());
-                    }
-                }).show();
             }
         });
 
         mButton1.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                keyword1 = mInput1.getText().toString();
-                if (TextUtils.isEmpty(keyword1)) {
-                    showToast("请输入检索条件");
-                    return;
-                }
-                currentPage = 1;
-                mData.clear();
-                mAdapter.notifyDataSetChanged();
-
                 hideKeyBord(v);
-                doSearch();
+                String keyword = mInput1.getText().toString();
+                reLoadData(keyword);
             }
         });
         mButton2.setOnClickListener(new View.OnClickListener(){
@@ -146,27 +128,22 @@ public class Office_searchCustomActivity extends BaseUserActivity {
                 startActivityForResult(intent, ADD_WTR_REQUEST_CODE);
             }
         });
-        mListView.setPullRefreshEnable(false);
-        mListView.setPullLoadEnable(false);
-        mListView.setAutoLoadEnable(true);
-        mData = new ArrayList<Custom>();
-        mAdapter = new MyAdapter();
-        mListView.setAdapter(mAdapter);
-        mListView.setXListViewListener(new XListView.IXListViewListener(){
 
+        mFooterViewHolder = CommonFooterViewHolder.create(this, new View.OnClickListener() {
             @Override
-            public void onRefresh() {
-
-            }
-
-            @Override
-            public void onLoadMore() {
-                currentPage++;
-                doSearch();
+            public void onClick(View v) {
+                loadData();
             }
         });
-        currentPage = 1;
-        doSearch();
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        listView.setLayoutManager(layoutManager);
+        mAdapter = new MyAdapter(this);
+        listView.setAdapter(mAdapter);
+
+        setOnLoadingListener();
+        mPage = 0;
+        loadData();
     }
 
     @OnActivityResult(ADD_WTR_REQUEST_CODE)
@@ -183,12 +160,20 @@ public class Office_searchCustomActivity extends BaseUserActivity {
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
-    private void doSearch() {// 检索所有客户
-        String searchType = TextUtils.isEmpty(keyword1)?"1":(keyword2 + "");
-        AppRequest request = new AppRequest.Build("Customer/GetCustomerAllList")
-                .addParam("Title", keyword1)
-                .addParam("SearchType", searchType)
-                .addParam("Pages", currentPage+"")
+    //String title, String type, String cols, String caseYear, String auditStat
+    public void reLoadData(String... params) {
+        if (params != null && params.length == 1) {
+            this.keyword1 = params[0];
+        }
+        mPage = 0;
+        loadData();
+    }
+
+    private void loadData() {// 检索所有客户
+        final int loadPage = mPage + 1;
+        AppRequest request = new AppRequest.Build("api/Custom/list_My")
+                .addParam("CustName", keyword1)
+                .addParam("PageIndex", loadPage+"")
                 .create();
         new HttpFormFuture.Builder(this)
                 .setData(request)
@@ -203,17 +188,23 @@ public class Office_searchCustomActivity extends BaseUserActivity {
                         hideLoading();
                         AppResponse resp = (AppResponse)result.getAttach();
                         if (resp.flag) {
-                            List<Custom> shenChas = resp.resultsToList(Custom.class);
-                            mData.addAll(shenChas);
-                            mAdapter.notifyDataSetChanged();
-                            if (shenChas.size() >= pageSize) {
-                                mListView.setPullLoadEnable(true);
-                            } else {
-                                mListView.setPullLoadEnable(false);
+                            List<Custom> data = resp.resultsToList(Custom.class);
+                            if (loadPage == 1) {
+                                mAdapter.mData.clear();
+                                mAdapter.notifyDataSetChanged();
                             }
+                            if (data.size() < 10) {
+                                mPage = -1;
+                                mFooterViewHolder.setLoadingNoMore();
+                            } else {
+                                mPage = loadPage;
+                                mFooterViewHolder.resetLoadingView();
+                            }
+                            int oldCount = mAdapter.mData.size();
+                            mAdapter.mData.addAll(data);
+                            mAdapter.notifyItemRangeInserted(oldCount, data.size());
                         } else {
-                            mListView.setPullLoadEnable(false);
-                            showToast(resp.Message);
+                            mFooterViewHolder.setLoadingError();
                         }
                     }
 
@@ -225,42 +216,117 @@ public class Office_searchCustomActivity extends BaseUserActivity {
                 .execute();
     }
 
-    class MyAdapter extends BaseAdapter implements View.OnClickListener {
+    private void setOnLoadingListener() {
+        listView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
 
-        @Override
-        public int getCount() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (mPage == -1) return;
+                if (!listView.canScrollVertically(1)) {
+                    // 首次进入不加载
+                    if (mFooterViewHolder.mLoadingStatus == 0 && !mFooterViewHolder.mFirstEnter) {
+                        if (mPage > -1) {
+                            loadData();
+                        }
+                    }
+                    if (mFooterViewHolder.mFirstEnter) {
+                        mFooterViewHolder.mFirstEnter = false;
+                    }
+                }
+            }
+        });
+    }
+
+    class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener {
+
+        protected static final int ITEM_TYPE_HEADER = 0;
+        protected static final int ITEM_TYPE_CONTENT = 1;
+        protected static final int ITEM_TYPE_FOOTER = 2;
+        protected static final int ITEM_TYPE_EMPTY = 3;
+
+        protected int mHeaderCount = 1;
+        protected int mFooterCount = 1;
+        protected Context mContext;
+        public List mData = new ArrayList();
+
+        public MyAdapter(Context context) {
+            mContext = context;
+        }
+
+        public int getContentItemCount() {
             return mData.size();
         }
 
-        @Override
-        public Object getItem(int position) {
-            return mData.get(position);
+        public int getFooterCount() {
+            return mFooterCount;
+        }
+
+        public boolean isHeaderView(int position) {
+            return mHeaderCount > 0 && position < mHeaderCount;
+        }
+
+        public boolean isFooterView(int position) {
+            return mFooterCount > 0 && position >= (mHeaderCount + getContentItemCount());
+        }
+
+        public boolean isLastContentView(int position) {
+            return position + 1 == mHeaderCount + getContentItemCount();
         }
 
         @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            Custom item = (Custom) getItem(position);
-            if (convertView == null) {
-                convertView = LinearLayout.inflate(Office_searchCustomActivity.this, R.layout.item_office_wtr, null);
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            if (viewType == ITEM_TYPE_HEADER) {
+                return mHeaderViewHolder;
+            } else if (viewType == ITEM_TYPE_FOOTER) {
+                return mFooterViewHolder;
+            } else if (viewType == ITEM_TYPE_CONTENT){
+                View view = View.inflate(mContext, R.layout.custom_list_choice_item, null);
+                ItemViewHolder viewHolder = new ItemViewHolder(view);
+                viewHolder.radio.setOnClickListener(this);
+                return viewHolder;
+            } else if (viewType == ITEM_TYPE_EMPTY) {
+                View view = View.inflate(mContext, R.layout.common_list_item_empty, null);
+                return new EmptyViewHolder(view);
             }
-            TextView text1 = ViewHolder.get(convertView, R.id.text1);
-            TextView text3 = ViewHolder.get(convertView, R.id.text3);
-            TextView text4 = ViewHolder.get(convertView, R.id.text4);
-            TextView text5 = ViewHolder.get(convertView, R.id.text5);
-            TextView button1 = ViewHolder.get(convertView, android.R.id.button1);
+            return null;
+        }
 
-            text1.setText(item.Title);
-            text3.setText("联系电话：" + item.Phone);
-            text4.setText("地　　区：" + item.ProvinceIdTxt + item.CityIdTxt);
-            text5.setText("入库时间：" + item.Addtime);
-            button1.setOnClickListener(this);
-            button1.setTag(item);
-            return convertView;
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            if (holder instanceof ItemViewHolder) {
+                ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
+                CommonItem item = getItem(position);
+                itemViewHolder.radio.setText(item.getTitle());
+                itemViewHolder.radio.setTag(item);
+            } else if (holder instanceof CommonFooterViewHolder) {
+                CommonFooterViewHolder footerViewHolder = (CommonFooterViewHolder) holder;
+                footerViewHolder.refrash();
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return mHeaderCount + getContentItemCount() + getFooterCount();
+        }
+
+        private CommonItem getItem(int position) {
+            return (CommonItem) mData.get(position - mHeaderCount);
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            if (isHeaderView(position)) {
+                return ITEM_TYPE_HEADER;
+            } else if (isFooterView(position)) {
+                return ITEM_TYPE_FOOTER;
+            } else {
+                return ITEM_TYPE_CONTENT;
+            }
         }
 
         @Override
@@ -270,6 +336,27 @@ public class Office_searchCustomActivity extends BaseUserActivity {
             data.putExtra("customItem", c);
             setResult(RESULT_OK, data);
             finish();
+        }
+
+    }
+
+    class ItemViewHolder extends RecyclerView.ViewHolder {
+        RadioButton radio;
+        public ItemViewHolder(@NonNull View itemView) {
+            super(itemView);
+            radio = itemView.findViewById(R.id.radio);
+
+            RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            itemView.setLayoutParams(params);
+        }
+    }
+
+    class HeaderViewHolder extends RecyclerView.ViewHolder {
+
+        public HeaderViewHolder(@NonNull View itemView) {
+            super(itemView);
+            RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            itemView.setLayoutParams(params);
         }
     }
 
@@ -291,7 +378,6 @@ public class Office_searchCustomActivity extends BaseUserActivity {
     }
 
     void titleOnDoubleClick(View view) {
-        if (mAdapter.getCount() > 10)mListView.setSelection(10);
-        mListView.smoothScrollToPosition(0);
+        listView.scrollToPosition(0);
     }
 }

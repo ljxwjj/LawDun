@@ -8,18 +8,9 @@
 
     <include layout="@layout/action_bar" />
 
-    <com.yunfa365.lawservice.app.ui.view.pulltorefresh.XListView
-        android:id="@android:id/list"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:scrollbars="none"
-        android:divider="#A0A0A0"
-        android:dividerHeight="1px"
-        android:layout_weight="1"
-        android:cacheColorHint="@android:color/transparent"
-        android:listSelector="@android:color/transparent"
-        android:headerDividersEnabled="false"
-        android:footerDividersEnabled="false"></com.yunfa365.lawservice.app.ui.view.pulltorefresh.XListView>
+        android:layout_height="match_parent">
+    </androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>

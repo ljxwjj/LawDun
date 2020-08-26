@@ -7,19 +7,27 @@ import android.text.TextUtils;
 
 import androidx.multidex.MultiDex;
 
+import com.android.agnetty.core.AgnettyFuture;
+import com.android.agnetty.core.AgnettyFutureListener;
+import com.android.agnetty.core.AgnettyManager;
+import com.android.agnetty.core.AgnettyResult;
 import com.android.agnetty.utils.LogUtil;
 import com.baidu.android.pushservice.PushConstants;
 import com.baidu.android.pushservice.PushManager;
 import com.mobsandgeeks.saripaar.Validator;
 import com.yunfa365.lawservice.app.R;
 import com.yunfa365.lawservice.app.constant.AppCst;
+import com.yunfa365.lawservice.app.future.HttpFormFuture;
 import com.yunfa365.lawservice.app.future.HttpJsonFuture;
 import com.yunfa365.lawservice.app.pojo.AppGlobal;
+import com.yunfa365.lawservice.app.pojo.CaseCols;
 import com.yunfa365.lawservice.app.pojo.User;
+import com.yunfa365.lawservice.app.pojo.base.BaseBean;
 import com.yunfa365.lawservice.app.pojo.event.BaiDuPushBindEvent;
 import com.yunfa365.lawservice.app.pojo.event.LoginEvent;
 import com.yunfa365.lawservice.app.pojo.event.LogoutEvent;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
+import com.yunfa365.lawservice.app.pojo.http.AppResponse;
 import com.yunfa365.lawservice.app.ui.notification.PushNotificationBuilder;
 import com.yunfa365.lawservice.app.ui.validation.OptionalEmail;
 import com.yunfa365.lawservice.app.ui.validation.OptionalIdCard;
@@ -131,6 +139,7 @@ public class AppApplication extends Application {
         if (AppGlobal.mUser.mRole == null) {
             AppGlobal.mUser.loadUserRole(this);
         }
+        loadSffsData();
 
         if (AppGlobal.mBaiDuChannelId != null) {
             PushManager.listTags(getApplicationContext());
@@ -167,6 +176,30 @@ public class AppApplication extends Application {
 
         new HttpJsonFuture.Builder(this)
                 .setData(request)
+                .execute();
+    }
+
+    private void loadSffsData() {
+        String TAG = "GetSFFFList";
+        AgnettyManager manager = AgnettyManager.getInstance(this);
+        AgnettyFuture future = manager.getFutureByTag(TAG);
+        if (future != null) return;
+
+        AppRequest request = new AppRequest.Build("api/Case/PayCols_Get")
+                .create();
+        new HttpFormFuture.Builder(this)
+                .setTag(TAG)
+                .setData(request)
+                .setListener(new AgnettyFutureListener(){
+                    @Override
+                    public void onComplete(AgnettyResult result) {
+                        AppResponse resp = (AppResponse) result.getAttach();
+                        if (resp.flag) {
+                            BaseBean[] sffs = resp.resultsToArray(BaseBean.class);
+                            AppCst.sffss = sffs;
+                        }
+                    }
+                })
                 .execute();
     }
 

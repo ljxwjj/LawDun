@@ -220,7 +220,8 @@ public class Office41_4Activity extends BaseUserActivity {
     private void initDefaultValue() {
         if (caseItem == null) {
             Mid = AppUtil.generateMid();
-            sffs.setText(AppCst.sffss[1]);
+            sffs.setText(AppCst.sffss[1].toString());
+            sffs.setTag(AppCst.sffss[1]);
             zfbz.setText(zfbzs[1]);
             initLocation();
         } else {
@@ -399,7 +400,8 @@ public class Office41_4Activity extends BaseUserActivity {
         new SpinnerDialog(this, "请选择收费方式", AppCst.sffss, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                sffs.setText(AppCst.sffss[which]);
+                sffs.setText(AppCst.sffss[which].toString());
+                sffs.setTag(AppCst.sffss[which]);
             }
         }).show();
     }

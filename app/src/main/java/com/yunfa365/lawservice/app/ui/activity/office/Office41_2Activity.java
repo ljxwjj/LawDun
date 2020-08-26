@@ -29,7 +29,7 @@ import com.yunfa365.lawservice.app.pojo.Case;
 import com.yunfa365.lawservice.app.pojo.CaseCols;
 import com.yunfa365.lawservice.app.pojo.Custom;
 import com.yunfa365.lawservice.app.pojo.DiQu;
-import com.yunfa365.lawservice.app.pojo.GetWebColName;
+import com.yunfa365.lawservice.app.pojo.base.BaseBean;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
 import com.yunfa365.lawservice.app.ui.activity.base.BaseUserActivity;
@@ -214,8 +214,8 @@ public class Office41_2Activity extends BaseUserActivity {
     @Extra
     Case caseItem;
 
-    private GetWebColName[] ssjds;
-    private GetWebColName[] ssdws;
+    private BaseBean[] ssjds;
+    private BaseBean[] ssdws;
 
     private DiQu[] shengs;
     private DiQu[] shis;
@@ -252,7 +252,7 @@ public class Office41_2Activity extends BaseUserActivity {
     private void initDefaultValue() {
         if (caseItem == null) {
             Mid = AppUtil.generateMid();
-            sffs.setText(AppCst.sffss[1]);
+            sffs.setText(AppCst.sffss[1].toString());
             zfbz.setText(zfbzs[1]);
 
             ajxz.setText(ajxzs[0]);
@@ -281,13 +281,11 @@ public class Office41_2Activity extends BaseUserActivity {
             ssjd.setText(caseItem.TSscx);
             String ssjdStr = caseItem.Sscx;
             String ssjdStrs[] = ssjdStr.split(",");
-            GetWebColName[] ssjdObjs = new GetWebColName[ssjdStrs.length];
+            BaseBean[] ssjdObjs = new BaseBean[ssjdStrs.length];
             try {
                 for (int i = 0; i < ssjdStrs.length; i++) {
-                    GetWebColName colObj = new GetWebColName();
                     int id = Integer.parseInt(ssjdStrs[i]);
-                    colObj.ID = id;
-                    ssjdObjs[i] = colObj;
+                    ssjdObjs[i] = new BaseBean(id, null);
                 }
             } catch(Exception e) {
                 e.printStackTrace();
@@ -296,8 +294,7 @@ public class Office41_2Activity extends BaseUserActivity {
             ssjd.setTag(ssjdObjs);
 
             ssdw.setText(caseItem.TSsdw);
-            GetWebColName colName = new GetWebColName();
-            colName.ID = caseItem.Ssdw;
+            BaseBean colName = new BaseBean(caseItem.Ssdw, null);
             ssdw.setTag(colName);
 
             ajxz.setText(caseItem.AjXz);
@@ -368,10 +365,9 @@ public class Office41_2Activity extends BaseUserActivity {
 
     private void loadDataSsjd() {
         // 获取诉讼阶段 诉讼地位
-        AppRequest request = new AppRequest.Build("Case/GetLawyerWebColList")
-                .addParam("Fid", "2")
-                .addParam("CaseCols", selectedCaseCols.Fid + "") // 案件类型
-                .addParam("Ay", selectedCaseCols.ID + "")
+        AppRequest request = new AppRequest.Build("api/Case/Config_Get")
+                .addParam("Types", "1")
+                .addParam("ColsId", selectedCaseCols.Fid + "") // 案件类型
                 .create();
         new HttpFormFuture.Builder(this)
                 .setData(request)
@@ -385,8 +381,7 @@ public class Office41_2Activity extends BaseUserActivity {
                     public void onComplete(AgnettyResult result) {
                         AppResponse resp = (AppResponse)result.getAttach();
                         if (resp.flag) {
-                            List<GetWebColName> ssjdList = resp.resultsToList(GetWebColName.class);
-                            ssjds = ssjdList.toArray(new GetWebColName[ssjdList.size()]);
+                            ssjds = resp.resultsToArray(BaseBean.class);
                             loadDataSsdw();
                         }
                     }
@@ -401,9 +396,9 @@ public class Office41_2Activity extends BaseUserActivity {
 
     private void loadDataSsdw() {
         // 诉讼地位
-        AppRequest request = new AppRequest.Build("Case/GetLawyerWebColList")
-                .addParam("Fid", "3")
-                .addParam("CaseCols", selectedCaseCols.Fid + "") // 案件类型
+        AppRequest request = new AppRequest.Build("api/Case/Config_Get")
+                .addParam("Types", "2")
+                .addParam("ColsId", selectedCaseCols.Fid + "") // 案件类型
                 .create();
         new HttpFormFuture.Builder(this)
                 .setData(request)
@@ -414,8 +409,7 @@ public class Office41_2Activity extends BaseUserActivity {
                         hideLoading();
                         AppResponse resp = (AppResponse)result.getAttach();
                         if (resp.flag) {
-                            List<GetWebColName> ssdwList = resp.resultsToList(GetWebColName.class);
-                            ssdws = ssdwList.toArray(new GetWebColName[ssdwList.size()]);
+                            ssdws = resp.resultsToArray(BaseBean.class);
                         }
                     }
 
@@ -533,7 +527,8 @@ public class Office41_2Activity extends BaseUserActivity {
         new SpinnerDialog(this, "请选择收费方式", AppCst.sffss, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                sffs.setText(AppCst.sffss[which]);
+                sffs.setText(AppCst.sffss[which].toString());
+                sffs.setTag(AppCst.sffss[which]);
             }
         }).show();
     }
@@ -566,7 +561,7 @@ public class Office41_2Activity extends BaseUserActivity {
             return;
 
         boolean[] checkItems = new boolean[ssjds.length];
-        GetWebColName[] selected = (GetWebColName[]) ssjd.getTag();
+        BaseBean[] selected = (BaseBean[]) ssjd.getTag();
 
         if (selected != null) {
             for (int i = 0; i < ssjds.length; i++) {
@@ -579,7 +574,7 @@ public class Office41_2Activity extends BaseUserActivity {
             }
         }
 
-        MultiSelectDialog<GetWebColName> msDialog = new MultiSelectDialog(this, "请选择诉讼阶段", ssjds, checkItems, new MultiSelectDialog.MultiSelectListener() {
+        MultiSelectDialog<BaseBean> msDialog = new MultiSelectDialog(this, "请选择诉讼阶段", ssjds, checkItems, new MultiSelectDialog.MultiSelectListener() {
             @Override
             public void onItemClick(MultiSelectDialog dialog, int position, boolean checked) {
 
@@ -587,7 +582,7 @@ public class Office41_2Activity extends BaseUserActivity {
 
             @Override
             public void onOkClick(MultiSelectDialog dialog) {
-                GetWebColName[] selected = (GetWebColName[]) dialog.getSelectedItem();
+                BaseBean[] selected = (BaseBean[]) dialog.getSelectedItem();
                 ssjd.setTag(selected);
                 String[] strs = new String[selected.length];
                 for (int i = 0; i < selected.length; i++)
@@ -610,7 +605,7 @@ public class Office41_2Activity extends BaseUserActivity {
         new SpinnerDialog(this, "选择诉讼地位", ssdws, new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GetWebColName gwcn = ssdws[which];
+                BaseBean gwcn = ssdws[which];
                 ssdw.setText(gwcn.Title);
                 ssdw.setTag(gwcn);
             }
@@ -702,7 +697,7 @@ public class Office41_2Activity extends BaseUserActivity {
     }
 
     private void doCommit() {
-        GetWebColName[] selected = (GetWebColName[]) ssjd.getTag();
+        BaseBean[] selected = (BaseBean[]) ssjd.getTag();
         String ids[] = new String[selected.length];
         for (int i = 0; i < ids.length; i++) {
             ids[i] = selected[i].ID + "";
@@ -722,7 +717,7 @@ public class Office41_2Activity extends BaseUserActivity {
                 .addParam("IsBuTie", zfbz.getText().toString())     //政府补贴
                 .addParam("BuTiePrice", bzje.getText().toString())  //补助金额
                 .addParam("Sscx", ssjdStr)                          //诉讼阶段
-                .addParam("Ssdw", ((GetWebColName)ssdw.getTag()).ID + "")       //诉讼地位
+                .addParam("Ssdw", ((BaseBean)ssdw.getTag()).ID + "")       //诉讼地位
                 .addParam("CaseType", ajxz.getText().toString())                //案件性质
                 .addParam("CaseFrom", ajly.getText().toString())    //案件来源
                 .addParam("LsCols", lssf.getText().toString())      //代理律师身份
