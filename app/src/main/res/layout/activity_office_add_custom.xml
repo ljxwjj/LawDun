@@ -209,6 +209,44 @@
                 android:layout_height="1px"
                 android:layout_marginLeft="23dp"
                 android:layout_marginRight="23dp"
+                android:background="@color/common_text_color_hint" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginLeft="23dp"
+                android:layout_marginRight="23dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="84dp"
+                    android:text="客户等级："
+                    android:textColor="@color/common_color_dark_gray"
+                    android:textSize="@dimen/common_size_small" />
+
+                <EditText
+                    android:id="@+id/khdj"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@null"
+                    android:drawableRight="@mipmap/right_arrow"
+                    android:focusable="false"
+                    android:hint="请选择客户等级"
+                    android:imeOptions="actionNext"
+                    android:inputType="none"
+                    android:singleLine="true"
+                    android:textColor="@color/common_text_color"
+                    android:textColorHint="@color/common_text_color_hint"
+                    android:textSize="@dimen/common_size_small" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginLeft="23dp"
+                android:layout_marginRight="23dp"
                 android:background="@color/common_text_color_hint"/>
 
             <TextView
@@ -295,42 +333,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minWidth="84dp"
-                        android:text="主要负责人："
-                        android:textColor="@color/common_color_dark_gray"
-                        android:textSize="@dimen/common_size_small" />
-
-                    <EditText
-                        android:id="@+id/zyfzr"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="@null"
-                        android:hint="请填写主要负责人(选填)"
-                        android:imeOptions="actionNext"
-                        android:inputType="text"
-                        android:singleLine="true"
-                        android:textColor="@color/common_text_color"
-                        android:textColorHint="@color/common_text_color_hint"
-                        android:textSize="@dimen/common_size_small" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:layout_marginLeft="23dp"
-                    android:layout_marginRight="23dp"
-                    android:background="@color/common_text_color_hint" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:layout_marginLeft="23dp"
-                    android:layout_marginRight="23dp"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minWidth="84dp"
                         android:text="业务联系人："
                         android:textColor="@color/common_color_dark_gray"
                         android:textSize="@dimen/common_size_small" />
@@ -367,18 +369,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minWidth="84dp"
-                        android:text="邮箱："
+                        android:text="职务："
                         android:textColor="@color/common_color_dark_gray"
                         android:textSize="@dimen/common_size_small" />
 
                     <EditText
-                        android:id="@+id/yx"
+                        android:id="@+id/zw"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:background="@null"
-                        android:hint="请填写邮箱(选填)"
+                        android:hint="请填写职务(选填)"
                         android:imeOptions="actionNext"
-                        android:inputType="textEmailAddress"
+                        android:inputType="text"
                         android:singleLine="true"
                         android:textColor="@color/common_text_color"
                         android:textColorHint="@color/common_text_color_hint"
@@ -403,16 +405,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minWidth="84dp"
-                        android:text="职务："
+                        android:text="主要负责人："
                         android:textColor="@color/common_color_dark_gray"
                         android:textSize="@dimen/common_size_small" />
 
                     <EditText
-                        android:id="@+id/zw"
+                        android:id="@+id/zyfzr"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:background="@null"
-                        android:hint="请填写职务(选填)"
+                        android:hint="请填写主要负责人(选填)"
                         android:imeOptions="actionNext"
                         android:inputType="text"
                         android:singleLine="true"
@@ -506,41 +508,178 @@
                     android:layout_height="44dp"
                     android:layout_marginLeft="23dp"
                     android:layout_marginRight="23dp"
-                    android:orientation="horizontal"
                     android:gravity="center_vertical">
 
-                    <EditText
-                        android:id="@+id/sheng"
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        android:background="@null"
-                        android:drawableRight="@mipmap/right_arrow"
-                        android:focusable="false"
-                        android:hint="省/直辖市"
-                        android:imeOptions="actionNext"
-                        android:inputType="none"
-                        android:singleLine="true"
-                        android:textColor="@color/common_text_color"
-                        android:textColorHint="@color/common_text_color_hint"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="84dp"
+                        android:text="邮箱："
+                        android:textColor="@color/common_color_dark_gray"
                         android:textSize="@dimen/common_size_small" />
 
                     <EditText
-                        android:id="@+id/shi"
-                        android:layout_width="0dp"
+                        android:id="@+id/yx"
+                        android:layout_width="match_parent"
                         android:layout_height="40dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_weight="1"
                         android:background="@null"
-                        android:drawableRight="@mipmap/right_arrow"
-                        android:focusable="false"
-                        android:hint="地级市"
+                        android:hint="请填写邮箱(选填)"
                         android:imeOptions="actionNext"
-                        android:inputType="none"
+                        android:inputType="textEmailAddress"
                         android:singleLine="true"
                         android:textColor="@color/common_text_color"
                         android:textColorHint="@color/common_text_color_hint"
                         android:textSize="@dimen/common_size_small" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginLeft="23dp"
+                    android:layout_marginRight="23dp"
+                    android:background="@color/common_text_color_hint" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginLeft="23dp"
+                    android:layout_marginRight="23dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="84dp"
+                        android:text="微信号码："
+                        android:textColor="@color/common_color_dark_gray"
+                        android:textSize="@dimen/common_size_small" />
+
+                    <EditText
+                        android:id="@+id/wxhm"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@null"
+                        android:hint=""
+                        android:imeOptions="actionNext"
+                        android:inputType="textEmailAddress"
+                        android:singleLine="true"
+                        android:textColor="@color/common_text_color"
+                        android:textColorHint="@color/common_text_color_hint"
+                        android:textSize="@dimen/common_size_small" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginLeft="23dp"
+                    android:layout_marginRight="23dp"
+                    android:background="@color/common_text_color_hint" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginLeft="23dp"
+                    android:layout_marginRight="23dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="84dp"
+                        android:text="QQ号码："
+                        android:textColor="@color/common_color_dark_gray"
+                        android:textSize="@dimen/common_size_small" />
+
+                    <EditText
+                        android:id="@+id/qqhm"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@null"
+                        android:hint=""
+                        android:imeOptions="actionNext"
+                        android:inputType="textEmailAddress"
+                        android:singleLine="true"
+                        android:textColor="@color/common_text_color"
+                        android:textColorHint="@color/common_text_color_hint"
+                        android:textSize="@dimen/common_size_small" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginLeft="23dp"
+                    android:layout_marginRight="23dp"
+                    android:background="@color/common_text_color_hint" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginLeft="23dp"
+                    android:layout_marginRight="23dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:minWidth="84dp"
+                        android:layout_height="wrap_content"
+                        android:text="上传证件："
+                        android:textColor="@color/common_color_dark_gray"
+                        android:textSize="@dimen/common_size_small" />
+
+                    <TextView
+                        android:id="@+id/xgwj"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@null"
+                        android:drawableRight="@mipmap/right_arrow"
+                        android:focusable="false"
+                        android:hint="请选择相关文件"
+                        android:ellipsize="end"
+                        android:inputType="none"
+                        android:singleLine="true"
+                        android:textColor="@color/common_text_color"
+                        android:textColorHint="@color/common_text_color_hint"
+                        android:textSize="@dimen/common_size_small"
+                        android:gravity="center_vertical"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginLeft="23dp"
+                    android:layout_marginRight="23dp"
+                    android:background="@color/common_text_color_hint" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginLeft="23dp"
+                    android:layout_marginRight="23dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:minWidth="84dp"
+                        android:layout_height="wrap_content"
+                        android:text="所属区域："
+                        android:textColor="@color/common_color_dark_gray"
+                        android:textSize="@dimen/common_size_small" />
+
+                    <TextView
+                        android:id="@+id/ssqy"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@null"
+                        android:drawableRight="@mipmap/right_arrow"
+                        android:focusable="false"
+                        android:hint="请选择所属区域"
+                        android:ellipsize="end"
+                        android:inputType="none"
+                        android:singleLine="true"
+                        android:textColor="@color/common_text_color"
+                        android:textColorHint="@color/common_text_color_hint"
+                        android:textSize="@dimen/common_size_small"
+                        android:gravity="center_vertical"/>
                 </LinearLayout>
 
                 <View
@@ -577,45 +716,6 @@
                         android:textColor="@color/common_text_color"
                         android:textColorHint="@color/common_text_color_hint"
                         android:textSize="@dimen/common_size_small" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:layout_marginLeft="23dp"
-                    android:layout_marginRight="23dp"
-                    android:background="@color/common_text_color_hint" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:layout_marginLeft="23dp"
-                    android:layout_marginRight="23dp"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:minWidth="84dp"
-                        android:layout_height="wrap_content"
-                        android:text="相关文件："
-                        android:textColor="@color/common_color_dark_gray"
-                        android:textSize="@dimen/common_size_small" />
-
-                    <TextView
-                        android:id="@+id/xgwj"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="@null"
-                        android:drawableRight="@mipmap/right_arrow"
-                        android:focusable="false"
-                        android:hint="请选择相关文件"
-                        android:ellipsize="end"
-                        android:inputType="none"
-                        android:singleLine="true"
-                        android:textColor="@color/common_text_color"
-                        android:textColorHint="@color/common_text_color_hint"
-                        android:textSize="@dimen/common_size_small"
-                        android:gravity="center_vertical"/>
                 </LinearLayout>
 
             </LinearLayout>

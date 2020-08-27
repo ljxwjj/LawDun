@@ -7,6 +7,13 @@ public class CusTomCols {
     public int ID;
     public String Title;
 
+    public CusTomCols(){}
+
+    public CusTomCols(int i, String t) {
+        ID = i;
+        Title = t;
+    }
+
     @Override
     public String toString() {
         return Title;

@@ -39,6 +39,10 @@ public class Custom implements Serializable, CommonItem {
     public String Email;              //     邮件
     public String Address;            //   详细地址
     public String Make;               // 备注
+    public int CustRanks;             // 客户等级
+    public String WeiXinNums;
+    public String QQNums;
+    public String CustRanksTxt;
 
     @Override
     public String getTitle() {

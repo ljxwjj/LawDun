@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.android.agnetty.core.AgnettyFutureListener;
 import com.android.agnetty.core.AgnettyResult;
+import com.android.agnetty.future.upload.form.FormUploadFile;
 import com.android.agnetty.utils.LogUtil;
 import com.mobsandgeeks.saripaar.QuickRule;
 import com.mobsandgeeks.saripaar.ValidationError;
@@ -25,23 +27,27 @@ import com.yunfa365.lawservice.app.pojo.CaseFile;
 import com.yunfa365.lawservice.app.pojo.CusTomCols;
 import com.yunfa365.lawservice.app.pojo.Custom;
 import com.yunfa365.lawservice.app.pojo.DiQu;
+import com.yunfa365.lawservice.app.pojo.YesNo;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
 import com.yunfa365.lawservice.app.ui.activity.base.BaseUserActivity;
+import com.yunfa365.lawservice.app.ui.dialog.AddressPickerDialog;
 import com.yunfa365.lawservice.app.ui.validation.OptionalEmail;
 import com.yunfa365.lawservice.app.ui.validation.OptionalPhone;
 import com.yunfa365.lawservice.app.ui.dialog.SpinnerDialog;
+import com.yunfa365.lawservice.app.ui.view.addresspickerlib.YwpAddressBean;
 import com.yunfa365.lawservice.app.utils.AppUtil;
 import com.yunfa365.lawservice.app.utils.FileUtil;
 import com.yunfa365.lawservice.app.utils.LocationUtil;
 import com.yunfa365.lawservice.app.utils.StringUtil;
+import com.yunfa365.lawservice.app.utils.UriUtil;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
-
 import java.util.List;
 
 
@@ -51,6 +57,15 @@ import java.util.List;
  */
 @EActivity(R.layout.activity_office_add_custom)
 public class Office_addCustomActivity extends BaseUserActivity {
+    private static final int SELECT_FILE_REQUEST_CODE = 1;
+
+    private YesNo[] khdjs = {new YesNo(0, "选择客户等级"),
+            new YesNo(1, "新建客户"),
+            new YesNo(2, "初步意向客户"),
+            new YesNo(3, "高意向客户"),
+            new YesNo(4, "正式客户"),
+            new YesNo(5, "无意向客户"),
+            new YesNo(6, "无效客户")};
 
     @ViewById
     View rootLayout;
@@ -90,42 +105,49 @@ public class Office_addCustomActivity extends BaseUserActivity {
     EditText xgzj;
 
     @ViewById
-    EditText zyfzr;
+    EditText khdj;
 
+    @ViewById
+    EditText ajbz;
+
+    // ------------------更多--------------------
     @ViewById
     EditText ywlxr;
-
-    @OptionalEmail(message = "邮箱格式不正确")
-    @Order(5)
-    @ViewById
-    EditText yx;
 
     @ViewById
     EditText zw;
 
     @ViewById
+    EditText zyfzr;
+
+    @ViewById
     EditText dqyxl;
 
     @OptionalPhone(message = "固定电话格式不正确")
-    @Order(6)
+    @Order(5)
     @ViewById
     EditText gddh;
 
+    @OptionalEmail(message = "邮箱格式不正确")
+    @Order(6)
     @ViewById
-    EditText sheng;
+    EditText yx;
 
     @ViewById
-    EditText shi;
+    EditText wxhm;
 
-    @Order(8)
     @ViewById
-    EditText xxdz;
+    EditText qqhm;
 
     @ViewById
     TextView xgwj;
 
     @ViewById
-    EditText ajbz;
+    TextView ssqy;
+
+    @Order(8)
+    @ViewById
+    EditText xxdz;
 
     @ViewById
     TextView moreBtn;
@@ -140,11 +162,6 @@ public class Office_addCustomActivity extends BaseUserActivity {
     String customName;
 
     private CusTomCols[] khnxs;
-
-    private DiQu[] shengs;
-    private DiQu[] shis;
-    private String Mid;
-
 
     private Validator validator;
     private QuickRule requiredXgzjRule;
@@ -163,10 +180,7 @@ public class Office_addCustomActivity extends BaseUserActivity {
         });
         mTitleTxt.setText("添加委托人");
 
-        String diquStr = FileUtil.getRawFileContent(getResources(), R.raw.diqu);
-        shengs = StringUtil.toObjectArray(diquStr, DiQu.class);
         loadCustomType();
-
         initValidate();
         initDefaultValue();
     }
@@ -205,7 +219,6 @@ public class Office_addCustomActivity extends BaseUserActivity {
 
     private void loadCaseFiles() {
         AppRequest request = new AppRequest.Build("Case/FileStoreList")
-                .addParam("Mid", Mid)
                 .addParam("Cols", "1")
                 .create();
         new HttpFormFuture.Builder(this)
@@ -291,24 +304,37 @@ public class Office_addCustomActivity extends BaseUserActivity {
 
     private void initDefaultValue() {
         if (customItem == null) {
-            Mid = AppUtil.generateMid();
             if (!TextUtils.isEmpty(customName)) {
                 wtr.setText(customName);
             }
+            khdj.setText(khdjs[0].toString());
+            khdj.setTag(khdjs[0]);
             initLocation();
         } else {
-            // khnx.setText(customItem.CustColsName);  不能在此设置客户类型，会导致证件号码字段不联动，因为此处setText不触发onTextChange，原因是khnxs为null
-
-            Mid = customItem.ID + "";
             loadCaseFiles();
 
             wtr.setText(customItem.Title);
+            dsr.setText(customItem.CaseUName);
+            sjhm.setText(customItem.Mobile);
+            khnx.setText(customItem.CustColsTxt);
+            khnx.setTag(new CusTomCols(customItem.CustCols, ""));
             // Model to see : initDefaultKhnx();
-            sjhm.setText(customItem.Phone);
-            sheng.setText(customItem.ProvinceIdTxt);
-            shi.setText(customItem.CityIdTxt);
             ajbz.setText(customItem.Make);
             xgzj.setText(customItem.UNums);
+            khdj.setText(customItem.CustRanksTxt);
+            khdj.setTag(new YesNo(customItem.CustRanks, ""));
+
+            DiQu[] addressTag = {
+                    new DiQu(),
+                    new DiQu(),
+                    new DiQu(),
+            };
+            addressTag[0].id = customItem.ProvinceId;
+            addressTag[1].id = customItem.CityId;
+            addressTag[2].id = customItem.AreaId;
+            YwpAddressBean.getInstance(this).initAddress(addressTag);
+            ssqy.setTag(addressTag);
+            ssqy.setText(String.format("%s-%s-%s", addressTag[0].text, addressTag[1].text, addressTag[2].text));
 
             ywlxr.setText(customItem.YwRen);
             zw.setText(customItem.YwRenZhiWu);
@@ -317,15 +343,9 @@ public class Office_addCustomActivity extends BaseUserActivity {
             gddh.setText(customItem.Phone);
             yx.setText(customItem.Email);
             xxdz.setText(customItem.Address);
+            wxhm.setText(customItem.WeiXinNums);
+            qqhm.setText(customItem.QQNums);
 
-            if (!TextUtils.isEmpty(customItem.ProvinceIdTxt)) {
-                for (DiQu sheng : shengs) {
-                    if (sheng.text.equals(customItem.ProvinceIdTxt)) {
-                        shis = sheng.children;
-                        break;
-                    }
-                }
-            }
         }
     }
 
@@ -334,23 +354,10 @@ public class Office_addCustomActivity extends BaseUserActivity {
         public void onGetLocation(String province, String city, String district) {
             if (isFinishing()) return;
 
-            if (TextUtils.isEmpty(sheng.getText())) {
-                for (DiQu s : shengs) {
-                    if (s.text.equals(province)) {
-                        sheng.setText(s.text);
-                        sheng.setTag(s);
-                        setShis(s.children);
-                        break;
-                    }
-                }
-                if (shis == null) return;
-                for (DiQu s : shis) {
-                    if (s.text.equals(city)) {
-                        shi.setText(s.text);
-                        shi.setTag(s);
-                        break;
-                    }
-                }
+            if (ssqy.getTag() == null) {
+                DiQu[] addressTag = YwpAddressBean.getInstance(Office_addCustomActivity.this)
+                        .initAddress(province, city, district);
+                ssqy.setTag(addressTag);
             }
         }
     };
@@ -372,32 +379,8 @@ public class Office_addCustomActivity extends BaseUserActivity {
     private void initDefaultKhnx() {
         String khsxStr = customItem.Model;
         String sxs[] = khsxStr.split("♀");
-        /*for (int i = 0; i < sxs.length; i++) {
-            String sx = sxs[i];
-            if (TextUtils.isEmpty(sx)) {
-                continue;
-            }
-            String kvs[] = sx.split("\\|");
-
-            khnxLayouts[i].setVisibility(View.VISIBLE);
-            CusTomCols labelTag = new CusTomCols();
-            CusTomCols viewTag = new CusTomCols();
-
-            labelTag.Title = kvs[0];
-            viewTag.Title = kvs[1];
-            khnxLabels[i].setText(kvs[0]);
-            khnxLabels[i].setTag(labelTag);
-            khnxViews[i].setText(kvs[1]);
-            khnxViews[i].setTag(viewTag);
-        }*/
-
     }
 
-    private void setShis(DiQu[] diqus) {
-        shis = diqus;
-        shi.setText(shis[0].toString());
-        shi.setTag(shis[0]);
-    }
 
     @Click(R.id.khnx)
     void khnxOnClick(View view) {
@@ -410,33 +393,50 @@ public class Office_addCustomActivity extends BaseUserActivity {
         }).show();
     }
 
-    @Click(R.id.sheng)
-    void shengOnClick(View view) {
-        if (shengs == null)
-            return;
-        new SpinnerDialog(this, "请选择省/直辖市", shengs, new DialogInterface.OnClickListener() {
+    @Click(R.id.ssqy)
+    void ssqyOnClick() {
+        DiQu[] addressTag = (DiQu[]) ssqy.getTag();
+        new AddressPickerDialog(this, addressTag, true)
+                .setAddressPickerListener(new AddressPickerDialog.AddressPickerListener() {
+                    @Override
+                    public void onSure(DiQu[] addresss) {
+                        ssqy.setText(String.format("%s-%s-%s", addresss[0].text, addresss[1].text, addresss[2].text));
+                        ssqy.setTag(addresss);
+                    }
+
+                    @Override
+                    public void onClear() {
+                        ssqy.setText("");
+                        ssqy.setTag(null);
+                    }
+                })
+                .show();
+    }
+
+    @Click(R.id.khdj)
+    void khdjOnClick() {
+        new SpinnerDialog(this, "请选择客户等级", khdjs, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                sheng.setTag(shengs[which]);
-                sheng.setText(shengs[which].toString());
-                setShis(shengs[which].children);
+                YesNo selected = khdjs[which];
+                khdj.setText(selected.toString());
+                khdj.setTag(selected);
             }
         }).show();
     }
 
-    @Click(R.id.shi)
-    void shiOnClick(View view) {
-        if (shis == null)
-            return;
-        new SpinnerDialog(this, "请选择地级市", shis, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                shi.setTag(shis[which]);
-                shi.setText(shis[which].toString());
-            }
-        }).show();
+    @Click(R.id.xgwj)
+    void xgwjOnClick(View view) {
+        RxPermissions rxPermissions = new RxPermissions(this);
+        rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE)
+                .subscribe(aBoolean -> {
+                    if (aBoolean) {
+                        startGetContent();
+                    } else {
+                        showToast("获取权限失败");
+                    }
+                }, Throwable::printStackTrace);
     }
-
 
     @Click(android.R.id.button1)
     void button1OnClick(View view) {
@@ -456,44 +456,33 @@ public class Office_addCustomActivity extends BaseUserActivity {
 
     private void doCommit() {
         LogUtil.d("+++++++++++doCommit+++");
-        final Custom custom = new Custom();
-        custom.Title = wtr.getText().toString();
-        custom.CaseUName = dsr.getText().toString();
-        custom.Mobile = sjhm.getText().toString();
-        custom.CustCols = ((CusTomCols) khnx.getTag()).ID;
-        custom.UNums = xgzj.getText().toString();
-        custom.Make = ajbz.getText().toString();
-        custom.YwRen = ywlxr.getText().toString();
-        custom.YwRenZhiWu = zw.getText().toString();
-        custom.FzRen = zyfzr.getText().toString();
-        custom.YingXiangLi = dqyxl.getText().toString();
-        custom.Phone = sjhm.getText().toString();
-        custom.Email = yx.getText().toString();
 
-        custom.ProvinceIdTxt = sheng.getText().toString();
-        custom.CityIdTxt = shi.getText().toString();
-//        custom.AreaIdTxt = qu.gettext().toString();
-        custom.Address = xxdz.getText().toString();
+        DiQu[] dqs = (DiQu[]) ssqy.getTag();
+        FormUploadFile file = (FormUploadFile) xgwj.getTag();
 
         AppRequest.Build build = new AppRequest.Build("api/Custom/Add")
-                .addParam("Title", custom.Title)              // 客户名称
-                .addParam("CaseUName", custom.CaseUName)       // 当事人名称
-                .addParam("Mobile", custom.Mobile)
-                .addParam("CustCols", custom.CustCols + "")          // 客户类型
-                .addParam("UNums", custom.UNums)       // 身份证号
-                .addParam("Make", custom.Make)        // 备注
-                .addParam("YwRen", custom.YwRen)
-                .addParam("YwRenZhiWu", custom.YwRenZhiWu)
-                .addParam("FzRen", custom.FzRen)
-                .addParam("YingXiangLi", custom.YingXiangLi)
-                .addParam("Phone", custom.Phone)       // 手机号码
-                .addParam("Email", custom.Email)
-                .addParam("ProvinceId", custom.ProvinceIdTxt)   // 省
-                .addParam("CityId", custom.CityIdTxt)    // 市
-                .addParam("AreaId", custom.AreaIdTxt)
-                .addParam("Adress", custom.Address)
-                .addParam("Mid", Mid);
+                .addParam("Title", wtr.getText().toString())              // 客户名称
+                .addParam("CaseUName", dsr.getText().toString())       // 当事人名称
+                .addParam("Mobile", sjhm.getText().toString())
+                .addParam("CustCols", ((CusTomCols) khnx.getTag()).ID + "")          // 客户类型
+                .addParam("UNums", xgzj.getText().toString())       // 身份证号
+                .addParam("Make", ajbz.getText().toString())        // 备注
+                .addParam("YwRen", ywlxr.getText().toString())
+                .addParam("YwRenZhiWu", zw.getText().toString())
+                .addParam("FzRen", zyfzr.getText().toString())
+                .addParam("YingXiangLi", dqyxl.getText().toString())
+                .addParam("Phone", gddh.getText().toString())       // 固定电话
+                .addParam("Email", yx.getText().toString())
+                .addParam("CustRanks", ((YesNo)khdj.getTag()).id + "")
+                .addParam("WeiXinNums", wxhm.getText().toString())
+                .addParam("QQNums", qqhm.getText().toString())
+                .addParam("ProvinceId", dqs[0].id + "")   // 省
+                .addParam("CityId", dqs[1].id + "")    // 市
+                .addParam("AreaId", dqs[2].id + "")
+                .addParam("Address", xxdz.getText().toString());
         if (customItem != null) build.addParam("Cid", customItem.ID + "");
+        if (file != null) build.addFile(file);
+
         AppRequest request = build.create();
         new HttpFormFuture.Builder(this)
                 .setData(request)
@@ -508,8 +497,7 @@ public class Office_addCustomActivity extends BaseUserActivity {
                         hideLoading();
                         AppResponse resp = (AppResponse) result.getAttach();
                         if (resp.flag) {
-                            String resultId = resp.RData;
-                            custom.ID = Integer.parseInt(resultId);
+                            Custom custom = resp.getFirstObject(Custom.class);
                             Intent data = new Intent();
                             data.putExtra("customItem", custom);
                             setResult(RESULT_OK, data);
@@ -540,6 +528,41 @@ public class Office_addCustomActivity extends BaseUserActivity {
         this.dialogTimes--;
         if (this.dialogTimes == 0) {
             super.hideLoading();
+        }
+    }
+
+    void startGetContent() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        try {
+            startActivityForResult( Intent.createChooser(intent, "选择上传文件"), SELECT_FILE_REQUEST_CODE);
+        } catch (android.content.ActivityNotFoundException ex) {
+            AppUtil.showToast(this, "Please install a File Manager.");
+        }
+    }
+
+    @OnActivityResult(SELECT_FILE_REQUEST_CODE)
+    void xgfjOnResult(int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            Uri uri = data.getData();
+            String path = UriUtil.getPath(this, uri);
+            String fileName = "";
+            FormUploadFile file = null;
+            if (TextUtils.isEmpty(path)) {
+                fileName = UriUtil.getFileName(this, uri);
+                byte[] content = UriUtil.getContent(this, uri);
+                if (fileName != null && content != null) {
+                    file = new FormUploadFile("file", fileName, content);
+                } else {
+                    LogUtil.e("文件读取失败");
+                }
+            } else {
+                fileName = FileUtil.getFileName(path);
+                file = new FormUploadFile("file", FileUtil.getFileName(path), path);
+            }
+            xgwj.setText(fileName);
+            xgwj.setTag(file);
         }
     }
 

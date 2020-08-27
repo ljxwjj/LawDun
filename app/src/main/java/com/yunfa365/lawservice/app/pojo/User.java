@@ -13,10 +13,12 @@ import com.yunfa365.lawservice.app.utils.StringUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2016/4/11.
  */
-public class User {
+public class User implements Serializable {
     public int ID;
     public int LawId;         // 律所ID
     public String Mobile;     //

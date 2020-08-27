@@ -33,6 +33,8 @@ import com.yunfa365.lawservice.app.pojo.Case;
 import com.yunfa365.lawservice.app.pojo.CaseCols;
 import com.yunfa365.lawservice.app.pojo.Custom;
 import com.yunfa365.lawservice.app.pojo.DiQu;
+import com.yunfa365.lawservice.app.pojo.User;
+import com.yunfa365.lawservice.app.pojo.YesNo;
 import com.yunfa365.lawservice.app.pojo.base.BaseBean;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
@@ -65,6 +67,7 @@ import java.util.List;
 @EActivity(R.layout.activity_office41_1)
 public class Office41_1Activity extends BaseUserActivity {
     private static final int WTR_REQUEST_CODE = 1;
+    private static final int ZYRY_REQUEST_CODE = 2;
     private static final BaseBean[] zfbzs = {new BaseBean(0, "不享受"), new BaseBean(1, "享受")};
     private static final BaseBean[] sfzps = {new BaseBean(0, "否"), new BaseBean(1, "是")};
     private static final BaseBean[] kpzts = {new BaseBean(1, "开票"), new BaseBean(0, "预收")};
@@ -247,6 +250,8 @@ public class Office41_1Activity extends BaseUserActivity {
         if (caseItem == null) {
             sffs.setText(AppCst.sffss[1].toString());
             sffs.setTag(AppCst.sffss[1]);
+            kpzt.setText(kpzts[0].toString());
+            kpzt.setTag(kpzts[0]);
             zfbz.setText(zfbzs[0].toString());
             zfbz.setTag(zfbzs[0]);
             sfzp.setText(sfzps[0].toString());
@@ -287,7 +292,6 @@ public class Office41_1Activity extends BaseUserActivity {
             sffs.setText(caseItem.PayCols);
             fxsfsm.setText(caseItem.FengXianMake);
             zfbz.setText(caseItem.IsBuTie);
-
         }
     }
 
@@ -423,6 +427,12 @@ public class Office41_1Activity extends BaseUserActivity {
         });
     }
 
+    @Click(R.id.zyry)
+    void zyryOnClick() {
+        Intent intent = new Intent(this, Office_searchLawyerActivity_.class);
+        startActivityForResult(intent, ZYRY_REQUEST_CODE);
+    }
+
     @Click(R.id.sarq)
     void sarqOnClick(View view) {
         String rq = sarq.getText().toString();
@@ -451,17 +461,6 @@ public class Office41_1Activity extends BaseUserActivity {
             public void onClick(DialogInterface dialog, int which) {
                 sffs.setText(AppCst.sffss[which].toString());
                 sffs.setTag(AppCst.sffss[which]);
-            }
-        }).show();
-    }
-
-    @Click(R.id.zfbz)
-    void zfbzOnClick(View view) {
-        new SpinnerDialog(this, "请选择", zfbzs, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                zfbz.setText(zfbzs[which].toString());
-                zfbz.setTag(zfbzs[which]);
             }
         }).show();
     }
@@ -523,6 +522,18 @@ public class Office41_1Activity extends BaseUserActivity {
         }).show();
     }
 
+    @Click(R.id.kpzt)
+    void kpztOnClick() {
+        new SpinnerDialog(this, "请选择", kpzts, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                BaseBean selected = kpzts[which];
+                kpzt.setText(selected.Title);
+                kpzt.setTag(selected);
+            }
+        }).show();
+    }
+
     @Click(R.id.sfzp)
     void sfzpOnClick(View view) {
         if (sfzps == null) return;
@@ -532,6 +543,17 @@ public class Office41_1Activity extends BaseUserActivity {
                 BaseBean selected = sfzps[which];
                 sfzp.setText(selected.Title);
                 sfzp.setTag(selected);
+            }
+        }).show();
+    }
+
+    @Click(R.id.zfbz)
+    void zfbzOnClick(View view) {
+        new SpinnerDialog(this, "请选择", zfbzs, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                zfbz.setText(zfbzs[which].toString());
+                zfbz.setTag(zfbzs[which]);
             }
         }).show();
     }
@@ -636,6 +658,18 @@ public class Office41_1Activity extends BaseUserActivity {
             Custom custom = (Custom) data.getSerializableExtra("customItem");
             wtr.setTag(custom);
             wtr.setText(custom.Title);
+        }
+    }
+
+    @OnActivityResult(ZYRY_REQUEST_CODE)
+    void selectLawyerResult(int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            List<User> lawyers = (List<User>) data.getSerializableExtra("lawyers");
+            String[] lawNames = new String[lawyers.size()];
+            for (int i = 0; i < lawNames.length; i++) {
+                lawNames[i] = lawyers.get(i).FullName;
+            }
+            zyry.setText(StringUtil.implode(lawNames, ","));
         }
     }
 }
