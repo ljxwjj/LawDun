@@ -1,10 +1,12 @@
 package com.yunfa365.lawservice.app.ui.activity.seal;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -18,6 +20,7 @@ import com.android.agnetty.core.AgnettyResult;
 import com.android.agnetty.utils.LogUtil;
 import com.baihe.bhsdk.util.BleHelper;
 import com.polidea.rxandroidble2.scan.ScanResult;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.yunfa365.lawservice.app.R;
 import com.yunfa365.lawservice.app.constant.AppCst;
 import com.yunfa365.lawservice.app.future.HttpFormFuture;
@@ -26,6 +29,7 @@ import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
 import com.yunfa365.lawservice.app.ui.activity.base.BaseUserActivity;
 import com.yunfa365.lawservice.app.ui.view.holder.EmptyViewHolder;
+import com.yunfa365.lawservice.app.utils.AppUtil;
 import com.yunfa365.lawservice.app.utils.ScreenUtil;
 
 import org.androidannotations.annotations.AfterViews;
@@ -39,6 +43,7 @@ import java.util.List;
 
 @EActivity(R.layout.activity_scan_seal)
 public class ScanSealActivity extends BaseUserActivity {
+    private final String TAG = "ScanSealActivity_TAG ";
     private final int REQUEST_CODE_ENABLE_BLE = 2;
     private final int REQUEST_CODE_SEAL_ADD = 1;
 
@@ -65,18 +70,11 @@ public class ScanSealActivity extends BaseUserActivity {
     private List<BhSeal> allData;
     private List<ScanResult> scanResultsList = new ArrayList<>();
     private List<String> scanMacList = new ArrayList<>();
-    private boolean bleCanCan = false;
     private boolean isBleOnScan = false;
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (bleCanCan) {
-            if (!isBleOnScan) startScan();
-        } else {
-            //获取定位权限
-            initCheck();
-        }
     }
 
     @Override
@@ -104,19 +102,31 @@ public class ScanSealActivity extends BaseUserActivity {
         listView.setAdapter(mAdapter);
 
         loadData();
+
+        //开启蓝牙
+        initCheck();
+
     }
 
     /**
      * 动态获取定位权限，Android6.0以上操作蓝牙需要动态获取系统定位权限
      */
     private void initCheck() {
-        /*if (Build.VERSION.SDK_INT >= 23) {
-            int checkCallPhonePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
-            if (checkCallPhonePermission != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
-                return;
-            }
-        }*/
+        if (Build.VERSION.SDK_INT >= 23) {
+            RxPermissions rxPermissions = new RxPermissions(this);
+            rxPermissions.request(Manifest.permission.ACCESS_COARSE_LOCATION)
+                    .subscribe(aBoolean -> {
+                        if (aBoolean) {
+                            openBle();
+                        }
+                    }, Throwable::printStackTrace);
+        } else {
+            openBle();
+        }
+
+    }
+
+    private void openBle() {
         //请求打开蓝牙
         Intent requestBluetoothOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
         //请求开启蓝牙
@@ -125,9 +135,9 @@ public class ScanSealActivity extends BaseUserActivity {
 
     @OnActivityResult(REQUEST_CODE_ENABLE_BLE)
     void enableBleOnResult(int result, Intent data) {
+        LogUtil.d(TAG + "REQUEST_CODE_ENABLE_BLE result:" + result);
         if (result == RESULT_OK) {
-            bleCanCan = true;
-            startScan();
+            if (!isBleOnScan) startScan();
         }
     }
 
@@ -141,14 +151,14 @@ public class ScanSealActivity extends BaseUserActivity {
     }
 
     private void startScan() {
-        LogUtil.d("startScan ---------------------------");
+        LogUtil.d(TAG + "startScan ---------------------------");
         isBleOnScan = true;
         //搜索印章设备，参数值传递你的app key和密钥
         BleHelper.getBleHelper(this).startScan(AppCst.BH_SDK_APP_KEY,AppCst.BH_SDK_SECRET).subscribe(
                 scanResult -> {
                     String name = scanResult.getBleDevice().getName();
                     String mac = scanResult.getBleDevice().getMacAddress();
-                    LogUtil.d("onScanResult =======================\n "+ "name:" + scanResult.getBleDevice().getName() + "   mac:" + scanResult.getBleDevice().getMacAddress());
+                    LogUtil.d(TAG + "onScanResult =======================\n "+ "name:" + scanResult.getBleDevice().getName() + "   mac:" + scanResult.getBleDevice().getMacAddress());
 //                        mList.add("name:" + scanResult.getBleDevice().getName() + "   mac:" + scanResult.getBleDevice().getMacAddress());
                     if (!scanMacList.contains(mac)) {
                         scanMacList.add(mac);
@@ -160,6 +170,7 @@ public class ScanSealActivity extends BaseUserActivity {
     }
 
     private void stopScan() {
+        LogUtil.d(TAG + "stopScan ---------------------------");
         isBleOnScan = false;
         BleHelper.getBleHelper(this).stopScan();
     }

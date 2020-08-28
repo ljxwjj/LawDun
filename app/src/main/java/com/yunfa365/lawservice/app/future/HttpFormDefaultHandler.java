@@ -74,7 +74,7 @@ public class HttpFormDefaultHandler extends HttpFormHandler {
             res.RData = json.optString("RData");
             res.response = response;
 
-            if ("-1".equals(res.Code)) {
+            if ("1003".equals(res.Code)) {
                 EventBus.getDefault().post(new LogoutEvent());
             }
             evt.getFuture().commitComplete(res);
