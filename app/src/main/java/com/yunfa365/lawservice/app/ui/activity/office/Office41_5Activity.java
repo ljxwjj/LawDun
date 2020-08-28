@@ -1,9 +1,15 @@
 package com.yunfa365.lawservice.app.ui.activity.office;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,17 +20,21 @@ import com.android.agnetty.core.AgnettyResult;
 import com.android.agnetty.utils.LogUtil;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
-import com.mobsandgeeks.saripaar.annotation.DecimalMin;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Order;
 import com.yunfa365.lawservice.app.R;
+import com.yunfa365.lawservice.app.constant.AppCst;
 import com.yunfa365.lawservice.app.future.HttpFormFuture;
 import com.yunfa365.lawservice.app.pojo.Case;
 import com.yunfa365.lawservice.app.pojo.CaseCols;
-import com.yunfa365.lawservice.app.pojo.CaseFile;
+import com.yunfa365.lawservice.app.pojo.Custom;
+import com.yunfa365.lawservice.app.pojo.User;
+import com.yunfa365.lawservice.app.pojo.base.BaseBean;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
 import com.yunfa365.lawservice.app.ui.activity.base.BaseUserActivity;
+import com.yunfa365.lawservice.app.ui.activity.custom.Office_searchCustomActivity_;
+import com.yunfa365.lawservice.app.ui.dialog.SpinnerDialog;
 import com.yunfa365.lawservice.app.utils.AppUtil;
 import com.yunfa365.lawservice.app.utils.DateUtil;
 import com.yunfa365.lawservice.app.utils.StringUtil;
@@ -33,6 +43,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.Calendar;
@@ -44,6 +55,12 @@ import java.util.List;
  */
 @EActivity(R.layout.activity_office41_5)
 public class Office41_5Activity extends BaseUserActivity {
+
+    private static final int WTR_REQUEST_CODE = 1;
+    private static final int ZYRY_REQUEST_CODE = 2;
+
+    @ViewById
+    View rootLayout;
 
     @ViewById(R.id.base_id_back)
     View mBackView;
@@ -58,56 +75,47 @@ public class Office41_5Activity extends BaseUserActivity {
     TextView mRightTxt;
 
     @ViewById
-    EditText fwlx;
+    TextView ajlx;
 
-    @NotEmpty(message = "服务时间不能为空")
+    @ViewById
+    TextView anh;
+
+    @NotEmpty(message = "执业人员不能为空")
     @Order(1)
     @ViewById
-    EditText fwsj;
+    EditText zyry;
 
-    @NotEmpty(message = "服务人次不能为空")
+    // sequence 字段内规则执行顺序
+    @NotEmpty(message="收案日期不能为空", sequence = 1)
     @Order(2)
     @ViewById
-    EditText fwrc;
+    EditText sarq;
 
     @NotEmpty(message = "代书事项不能为空")
     @Order(3)
     @ViewById
     EditText dssx;
 
-    @NotEmpty(message = "服务费用不能为空")
+    @NotEmpty(message = "服务人次不能为空")
     @Order(4)
-    @DecimalMin(value = 0)
     @ViewById
-    EditText fwfy;
+    EditText fwrc;
 
+    @NotEmpty(message="委托人不能为空")
+    @Order(5)
     @ViewById
     EditText wtr;
 
     @ViewById
-    EditText zsah;
+    EditText sffs;
 
-    @NotEmpty(message = "案源人不能为空")
-    @Order(17)
+    @NotEmpty(message="不能为空")
+    @Order(7)
     @ViewById
-    EditText ayr;
-
-    @ViewById
-    EditText disr;
-
-    @NotEmpty(message = "相关文件不能为空")
-    @Order(18)
-    @ViewById
-    TextView xgwj;
+    EditText dlf;
 
     @ViewById
     EditText bzsm;
-
-    @ViewById
-    TextView moreBtn;
-
-    @ViewById
-    View moreLayout;
 
     @Extra
     CaseCols selectedCaseCols;
@@ -115,7 +123,6 @@ public class Office41_5Activity extends BaseUserActivity {
     @Extra
     Case caseItem;
 
-    private String Mid;
     private Validator validator;
 
     @AfterViews
@@ -127,67 +134,54 @@ public class Office41_5Activity extends BaseUserActivity {
                 finish();
             }
         });
+
+        if (caseItem != null) {
+            selectedCaseCols = new CaseCols();
+            selectedCaseCols.Fid = caseItem.ColsV1;
+            selectedCaseCols.ID = caseItem.ColsV2;
+        }
         mTitleTxt.setText("案件登记");
-        //loadDataSsjd();
+        initRadStarLabel(rootLayout);
         initValidate();
-        loadRequiredFields();
         initDefaultValue();
+    }
+
+    private void initRadStarLabel(View view) {
+        if (view instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) view;
+            int count = group.getChildCount();
+            for (int i = 0; i < count; i++) {
+                view = group.getChildAt(i);
+                initRadStarLabel(view);
+            }
+        } else if (view instanceof TextView) {
+            TextView textView = (TextView) view;
+            String text = textView.getText().toString();
+            if (text.startsWith("*")) {
+                Object radSpan = new ForegroundColorSpan(Color.RED);
+                SpannableStringBuilder style = new SpannableStringBuilder(text);
+                style.setSpan(radSpan, 0, 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                textView.setText(style);
+            }
+        }
     }
 
     private void initDefaultValue() {
         if (caseItem == null) {
-            Mid = AppUtil.generateMid();
-            fwlx.setText(selectedCaseCols.Title);
+            ajlx.setText(selectedCaseCols.Title);
+
+            sffs.setText(AppCst.sffss[1].toString());
+            sffs.setTag(AppCst.sffss[1]);
         } else {
-            Mid = caseItem.ID + "";
-            loadCaseFiles();
-            fwsj.setText(caseItem.Begtime);
+            ajlx.setText(caseItem.ColsV2Txt);
             fwrc.setText(caseItem.Ssbd);
             dssx.setText(caseItem.AyMake);
-            fwfy.setText(caseItem.Price + "");
-            wtr.setText(caseItem.TWtr);
+            sffs.setText(caseItem.PayColsTxt);
+            sffs.setTag(new BaseBean(caseItem.PayCols, null));
+            dlf.setText(caseItem.Price + "");
+            wtr.setText(caseItem.CustIdTxt);
             bzsm.setText(caseItem.Des);
-            fwlx.setText(caseItem.AyTxt);
-            zsah.setText(caseItem.UserDefId);
-            ayr.setText(caseItem.AnYuanRen);
-            disr.setText(caseItem.DiSanRen);
         }
-    }
-
-    private void loadCaseFiles() {
-        AppRequest request = new AppRequest.Build("Case/FileStoreList")
-                .addParam("Mid", Mid)
-                .addParam("Cols", "5")
-                .create();
-        new HttpFormFuture.Builder(this)
-                .setData(request)
-                .setListener(new AgnettyFutureListener(){
-
-                    @Override
-                    public void onComplete(AgnettyResult result) {
-                        hideLoading();
-                        AppResponse resp = (AppResponse)result.getAttach();
-                        if (resp.flag) {
-                            List<CaseFile> files = resp.resultsToList(CaseFile.class);
-                            xgwj.setTag(files);
-                            displayXgwj(files);
-                        }
-                    }
-
-                    @Override
-                    public void onException(AgnettyResult result) {
-                        hideLoading();
-                    }
-                })
-                .execute();
-    }
-
-    private void displayXgwj(List<CaseFile> files) {
-        String[] names = new String[files.size()];
-        for (int i = 0; i < names.length; i++) {
-            names[i] = files.get(i).FileName;
-        }
-        xgwj.setText(StringUtil.implode(names, ","));
     }
 
     private void initValidate() {
@@ -216,9 +210,15 @@ public class Office41_5Activity extends BaseUserActivity {
         });
     }
 
-    @Click(R.id.fwsj)
+    @Click(R.id.zyry)
+    void zyryOnClick() {
+        Intent intent = new Intent(this, Office_searchLawyerActivity_.class);
+        startActivityForResult(intent, ZYRY_REQUEST_CODE);
+    }
+
+    @Click(R.id.sarq)
     void sarqOnClick(View view) {
-        String rq = fwsj.getText().toString();
+        String rq = sarq.getText().toString();
         final Calendar calendar = Calendar.getInstance();
         if (TextUtils.isEmpty(rq)) {
             calendar.setTime(new Date());
@@ -232,9 +232,26 @@ public class Office41_5Activity extends BaseUserActivity {
                 calendar.set(Calendar.MONTH, monthOfYear);
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 String rq = DateUtil.formatDate(calendar, "yyyy-MM-dd");
-                fwsj.setText(rq);
+                sarq.setText(rq);
             }
         },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
+    }
+
+    @Click(R.id.sffs)
+    void sffsOnClick(View view) {
+        new SpinnerDialog(this, "请选择收费方式", AppCst.sffss, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                sffs.setText(AppCst.sffss[which].toString());
+                sffs.setTag(AppCst.sffss[which]);
+            }
+        }).show();
+    }
+
+    @Click(R.id.wtr)
+    void wtrOnClick(View view) {
+        Intent intent = new Intent(this, Office_searchCustomActivity_.class);
+        startActivityForResult(intent, WTR_REQUEST_CODE);
     }
 
     @Click(android.R.id.button1)
@@ -242,26 +259,18 @@ public class Office41_5Activity extends BaseUserActivity {
         validator.validate();
     }
 
-    private void showMoreLayout() {
-        moreLayout.setVisibility(View.VISIBLE);
-        moreBtn.setText("收起");
-    }
-
     private void doCommit() {
-        AppRequest.Build build = new AppRequest.Build("Case/UpdateCaseZXWS")
-                .addParam("Cols", selectedCaseCols.Fid + "")
-                .addParam("Ay", selectedCaseCols.ID + "")
-                .addParam("BegTime", fwsj.getText().toString())     //服务时间
+        AppRequest.Build build = new AppRequest.Build("api/Case/Add_DS")
+                .addParam("CaseId", caseItem == null?"0":caseItem.ID + "")
+                .addParam("ColsV1", selectedCaseCols.Fid + "")
+                .addParam("ColsV2", selectedCaseCols.ID + "")
                 .addParam("Ssbd", fwrc.getText().toString())        //服务人次
                 .addParam("AyMake", dssx.getText().toString())      //咨询/代书事项
-                .addParam("Price", fwfy.getText().toString())       //服务费用
+                .addParam("Price", dlf.getText().toString())       //服务费用
                 .addParam("TWtr", wtr.getText().toString())        //委托人
-                .addParam("DiSanRen", disr.getText().toString())    //第三人
-                .addParam("UserDefId", zsah.getText().toString())   //专属案号
-                .addParam("AnYuanRen", ayr.getText().toString())    // 案源人
                 .addParam("Des", bzsm.getText().toString())         //备注说明
-                .addParam("Mid", Mid);
-        if (caseItem != null) build.addParam("CaseId", caseItem.ID + "");
+                ;
+
         AppRequest request = build.create();
         new HttpFormFuture.Builder(this)
                 .setData(request)
@@ -292,50 +301,23 @@ public class Office41_5Activity extends BaseUserActivity {
                 .execute();
     }
 
-    private void loadRequiredFields() {
-        AppRequest request = new AppRequest.Build("Case/FieldIsRequired")
-                .create();
-        new HttpFormFuture.Builder(this)
-                .setData(request)
-                .setListener(new AgnettyFutureListener(){
-
-                    @Override
-                    public void onComplete(AgnettyResult result) {
-                        hideLoading();
-                        AppResponse resp = (AppResponse)result.getAttach();
-                        if (resp.flag) {
-                            List<String> requiredFields = resp.resultsToList(String.class);
-                            if (!requiredFields.contains("AnYuanRen")) {
-                                validator.removeRules(ayr);
-                                ayr.setHint("请填写案源人(选填)");
-                            } else {
-                                showMoreLayout();
-                            }
-                            if (!requiredFields.contains("CaseFileUp")) {
-                                validator.removeRules(xgwj);
-                                xgwj.setHint("请选择相关文件(选填)");
-                            } else {
-                                showMoreLayout();
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onException(AgnettyResult result) {
-                        hideLoading();
-                    }
-                })
-                .execute();
+    @OnActivityResult(WTR_REQUEST_CODE)
+    void selectWtrResult(int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            Custom custom = (Custom) data.getSerializableExtra("customItem");
+            wtr.setText(custom.Title);
+        }
     }
 
-    @Click(R.id.moreBtn)
-    void moreBtnOnClick(TextView view) {
-        if (moreLayout.getVisibility() == View.GONE) {
-            moreLayout.setVisibility(View.VISIBLE);
-            view.setText("收起");
-        } else {
-            moreLayout.setVisibility(View.GONE);
-            view.setText("展开");
+    @OnActivityResult(ZYRY_REQUEST_CODE)
+    void selectLawyerResult(int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            List<User> lawyers = (List<User>) data.getSerializableExtra("lawyers");
+            String[] lawNames = new String[lawyers.size()];
+            for (int i = 0; i < lawNames.length; i++) {
+                lawNames[i] = lawyers.get(i).FullName;
+            }
+            zyry.setText(StringUtil.implode(lawNames, ","));
         }
     }
 

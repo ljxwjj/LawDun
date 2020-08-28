@@ -79,8 +79,6 @@
             android:screenOrientation="portrait"></activity>
         <activity android:name=".ui.activity.office.Office41_1Activity_"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".ui.activity.office.Office41_2Activity_"
-            android:screenOrientation="portrait"></activity>
         <activity android:name=".ui.activity.office.Office41_3Activity_"
             android:screenOrientation="portrait"></activity>
         <activity android:name=".ui.activity.office.Office41_4Activity_"

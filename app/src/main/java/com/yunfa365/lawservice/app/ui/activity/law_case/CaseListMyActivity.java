@@ -1,6 +1,7 @@
 package com.yunfa365.lawservice.app.ui.activity.law_case;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.Gravity;
@@ -19,12 +20,19 @@ import com.android.agnetty.core.AgnettyResult;
 import com.android.agnetty.utils.LogUtil;
 import com.nineoldandroids.view.ViewHelper;
 import com.yunfa365.lawservice.app.R;
+import com.yunfa365.lawservice.app.constant.AppCst;
 import com.yunfa365.lawservice.app.future.HttpFormFuture;
 import com.yunfa365.lawservice.app.pojo.Case;
+import com.yunfa365.lawservice.app.pojo.FieldItem;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
 import com.yunfa365.lawservice.app.ui.activity.base.DrawerActivity;
+import com.yunfa365.lawservice.app.ui.activity.office.Office41_1Activity_;
+import com.yunfa365.lawservice.app.ui.activity.office.Office41_3Activity_;
+import com.yunfa365.lawservice.app.ui.activity.office.Office41_4Activity_;
+import com.yunfa365.lawservice.app.ui.activity.office.Office41_5Activity_;
 import com.yunfa365.lawservice.app.ui.adapter.CommonListAdapter;
+import com.yunfa365.lawservice.app.ui.dialog.BottomMenuDialog;
 import com.yunfa365.lawservice.app.ui.view.holder.CommonFooterViewHolder;
 
 import org.androidannotations.annotations.AfterViews;
@@ -39,7 +47,6 @@ import static com.yunfa365.lawservice.app.constant.BaseCst.DETAIL_REQUEST_CODE;
 @EActivity(R.layout.common_search_list)
 public class CaseListMyActivity extends DrawerActivity {
     private String FUTURE_TAG = "custom_list";
-    private static final int ADD_REQUEST_CODE = 1;
 
     private int pageSize = 10;
 
@@ -306,7 +313,7 @@ public class CaseListMyActivity extends DrawerActivity {
             Object obj = v.getTag();
             if (obj != null) {
                 Case item = (Case) obj;
-                gotoDetail(item);
+                showActionMenu(item);
             }
         }
 
@@ -316,12 +323,71 @@ public class CaseListMyActivity extends DrawerActivity {
 
     }
 
+    private void showActionMenu(Case item) {
+        final FieldItem items[] = {new FieldItem(1, "详情"), new FieldItem(2, "修改")};
+        new BottomMenuDialog(this, items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0:
+                        gotoDetail(item);
+                        break;
+                    case 1:
+                        loadCaseDetail(item);
+                        break;
+                }
+            }
+        }).show();
+    }
+
     private void gotoDetail(Case item) {
         CaseDetailActivity_.intent(this).ID(item.ID).startForResult(DETAIL_REQUEST_CODE);
     }
 
-    @OnActivityResult(ADD_REQUEST_CODE)
-    void addOnResult(int resultCode, Intent data) {
+    private void gotoEdit(Case item) {
+        if ("ms".equalsIgnoreCase(item.TempCols)) {
+            Office41_1Activity_.intent(this).caseItem(item).startForResult(AppCst.EDIT_REQUEST_CODE);
+        } else if ("fs".equals(item.TempCols)) {
+            Office41_4Activity_.intent(this).caseItem(item).startForResult(AppCst.EDIT_REQUEST_CODE);
+        } else if ("gw".equals(item.TempCols)) {
+            Office41_3Activity_.intent(this).caseItem(item).startForResult(AppCst.EDIT_REQUEST_CODE);
+        } else if ("ds".equals(item.TempCols)) {
+            Office41_5Activity_.intent(this).caseItem(item).startForResult(AppCst.EDIT_REQUEST_CODE);
+        }
+    }
+
+    private void loadCaseDetail(Case item) {
+        showLoading();
+        AppRequest request = new AppRequest.Build("api/Case/Des_Get")
+                .addParam("CaseId", item.ID + "")
+                .addParam("GetType", "2") //获取类型，1：获取拼接好的键值对，2：获取数据库源数据；不传值默认为1
+                .create();
+        new HttpFormFuture.Builder(this)
+                .setData(request)
+                .setListener(new AgnettyFutureListener(){
+
+                    @Override
+                    public void onComplete(AgnettyResult result) {
+                        hideLoading();
+                        AppResponse resp = (AppResponse)result.getAttach();
+                        if (resp.flag) {
+                            Case item = resp.getFirstObject(Case.class);
+                            gotoEdit(item);
+                        } else {
+                            showToast(resp.Message);
+                        }
+                    }
+
+                    @Override
+                    public void onException(AgnettyResult result) {
+                        hideLoading();
+                    }
+                })
+                .execute();
+    }
+
+    @OnActivityResult(AppCst.EDIT_REQUEST_CODE)
+    void editOnResult(int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             reLoadData();
         }

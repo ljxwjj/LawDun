@@ -100,4 +100,9 @@ public class User implements Serializable {
     public final boolean isOnLoadUserRole() {
         return onLoadUserRole;
     }
+
+    @Override
+    public String toString() {
+        return FullName;
+    }
 }

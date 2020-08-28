@@ -90,7 +90,7 @@ public class UserBindSealActivity extends BaseUserActivity {
     }
 
     private void loadData() {
-        AppRequest request = new AppRequest.Build("api/WebSet/Zhang_list")
+        AppRequest request = new AppRequest.Build("api/Users/Users_List_Get")
                 .create();
         new HttpFormFuture.Builder(this)
                 .setData(request)

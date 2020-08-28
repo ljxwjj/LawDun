@@ -11,16 +11,25 @@ public class Case implements Serializable, CommonItem {
 
     // 主要信息  （在列表中显示）
     public int ID;
+    public int CaseYear;
+    public int CaseNums;
     public String CaseIdTxt;
+    public int LawId;
+    public int Uid;
     public int ColsV1;
+    public int ColsV2;
     public String AyMake;
     public int CustId;
     public int DCustId;
+
     public double CasePrice;
+    public double ZPrice;
+    public int IsFrom;    //是否指派
     public String BegTime;
     public int Stat;
     public int EndStat;
     public String ColsV1Txt;
+    public String ColsV2Txt;
     public String CustIdTxt;
     public String DCustIdTxt;
     public String DCustName;
@@ -28,7 +37,6 @@ public class Case implements Serializable, CommonItem {
     public String EndStatTxt;
     public String TempCols; // "MS"
 
-    public double BuTiePrice;
     public double Price;
     public String CaseID;
     public String Title;
@@ -36,38 +44,34 @@ public class Case implements Serializable, CommonItem {
 
     // 详细信息
 
-    public String Slfy;
-    public String Ssbd;
-    public String Province;
-    public String City;
-    public String Sscx;
-    public int Ssdw;
+    public String Slfy;    // 受理法院
+    public String Ssbd;    // 诉讼地位
+    public int ProvinceId, CityId,  AreaId;
+    public String Sscx; // 诉讼阶段
+    public String SscxTxt;
+    public int Ssdw;    // 诉讼地位
+    public String SsdwTxt;
     public String Begtime;
     public String Des;
+    public int PayCols;
+    public String FengXianMake;
+    public String IsBuTie;     // 就否政府补助
+    public double BuTiePrice;  // 补助金额
+    public int BillStat;       // 开票状态
     public String CaseTime1;
     public String CaseTime2;
-    public String PayCols;
-    public String FengXianMake;
-    public String IsBuTie;
-    public String TWtr;
-    public String AyTxt; // 案件分类
-    public String TSscx;
-    public String TDfdsr;
-    public String DfdsrDW;
-    public String TSsdw;
-    public String Slfy1;   // 公安
-    public String Slfy2;   // 检察院
-    public String Slfy3;   // 法院
-    public String Slfy4;   // 看守所
-
-    public String AjXz;         //案件性质
-    public String AjLy;         //案件来源
-    public String DLShenFen;    //代理律师身份
-    public int Lyct;            //0无冲突  1有冲突
-    public String UserDefId;    //专属案号
-    public String DiSanRen;     //第三人
-    public String TongAnFan;    //同案犯
-    public String AnYuanRen;    //案源人
+    public String CaseTime3;
+    public String CaseTime4;
+    public String UsersList; // 执业人员ID
+    public String UsersListTxt; // 执业人员
+    public String AddTime;
+    public int GdStat;       // ?
+    public double SPrice;    // ?
+    public double PPrice;    // ?
+    public String GdNums;    // ?
+    public int JinDuId;      // ?
+    public String ProvinceIdTxt, CityIdTxt, AreaIdTxt;
+    public String PayColsTxt;
 
     @Override
     public String getTitle() {

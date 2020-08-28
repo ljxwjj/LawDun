@@ -41,7 +41,7 @@
                     android:layout_width="wrap_content"
                     android:minWidth="84dp"
                     android:layout_height="wrap_content"
-                    android:text="案　　号："
+                    android:text="*案　　号："
                     android:textColor="@color/common_color_dark_gray"
                     android:textSize="@dimen/common_size_small" />
 
@@ -111,7 +111,7 @@
                     android:layout_width="wrap_content"
                     android:minWidth="84dp"
                     android:layout_height="wrap_content"
-                    android:text="收案日期："
+                    android:text="*收案日期："
                     android:textColor="@color/common_color_dark_gray"
                     android:textSize="@dimen/common_size_small" />
 
@@ -147,7 +147,7 @@
                     android:layout_width="wrap_content"
                     android:minWidth="84dp"
                     android:layout_height="wrap_content"
-                    android:text="案　　由："
+                    android:text="*案　　由："
                     android:textColor="@color/common_color_dark_gray"
                     android:textSize="@dimen/common_size_small" />
 
@@ -183,7 +183,7 @@
                     android:layout_width="wrap_content"
                     android:minWidth="84dp"
                     android:layout_height="wrap_content"
-                    android:text="委 托 人："
+                    android:text="*委 托 人："
                     android:textColor="@color/common_color_dark_gray"
                     android:textSize="@dimen/common_size_small" />
 
@@ -292,7 +292,7 @@
                     android:layout_width="wrap_content"
                     android:minWidth="84dp"
                     android:layout_height="wrap_content"
-                    android:text="收费方式："
+                    android:text="*收费方式："
                     android:textColor="@color/common_color_dark_gray"
                     android:textSize="@dimen/common_size_small" />
 
@@ -330,7 +330,7 @@
                     android:layout_width="wrap_content"
                     android:minWidth="84dp"
                     android:layout_height="wrap_content"
-                    android:text="代 理 费："
+                    android:text="*代 理 费："
                     android:textColor="@color/common_color_dark_gray"
                     android:textSize="@dimen/common_size_small" />
 
@@ -365,7 +365,7 @@
                     android:layout_width="wrap_content"
                     android:minWidth="84dp"
                     android:layout_height="wrap_content"
-                    android:text="*受理部门："
+                    android:text="受理部门："
                     android:textColor="@color/common_color_dark_gray"
                     android:textSize="@dimen/common_size_small" />
 
@@ -505,7 +505,7 @@
                         android:layout_width="wrap_content"
                         android:minWidth="84dp"
                         android:layout_height="wrap_content"
-                        android:text="*是否指派："
+                        android:text="是否指派："
                         android:textColor="@color/common_color_dark_gray"
                         android:textSize="@dimen/common_size_small" />
 

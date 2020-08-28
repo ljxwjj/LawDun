@@ -33,6 +33,7 @@ import com.yunfa365.lawservice.app.future.HttpFormFuture;
 import com.yunfa365.lawservice.app.pojo.Case;
 import com.yunfa365.lawservice.app.pojo.CaseCols;
 import com.yunfa365.lawservice.app.pojo.Custom;
+import com.yunfa365.lawservice.app.pojo.User;
 import com.yunfa365.lawservice.app.pojo.base.BaseBean;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
@@ -188,6 +189,11 @@ public class Office41_4Activity extends BaseUserActivity {
         });
         mTitleTxt.setText("案件登记");
 
+        if (caseItem != null) {
+            selectedCaseCols = new CaseCols();
+            selectedCaseCols.Fid = caseItem.ColsV1;
+            selectedCaseCols.ID = caseItem.ColsV2;
+        }
         initRadStarLabel(rootLayout);
         initAyAutoComplete();
         initValidate();
@@ -232,18 +238,16 @@ public class Office41_4Activity extends BaseUserActivity {
             sfzp.setTag(sfzps[0]);
         } else {
             anh.setText(caseItem.CaseID);
-
+            zyry.setText(caseItem.CaseID);
             sarq.setText(caseItem.Begtime);
             ay.setText(caseItem.AyMake);
-            wtr.setText(caseItem.TWtr);
-            Custom custom = new Custom();
-            custom.ID = caseItem.CustId;
-            wtr.setTag(custom);
-
-            dfdsr.setText(caseItem.TDfdsr);
+            wtr.setText(caseItem.CustIdTxt);
+            dfdsr.setText(caseItem.DCustIdTxt);
             ssbd.setText(caseItem.Ssbd);
+            sffs.setText(caseItem.PayColsTxt);
+            sffs.setTag(new BaseBean(caseItem.PayCols, null));
             dlf.setText(caseItem.Price + "");
-            sffs.setText(caseItem.PayCols);
+
             fxsfsm.setText(caseItem.FengXianMake);
             zfbz.setText(caseItem.IsBuTie);
             bzje.setText(caseItem.BuTiePrice + "");
@@ -411,13 +415,13 @@ public class Office41_4Activity extends BaseUserActivity {
     }
 
     private void doCommit() {
-        AppRequest.Build build = new AppRequest.Build("Case/UpdateCaseFSS")
+        AppRequest.Build build = new AppRequest.Build("api/Case/Add_FS")
                 .addParam("CaseId", caseItem == null?"0":caseItem.ID + "")
                 .addParam("ColsV1", selectedCaseCols.Fid + "")
                 .addParam("ColsV2", selectedCaseCols.ID + "")
                 .addParam("BegTime", sarq.getText().toString())         // 收案日期
                 .addParam("AyMake", ay.getText().toString())            // 案由
-                .addParam("Wtr", ((Custom)wtr.getTag()).ID + "")        // 委托人
+                .addParam("Wtr", wtr.getText().toString())              // 委托人
                 .addParam("TDfdsr", dfdsr.getText().toString())         // 对方当事人
                 .addParam("Ssbd", ssbd.getText().toString())            // 标的
                 .addParam("PayCols", sffs.getText().toString())         // 收费方式
@@ -478,8 +482,19 @@ public class Office41_4Activity extends BaseUserActivity {
     void selectWtrResult(int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             Custom custom = (Custom) data.getSerializableExtra("customItem");
-            wtr.setTag(custom);
             wtr.setText(custom.Title);
+        }
+    }
+
+    @OnActivityResult(ZYRY_REQUEST_CODE)
+    void selectLawyerResult(int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            List<User> lawyers = (List<User>) data.getSerializableExtra("lawyers");
+            String[] lawNames = new String[lawyers.size()];
+            for (int i = 0; i < lawNames.length; i++) {
+                lawNames[i] = lawyers.get(i).FullName;
+            }
+            zyry.setText(StringUtil.implode(lawNames, ","));
         }
     }
 

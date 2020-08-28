@@ -32,9 +32,7 @@ import com.yunfa365.lawservice.app.future.HttpFormFuture;
 import com.yunfa365.lawservice.app.pojo.Case;
 import com.yunfa365.lawservice.app.pojo.CaseCols;
 import com.yunfa365.lawservice.app.pojo.Custom;
-import com.yunfa365.lawservice.app.pojo.DiQu;
 import com.yunfa365.lawservice.app.pojo.User;
-import com.yunfa365.lawservice.app.pojo.YesNo;
 import com.yunfa365.lawservice.app.pojo.base.BaseBean;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
@@ -213,6 +211,11 @@ public class Office41_1Activity extends BaseUserActivity {
         });
         mTitleTxt.setText("案件登记");
 
+        if (caseItem != null) {
+            selectedCaseCols = new CaseCols();
+            selectedCaseCols.Fid = caseItem.ColsV1;
+            selectedCaseCols.ID = caseItem.ColsV2;
+        }
         initRadStarLabel(rootLayout);
         initAyAutoComplete();
         loadDataSsjd();
@@ -258,21 +261,19 @@ public class Office41_1Activity extends BaseUserActivity {
             sfzp.setTag(sfzps[0]);
         } else {
             anh.setText(caseItem.CaseID);
+            zyry.setText(caseItem.CaseID);
 
             ay.setText(caseItem.AyMake);
             sarq.setText(caseItem.Begtime);
-            dfdsr.setText(caseItem.TDfdsr);
-            wtr.setText(caseItem.TWtr);
-            Custom custom = new Custom();
-            custom.ID = caseItem.CustId;
-            wtr.setTag(custom);
+            dfdsr.setText(caseItem.DCustIdTxt);
+            wtr.setText(caseItem.CustIdTxt);
             slbm.setText(caseItem.Slfy);
             ssbd.setText(caseItem.Ssbd);
             dlf.setText(caseItem.Price + "");
-            ssdw.setText(caseItem.TSsdw);
+            ssdw.setText(caseItem.SsdwTxt);
             ssdw.setTag(new BaseBean(caseItem.Ssdw, null));
             ajbz.setText(caseItem.Des);
-            ssjd.setText(caseItem.TSscx);
+            ssjd.setText(caseItem.SscxTxt);
             String ssjdStr = caseItem.Sscx;
             String ssjdStrs[] = ssjdStr.split(",");
             BaseBean[] ssjdObjs = new BaseBean[ssjdStrs.length];
@@ -289,7 +290,8 @@ public class Office41_1Activity extends BaseUserActivity {
             }
             ssjd.setTag(ssjdObjs);
             bzje.setText(caseItem.BuTiePrice + "");
-            sffs.setText(caseItem.PayCols);
+            sffs.setText(caseItem.PayColsTxt);
+            sffs.setTag(new BaseBean(caseItem.PayCols, null));
             fxsfsm.setText(caseItem.FengXianMake);
             zfbz.setText(caseItem.IsBuTie);
         }
@@ -585,7 +587,7 @@ public class Office41_1Activity extends BaseUserActivity {
                 .addParam("BegTime", sarq.getText().toString())
                 .addParam("AyMake", ay.getText().toString())
                 .addParam("Ssbd", ssbd.getText().toString())
-                .addParam("CustName", ((Custom)wtr.getTag()).Title)
+                .addParam("CustName", wtr.getText().toString())
                 .addParam("DCustName", dfdsr.getText().toString())
                 .addParam("PayCols", ((BaseBean)sffs.getTag()).ID + "")
                 .addParam("FengXianMake", fxsfsm.getText().toString())
@@ -656,7 +658,6 @@ public class Office41_1Activity extends BaseUserActivity {
     void selectWtrResult(int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             Custom custom = (Custom) data.getSerializableExtra("customItem");
-            wtr.setTag(custom);
             wtr.setText(custom.Title);
         }
     }

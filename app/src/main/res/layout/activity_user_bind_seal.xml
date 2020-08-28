@@ -24,27 +24,41 @@
                 android:layout_width="0dp"
                 android:layout_height="44dp"
                 android:layout_marginTop="30dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:drawableRight="@mipmap/right_arrow"
+                android:gravity="center_vertical"
+                android:hint="选择人员"/>
 
             <TextView
                 android:id="@+id/seal"
                 android:layout_width="0dp"
                 android:layout_height="44dp"
                 android:layout_marginTop="15dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/user"/>
+                app:layout_constraintTop_toBottomOf="@id/user"
+                android:drawableRight="@mipmap/right_arrow"
+                android:gravity="center_vertical"
+                android:hint="选择印章"/>
 
             <Button
                 android:id="@+id/submitBtn"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="30dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/seal"
+                android:background="@drawable/common_round_blue_select_bg"
+                android:textColor="@color/common_color_white"
                 android:text="提交"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

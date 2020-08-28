@@ -169,11 +169,11 @@ public class Office41Activity extends BaseUserActivity {
             intent.putExtra("selectedCaseCols", selectedCaseCols);
             startActivityForResult(intent, REQUEST_CODE);
         } else if ("fs".equals(selectedCaseCols.TempCols)) {
-            Intent intent = new Intent(this, Office41_3Activity_.class);
+            Intent intent = new Intent(this, Office41_4Activity_.class);
             intent.putExtra("selectedCaseCols", selectedCaseCols);
             startActivityForResult(intent, REQUEST_CODE);
         } else if ("gw".equals(selectedCaseCols.TempCols)) {
-            Intent intent = new Intent(this, Office41_4Activity_.class);
+            Intent intent = new Intent(this, Office41_3Activity_.class);
             intent.putExtra("selectedCaseCols", selectedCaseCols);
             startActivityForResult(intent, REQUEST_CODE);
         } else if ("ds".equals(selectedCaseCols.TempCols)) {
