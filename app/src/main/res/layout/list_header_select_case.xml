@@ -1,0 +1,55 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:textSize="@dimen/common_size_normal"
+        android:textColor="@color/common_color_gray"
+        android:text="搜索案件"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginBottom="12dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@android:id/text1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/input_search"
+            android:hint="关键字"
+            android:textColorHint="@color/common_text_color_hint"
+            android:textSize="@dimen/common_size_normal"
+            android:textColor="@color/common_text_color"
+            android:imeOptions="actionSearch"
+            android:singleLine="true"/>
+
+        <TextView
+            android:id="@android:id/button1"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:background="@drawable/common_round_blue_select_bg"
+            android:textColor="@color/common_color_white"
+            android:textSize="@dimen/common_size_small"
+            android:gravity="center"
+            android:text="搜索"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#A0A0A0"/>
+</LinearLayout>

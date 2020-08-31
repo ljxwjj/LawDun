@@ -38,6 +38,7 @@ import com.yunfa365.lawservice.app.ui.activity.law_case.CaseListAllActivity_;
 import com.yunfa365.lawservice.app.ui.activity.law_case.CaseListMyActivity_;
 import com.yunfa365.lawservice.app.ui.activity.office.ChongTuActivity_;
 import com.yunfa365.lawservice.app.ui.activity.office.Office41Activity_;
+import com.yunfa365.lawservice.app.ui.activity.official.OfficialAddActivity_;
 import com.yunfa365.lawservice.app.ui.activity.official.OfficialListAllActivity_;
 import com.yunfa365.lawservice.app.ui.activity.official.OfficialListMyActivity_;
 import com.yunfa365.lawservice.app.ui.activity.seal.ScanSealActivity_;
@@ -267,6 +268,9 @@ class FragmentPage3 extends BaseFragment {
                 break;
             case 6:
                 DfCustomListActivity_.intent(this).start();
+                break;
+            case 7:
+                OfficialAddActivity_.intent(this).start();
                 break;
             case 8:
                 OfficialListMyActivity_.intent(this).start();

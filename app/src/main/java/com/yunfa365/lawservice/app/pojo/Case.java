@@ -88,4 +88,9 @@ public class Case implements Serializable, CommonItem {
     public String getStatus() {
         return StatTxt;
     }
+
+    public String getCaseInfo() {
+        String desc = "案号：%s\n代理费：%.0f\n案由：%s\n委托人：%s\n对方当事人：%s\n收案日期：%s";
+        return String.format(desc,CaseIdTxt, CasePrice, AyMake, CustIdTxt, DCustIdTxt, BegTime);
+    }
 }

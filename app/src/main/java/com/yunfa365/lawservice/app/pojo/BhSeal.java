@@ -8,4 +8,9 @@ public class BhSeal implements Serializable {
     public String ZTitle;
     public String ZMac;
     public String Addtime;
+
+    @Override
+    public String toString() {
+        return ZTitle;
+    }
 }

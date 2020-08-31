@@ -125,9 +125,13 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.law_case.CaseDetailActivity_"
             android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.law_case.SelectCaseActivity_"
+            android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.official.OfficialListAllActivity_"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.official.OfficialListMyActivity_"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.official.OfficialAddActivity_"
             android:screenOrientation="portrait"/>
 
 

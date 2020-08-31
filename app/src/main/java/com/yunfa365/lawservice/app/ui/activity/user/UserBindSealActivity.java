@@ -89,6 +89,21 @@ public class UserBindSealActivity extends BaseUserActivity {
         }).show();
     }
 
+    @Click(R.id.submitBtn)
+    void submitBtnOnClick() {
+        User userItem = (User) user.getTag();
+        BhSeal sealItem = (BhSeal) seal.getTag();
+
+        if (userItem == null) {
+            showToast("请选择印章");
+        }
+        if (sealItem == null) {
+            showToast("请选择人员");
+            return;
+        }
+        doSubmit(userItem, sealItem);
+    }
+
     private void loadData() {
         AppRequest request = new AppRequest.Build("api/Users/Users_List_Get")
                 .create();
@@ -135,6 +150,40 @@ public class UserBindSealActivity extends BaseUserActivity {
                         AppResponse resp = (AppResponse)result.getAttach();
                         if (resp.flag) {
                             allSeals = resp.resultsToArray(BhSeal.class);
+                        } else {
+                            showToast(resp.Message);
+                        }
+                    }
+
+                    @Override
+                    public void onException(AgnettyResult result) {
+                        hideLoading();
+                        result.getException().printStackTrace();
+                    }
+                })
+                .execute();
+    }
+
+    private void doSubmit(User userItem, BhSeal sealItem) {
+        AppRequest request = new AppRequest.Build("api/WebSet/Zhang_bind_Add")
+                .addParam("Uid", userItem.ID + "")
+                .addParam("Zid", sealItem.ID + "")
+                .create();
+        new HttpFormFuture.Builder(this)
+                .setData(request)
+                .setListener(new AgnettyFutureListener(){
+                    @Override
+                    public void onStart(AgnettyResult result) {
+                        showLoading();
+                    }
+
+                    @Override
+                    public void onComplete(AgnettyResult result) {
+                        hideLoading();
+                        AppResponse resp = (AppResponse)result.getAttach();
+                        if (resp.flag) {
+                            showToast(resp.Message);
+                            finish();
                         } else {
                             showToast(resp.Message);
                         }
