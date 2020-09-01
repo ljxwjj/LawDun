@@ -20,6 +20,7 @@
     <string name="relogin">重新登录</string>
     <string name="relogin_message">您的帐号已在其它设备上登录。如非本人操作，则密码可能已泄露，建议修改密码，如有疑问请联系客服。</string>
     <string name="network_exception_message">网络异常，请重试</string>
+    <string name="empty_no_data">没有数据，点击重试</string>
 
     <string name="header_hint_refresh_normal">下拉刷新</string>
     <string name="header_hint_refresh_ready">释放立即刷新</string>

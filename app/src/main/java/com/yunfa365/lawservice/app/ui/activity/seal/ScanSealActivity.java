@@ -46,6 +46,7 @@ public class ScanSealActivity extends BaseUserActivity {
     private final String TAG = "ScanSealActivity_TAG ";
     private final int REQUEST_CODE_ENABLE_BLE = 2;
     private final int REQUEST_CODE_SEAL_ADD = 1;
+    private final int REQUEST_CODE_SEAL_CONNECT = 3;
 
     @ViewById(R.id.base_id_back)
     View mBackView;
@@ -62,12 +63,15 @@ public class ScanSealActivity extends BaseUserActivity {
     @ViewById
     RecyclerView listView;
     MyAdapter mAdapter;
-    List<ScanResult> mData = new ArrayList<>();
+    List<BhSeal> mData = new ArrayList<>();
 
     @Extra
     int action;  // 1: 添加印章  2: 启动印章
 
-    private List<BhSeal> allData;
+//    @Extra
+
+
+    private List<BhSeal> zhangList, zhangMyList;
     private List<ScanResult> scanResultsList = new ArrayList<>();
     private List<String> scanMacList = new ArrayList<>();
     private boolean isBleOnScan = false;
@@ -92,7 +96,7 @@ public class ScanSealActivity extends BaseUserActivity {
                 finish();
             }
         });
-        mTitleTxt.setText("添加印章");
+        mTitleTxt.setText("附近设备");
 
         mData = new ArrayList();
         mAdapter = new MyAdapter();
@@ -101,7 +105,11 @@ public class ScanSealActivity extends BaseUserActivity {
         listView.setLayoutManager(layoutManager);
         listView.setAdapter(mAdapter);
 
-        loadData();
+        if (action == 1) {
+            loadZhangList();
+        } else {
+            loadZhangBindList();
+        }
 
         //开启蓝牙
         initCheck();
@@ -145,7 +153,7 @@ public class ScanSealActivity extends BaseUserActivity {
     void sealAddOnResult(int result, Intent data) {
         if (result == RESULT_OK) {
             BhSeal item = (BhSeal) data.getSerializableExtra("item");
-            allData.add(item);
+            zhangList.add(item);
             filterData();
         }
     }
@@ -175,7 +183,7 @@ public class ScanSealActivity extends BaseUserActivity {
         BleHelper.getBleHelper(this).stopScan();
     }
 
-    private void loadData() {
+    private void loadZhangList() {
         AppRequest request = new AppRequest.Build("api/WebSet/Zhang_list")
                 .create();
         new HttpFormFuture.Builder(this)
@@ -193,9 +201,46 @@ public class ScanSealActivity extends BaseUserActivity {
                         if (resp.flag) {
                             List<BhSeal> list = resp.resultsToList(BhSeal.class);
                             if (list == null) {
-                                allData = new ArrayList<>();
+                                zhangList = new ArrayList<>();
                             } else {
-                                allData = list;
+                                zhangList = list;
+                            }
+                            filterData();
+                        } else {
+                            showToast(resp.Message);
+                        }
+                    }
+
+                    @Override
+                    public void onException(AgnettyResult result) {
+                        hideLoading();
+                        result.getException().printStackTrace();
+                    }
+                })
+                .execute();
+    }
+
+    private void loadZhangBindList() {
+        AppRequest request = new AppRequest.Build("api/WebSet/Zhang_bind_mylist")
+                .create();
+        new HttpFormFuture.Builder(this)
+                .setData(request)
+                .setListener(new AgnettyFutureListener(){
+                    @Override
+                    public void onStart(AgnettyResult result) {
+                        showLoading();
+                    }
+
+                    @Override
+                    public void onComplete(AgnettyResult result) {
+                        hideLoading();
+                        AppResponse resp = (AppResponse)result.getAttach();
+                        if (resp.flag) {
+                            List<BhSeal> list = resp.resultsToList(BhSeal.class);
+                            if (list == null) {
+                                zhangMyList = new ArrayList<>();
+                            } else {
+                                zhangMyList = list;
                             }
                             filterData();
                         } else {
@@ -214,26 +259,28 @@ public class ScanSealActivity extends BaseUserActivity {
 
     private void filterData() {
         mData.clear();
-        if (allData == null) {
-
-        } else if (action == 1) {
+        if (action == 1) {
+            if (zhangList == null) return;
             for (ScanResult item : scanResultsList) {
                 String itemMac = item.getBleDevice().getMacAddress();
                 boolean addItem = true;
-                for (BhSeal seal : allData) {
+                for (BhSeal seal : zhangList) {
                     if (seal.ZMac.equals(itemMac)) {
                         addItem = false;
                         break;
                     }
                 }
-                if (addItem) mData.add(item);
+                if (addItem) mData.add(new BhSeal(item));
             }
         } else if (action == 2){
-            if (allData == null || allData.isEmpty() || scanResultsList.isEmpty()) {
-
-            } else {
-                for (BhSeal item : allData) {
-
+            if (zhangMyList == null) return;
+            for (ScanResult item : scanResultsList) {
+                String itemMac = item.getBleDevice().getMacAddress();
+                for (BhSeal seal : zhangMyList) {
+                    if (seal.ZMac.equals(itemMac)) {
+                        mData.add(seal);
+                        break;
+                    }
                 }
             }
         }
@@ -298,12 +345,16 @@ public class ScanSealActivity extends BaseUserActivity {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             if (holder instanceof ContentViewHolder) {
-                ScanResult item = getItem(position);
-                String name = item.getBleDevice().getName();
-                String mac = item.getBleDevice().getMacAddress();
+                BhSeal item = getItem(position);
                 ContentViewHolder itemViewHolder = (ContentViewHolder) holder;
-                itemViewHolder.text.setText(String.format("%s->%s", name, mac));
-                itemViewHolder.itemMac = mac;
+                if (item.scanResult != null) {
+                    String name = item.scanResult.getBleDevice().getName();
+                    String mac = item.scanResult.getBleDevice().getMacAddress();
+                    itemViewHolder.text.setText(String.format("%s->%s", name, mac));
+                } else {
+                    itemViewHolder.text.setText(item.ZTitle);
+                }
+                itemViewHolder.item = item;
             }
         }
 
@@ -312,7 +363,7 @@ public class ScanSealActivity extends BaseUserActivity {
             return mHeaderCount + getContentItemCount() + getFooterCount();
         }
 
-        private ScanResult getItem(int position) {
+        private BhSeal getItem(int position) {
             return mData.get(position - mHeaderCount);
         }
 
@@ -329,7 +380,7 @@ public class ScanSealActivity extends BaseUserActivity {
     }
 
     class ContentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        String itemMac;
+        BhSeal item;
         TextView text;
 
         public ContentViewHolder(View itemView) {
@@ -342,8 +393,25 @@ public class ScanSealActivity extends BaseUserActivity {
 
         @Override
         public void onClick(View v) {
-            SealAddActivity_.intent(ScanSealActivity.this).mac(itemMac)
-                    .startForResult(REQUEST_CODE_SEAL_ADD);
+            if (action == 1) {
+                SealAddActivity_.intent(ScanSealActivity.this).mac(item.ZMac)
+                        .startForResult(REQUEST_CODE_SEAL_ADD);
+            } else if (action == 2) {
+                BleHelper.getBleHelper(ScanSealActivity.this).stopScan();
+                BleHelper.getBleHelper(ScanSealActivity.this).connect(item.ZMac, AppCst.BH_SDK_APP_KEY).subscribe(tag -> {
+                    if (tag) {
+                        Intent data = new Intent();
+                        data.putExtra("sealItem", item);
+                        setResult(RESULT_OK, data);
+                        finish();
+//                        SealConnectActivity_.intent(ScanSealActivity.this).start();
+                    } else {
+                        showToast("您没有权限使用此设备！");
+                        BleHelper.getBleHelper(ScanSealActivity.this).disconnectBle();
+                    }
+                });
+
+            }
         }
     }
 

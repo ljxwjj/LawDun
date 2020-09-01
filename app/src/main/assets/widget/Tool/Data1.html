@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>日期推算计算</title>
+    <link href="../style/css.css" rel="stylesheet" />
+    <script src="../script/jquery-1.6.1.min.js"></script>
+    <script src="../script/WebSiteJs.js"></script>
+    <script src="../script/DateExchange.js"></script>
+    <script src="../script/datajson.js"></script>
+</head>
+<body>
+    <div class="all">
+        <form style="text-align: center;">
+            <ul class="ul1">
+                <li>
+                    <label>计算方式：</label>
+                    <span>
+                        <select id="t4" name="t4" class="select" onchange="GetHide()">
+                            <option value="0">常规换算</option>
+                            <option value="1">工作日换算</option>
+                        </select>
+                    </span></li>
+                <li>
+                    <label>起始日期：</label>
+                    <span>
+                        <input id='BegTime' type="date" class="text" title="date|起始日期" /></span>
+                </li>
+                <li id="mouthDIV">
+                    <label>月数：</label>
+                    <span>
+                        <input id='mouth' type="text" class="text" placeholder="月数" title="price|月数" /></span>
+                </li>
+                <li>
+                    <label>天数：</label>
+                    <span>
+                        <input id='days' type="text" class="text" placeholder="天数" title="price|天数" /></span>
+                </li>
+
+            </ul>
+            <div class="d_but">
+                <input type="button" class="btn" value="确 定" onclick="setJS()" />
+            </div>
+            <br />
+        </form>
+        <div class="list" id="table" style="display: none">
+            <ul>
+                <li><span style="color: red">*计算结果仅供参考</span></li>
+                <li><span>截止日期(天)：</span><label id="data2"></label></li>
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function GetHide() {
+            var v = $("#t4").val();
+            if (v === "1") {
+                $("#mouth").val("0");
+                $("#mouthDIV").hide();
+            } else {
+                $("#mouthDIV").show();
+            }
+        }
+
+        function setJS() {
+
+            if (PostCheck()) {
+                var v4 = $("#t4").val() == null ? "" : $("#t4").val();
+                var d1 = $("#BegTime").val();
+                var days = $("#days").val();
+                var mouth = $("#mouth").val();
+                var jsonobj = eval(datajsons);
+                d1 = d1.replace(/\-/g, "/");
+                var value = setData2(d1, mouth, days, v4, jsonobj);
+                if (value !== "" && value !== 0) {
+                    $("#table").show();
+                    $("#data2").html(value);
+                }
+            };
+        }
+    </script>
+</body>
+</html>

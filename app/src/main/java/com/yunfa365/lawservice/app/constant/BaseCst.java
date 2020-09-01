@@ -13,6 +13,8 @@ public class BaseCst {
 	// 操作成功
 	public static final int HTTP_CODE_SUCCESS = 0;
 
+	public static final int PAGE_SIZE = 10;
+
 	public static BaseBean[] sffss = {new BaseBean(801, "免费")
 			, new BaseBean(802, "计件收费")
 			, new BaseBean(803, "计时收费")

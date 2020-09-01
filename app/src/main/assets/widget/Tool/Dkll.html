@@ -1,0 +1,60 @@
+﻿<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="renderer" content="webkit" />
+    <title>贷款利息计算</title>
+    <link href="../style/css.css" rel="stylesheet" />
+    <script src="../script/jquery-1.6.1.min.js"></script>
+    <script src="../script/WebSiteJs.js"></script>
+    <script src="../script/dkll.js"></script>
+</head>
+<body>
+    <div class="all">
+        <form style="text-align: center;">
+            <ul class="ul1">
+                <li>
+                    <label>贷款金额(元)：</label>
+                    <span>
+                        <input id='prices' type="text" class="text" placeholder="请输入贷款金额" title="price|贷款金额" /></span>
+                </li>
+                <li>
+                    <label>开始时间：</label>
+                    <span>
+                        <input id="d1" type="date" class="text" title="date|开始时间" /></span>
+                </li>
+                <li>
+                    <label>结束时间：</label>
+                    <span>
+                        <input id="d2" type="date" class="text"  title="date|结束时间" /></span>
+                </li>
+                <li id="cols2">
+                    <label>利率项目：</label>
+                    <span>
+                        <select id="type" name="type" class="select">
+                            <option value="A">六个月内(含六个月)</option>
+                            <option value="B">六个月至一年(含一年)</option>
+                            <option value="C">一年至三年(含三年)</option>
+                            <option value="D">三年至五年(含五年)</option>
+                            <option value="E">五年以上</option>
+
+                        </select>
+                    </span>
+                </li>
+
+            </ul>
+            <div class="d_but">
+                <input type="button" class="btn" value="确 定" onclick="setMoney()" />
+            </div>
+            <br />
+        </form>
+        <div class="list" id="table" style="display: none">
+            <ul style="border-bottom: none">
+                <li><span style="color: red">*计算结果仅供参考</span></li>
+                <li style="height: auto;border-bottom: none">
+                    <div id="Price"></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

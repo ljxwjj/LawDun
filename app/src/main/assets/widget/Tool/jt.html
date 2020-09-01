@@ -1,0 +1,170 @@
+﻿<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="renderer" content="webkit" />
+
+    <title>交通赔偿计算</title>
+    <link href="../style/css.css" rel="stylesheet" />
+    <script src="../script/jquery-1.6.1.min.js"></script>
+    <script src="../script/WebSiteJs.js"></script>
+    <script src="../script/jt.js"></script>
+</head>
+<body>
+    <div class="all" id="main">
+        <form style="text-align: center;">
+            <ul class="ul1">
+                  <li>
+                    <label>所在地区：</label>
+                    <span>
+                        <select id="t3" name="t3" class="select">
+                        </select>
+                    </span>
+                </li>
+                <li>
+                    <label>伤残等级：</label>
+                    <span>
+                        <select id="t1" name="type" class="select">
+                            <option value="0">死亡</option>
+                            <option value="1">一级</option>
+                            <option value="0.9">二级</option>
+                            <option value="0.8">三级</option>
+                            <option value="0.7">四级</option>
+                            <option value="0.6">五级</option>
+                            <option value="0.5">六级</option>
+                            <option value="0.4">七级</option>
+                            <option value="0.3">八级</option>
+                            <option value="0.2">九级</option>
+                            <option value="0.1">十级</option>
+                        </select>
+                    </span>
+                </li>
+                <li>
+                    <label>选择户口：</label>
+                    <span>
+                        <select id="t2" name="type" class="select">
+                            <option value="0">城镇</option>
+                            <option value="1">农村</option>
+                        </select>
+                    </span>
+                </li>
+                <li>
+                    <label>年龄：</label>
+                    <span>
+                        <input maxlength="3" id='age' type="text" class="text" placeholder="年龄" title="int|年龄" /></span>
+                </li>
+
+            </ul>
+            <div class="d_but">
+                <input type="button" class="btn" value="确定" onClick="setJS()" />
+            </div>
+            <br />
+        </form>
+        <div class="quan" id="table" style="display: none">
+            <ul>
+                <li><span style="color: red"></span></li>
+            </ul>
+
+            <div class="all1">
+                <div class="con" style="color: red; margin-bottom: 20px">*计算结果仅供参考</div>
+            </div>
+
+            <div class="all1">
+
+                <div class="cont cent"><span style="color: red" id="pzjPrices"></span></div>
+                <div class="cont cent" style="display: none" id="szfLi" >丧葬费：<span style="color: red"  id="szf"></span> 元</div>
+
+            </div>
+
+            <div class="cont jt">
+                <ul id="bzjDiv">
+                    <li>误工费<span>
+                        <input type="button" class="btn2" value="计算" onClick="setHide(0)" /></span>
+                        <span id="wgfSpan" style="color: red"></span>
+
+                    </li>
+                    <li style="height: auto; min-height: 40px">被抚养人生活费<span>
+                        <input type="button" class="btn2" value="计算" onClick="setHide2(0)" />
+                    </span><br /><br />
+                        <div style="margin-top: 10px; color: red" id="fyfSpan"> 
+                        </div>
+                    </li>
+                   
+                    <li>交通费<span  id="jtf"></span></li>
+                    <li>医疗费<span  id="ylf"></span></li>
+                    <li>护理费<span id="hlf">当地劳务报酬标准*护理天数</span></li>
+                    <li>鉴定费<span id="jdf"></span></li>
+                    <li>营养费<span id="yyf"></span></li>
+                    <li>住宿费<span id="zsf"></span></li>
+                    <li>住院伙食补助费<span  id="hsf"></span></li>
+                    <li>精神损害抚慰金<span id="jsfwj">法院根据实际情况判决</span></li>
+                    <li>其他费用<span>按需据实</span></li>
+                    <li   id="bzDiv"></li>
+
+                </ul>
+            </div>
+            
+        </div>
+
+    </div>
+
+    <div id="topDiv" style="display: none">
+        <form style="text-align: center;">
+            <ul class="ul1">
+                <li>
+                    <label>月收入：</label>
+                    <span>
+                        <input id='wgMoney' value="1" type="text" class="text" placeholder="月收入" title="int|月收入" /></span>
+                </li>
+                <li>
+                    <label>月数：</label>
+                    <span>
+                        <input id='wgDay' value="1" type="text" class="text" placeholder="月数" title="int|月数" /></span>
+                </li>
+            </ul>
+            <div class="d_but">
+                <input type="button" class="btn_left" value="确 定" onClick="setDays()" />
+                <input type="button" class="btn_qx" value="取 消" onClick="setHide(1)" />
+
+            </div>
+            <div style="width: 10px; height: 40px;"></div>
+            <br />
+        </form>
+    </div>
+
+    <div id="topDiv2" style="display: none">
+        <form style="text-align: center;">
+            <ul class="ul1" id="ul1">
+                <li>
+                    <label>被抚养人年龄：</label>
+                    <input maxlength="3" name="fyAge" type="text" class="text2" placeholder="被抚养人年龄" value="1" />
+                    <input type="button" class="btn_x" value="-" onClick="setUL(1,this)" style="float: right; width: 55px;" />
+                </li>
+                <li>
+                    <label>承担义务人数：</label>
+                    <span>
+                        <input name="fyNum" type="text" class="text" placeholder="承担义务人数" value="1"  />
+                    </span>
+
+                </li>
+
+            </ul>
+
+            <div class="all1">
+                <div class="cont "></div>
+            </div>
+
+            <div class="d_but" id="pubs">
+                <input type="button" class="btn" value="+" onClick="setUL(0,null)" style="float: right; width: 55px;" />
+            </div>
+            <div class="d_but" style="margin-top: 100px">
+                <input type="button" class="btn_left" value="确定" onClick="setFyMoney()" />
+                <input type="button" class="btn_qx" value="取消" onClick="setHide2(1)" />
+
+            </div>
+            
+            <div style="width: 10px; height: 40px;"></div>
+            <br />
+        </form>
+    </div>
+</body>
+</html>

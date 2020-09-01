@@ -2,7 +2,9 @@ package com.yunfa365.lawservice.app.pojo;
 
 import com.yunfa365.lawservice.app.pojo.base.CommonItem;
 
-public class OfficialRecord implements CommonItem {
+import java.io.Serializable;
+
+public class OfficialRecord implements CommonItem, Serializable {
 
     public int ID;
     public int LawId;

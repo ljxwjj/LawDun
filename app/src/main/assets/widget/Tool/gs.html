@@ -1,0 +1,90 @@
+﻿<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="renderer" content="webkit" />
+
+    <title>工伤赔偿计算</title>
+    <link href="../style/css.css" rel="stylesheet" />
+    <script src="../script/jquery-1.6.1.min.js"></script>
+    <script src="../script/WebSiteJs.js"></script>
+    <script src="../script/gs.js"></script>
+</head>
+<body>
+    <div class="all">
+        <form style="text-align: center;">
+            <ul class="ul1">
+                <li>
+                    <label>所在地区：</label>
+                    <span>
+                        <select id="t2" name="t2" class="select">
+                        </select>
+                    </span>
+                </li>
+                <li>
+                    <label>伤残等级：</label>
+                    <span>
+                        <select id="t1" name="type" class="select">
+                            <option value="0">工亡</option>
+                            <option value="1">一级</option>
+                            <option value="2">二级</option>
+                            <option value="3">三级</option>
+                            <option value="4">四级</option>
+                            <option value="5">五级</option>
+                            <option value="6">六级</option>
+                            <option value="7">七级</option>
+                            <option value="8">八级</option>
+                            <option value="9">九级</option>
+                            <option value="10">十级</option>
+                        </select>
+                    </span>
+                </li>
+                <li>
+                    <label>月工资(元)：</label>
+                    <span>
+                        <input maxlength="14" id='prices' type="text" class="text" placeholder="月工资" title="int|月工资" /></span>
+                </li>
+
+            </ul>
+            <div class="d_but">
+                <input type="button" class="btn" value="确 定" onclick="setJS()" />
+            </div>
+            <br />
+        </form>
+        <div class="quan" id="table" style="display: none">
+            <ul>
+                <li><span style="color: red"></span></li>
+            </ul>
+           
+            <div class="all1">
+                <div class="cont cent">合计：<span style="color: red" id="pzjPrices"></span></div>
+            </div>
+            <div class="all1 bzj">
+                <div class="bt" id="bzj">补助金</div>
+            </div>
+            <div class="cont bzj">
+                <ul id="bzjDiv">
+                </ul>
+            </div>
+            <div class="all1 scjt">
+                <div class="bt"  id="scjt">伤残津贴</div>
+            </div>
+            <div class="cont scjt">
+                <ul id="scjtDiv">
+                </ul>
+            </div>
+            <div class="all1" id="hlf">
+                <div class="bt" style="margin-top: 20px;" id="shhlf">生活护理费</div>
+            </div>
+            <div class="cont">
+                <ul id="hlfDiv">
+                </ul>
+                  <li style="margin-top: 30px">
+                     <div id="bzDiv">
+                        
+                     </div>
+                </li>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

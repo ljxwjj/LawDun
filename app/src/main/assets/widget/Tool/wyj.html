@@ -1,0 +1,79 @@
+﻿<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="renderer" content="webkit" />
+    <title>违约金计算</title>
+    <link href="../style/css.css" rel="stylesheet" />
+    <script src="../script/jquery-1.6.1.min.js"></script>
+    <script src="../script/WebSiteJs.js"></script>
+    <script src="../script/DateExchange.js"></script>
+
+</head>
+<body>
+    <div class="all">
+        <form style="text-align: center;">
+            <ul class="ul1">
+                <li>
+                    <label>标的金额(元)：</label>
+                    <span>
+                        <input id="prices" type="text" class="text" placeholder="请输入诉讼标的金额" title="price|诉讼标的金额" /></span>
+                </li>
+                <li>
+                    <label>开始时间：</label>
+                    <span>
+                        <input id="d1" type="date" class="text" title="date|开始时间" /></span>
+                </li>
+                <li>
+                    <label>结束时间：</label>
+                    <span>
+                        <input id="d2" type="date" class="text"  title="date|结束时间" /></span>
+                </li>
+                <li>
+                    <label>　　利率：</label>
+                    <span>
+                        <input id="lilv" type="text" class="text" placeholder="请输入利率" title="price|请输入利率" /></span>
+                </li>
+
+                <li>
+                    <label>选择利率方式：</label>
+                    <span>
+                        <select id="t1" name="t1" class="select">
+                            <option value="0">天利率</option>
+                            <option value="1">月利率</option>
+                            <option value="2">年利率</option>
+                        </select>
+                    </span>
+                </li>
+            </ul>
+            <div class="d_but">
+                <input type="button" class="btn" value="确 定" onclick="setJS()" />
+            </div>
+            <br />
+        </form>
+        <div class="list" id="table" style="display: none">
+            <ul>
+                <li><span style="color: red">*计算结果仅供参考</span></li>
+
+
+                <li class="l_des">
+                    <div id="Price"></div>
+                </li>
+                <li style="height: auto">
+                    <span style="color: red">*利率换算：年利率=12*月利率=360*日利率</span>
+                    <br/><span style="color: red">*违约金换算： 违约金=标的金额*逾期期限*利率</span>
+                  
+                     
+                    <br/>
+                </li>
+
+            </ul>
+
+
+
+
+        </div>
+           
+
+    </div>
+</body>
+</html>

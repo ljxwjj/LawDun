@@ -46,6 +46,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="OXM3uBL55iENNHsUcSMCuwkrDM9YquXT" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -103,6 +106,10 @@
             android:screenOrientation="portrait"></activity>
         <activity android:name=".ui.activity.seal.SealListActivity_"
             android:screenOrientation="portrait"></activity>
+        <activity android:name=".ui.activity.seal.StartSealActivity_"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".ui.activity.seal.SealConnectActivity_"
+            android:screenOrientation="portrait"></activity>
         <activity android:name=".ui.activity.user.UserBindSealActivity_"
             android:screenOrientation="portrait"/>
 
@@ -138,12 +145,15 @@
 
         <activity android:name=".ui.activity.common.PhotoPagerActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.common.ToolWebViewActivity_"
+            android:screenOrientation="portrait"/>
 
         <activity android:name=".ui.activity.personal.ProfileActivity_"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.personal.ModifyPasswordActivity_"
             android:screenOrientation="portrait"/>
 
+        <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote"></service>
     </application>
 
 </manifest>

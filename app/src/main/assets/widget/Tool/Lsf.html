@@ -1,0 +1,58 @@
+﻿<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="renderer" content="webkit" />
+    <title>律师费计算</title>
+    <link href="../style/css.css" rel="stylesheet" />
+    <script src="../script/jquery-1.6.1.min.js"></script>
+    <script src="../script/WebSiteJs.js"></script>
+    <script src="../script/lsf.js"></script>
+</head>
+<body>
+    <div class="all">
+        <form style="text-align: center;">
+            <ul class="ul1">
+                <li>
+                    <label>所在地区：</label>
+                    <span>
+                        <select id="t1" name="t1" class="select">
+                        </select>
+                    </span>
+                </li>
+                <li id="cols2">
+                    <label>案件类型：</label>
+                    <span>
+                        <select id="t2" name="t2" class="select">
+                            <option value="0">民事</option>
+                            <option value="1">刑事</option>
+                            <option value="2">行政</option>
+                        </select>
+                    </span>
+                </li>
+                <li>
+                    <label>诉讼标的(元)：</label>
+                    <span>
+                        <input id='prices' type="text" class="text" placeholder="请输入诉讼标的金额" title="price|诉讼标的金额" /></span>
+                </li>
+            </ul>
+            <div class="d_but">
+                <input type="button" class="btn" value="确 定" onclick="setJS()" />
+            </div>
+            <br />
+        </form>
+        <div class="list" id="table" style="display: none">
+            <ul>
+                <li><span style="color: red">*计算结果仅供参考</span></li>
+                <li>
+                    <div id="Price"></div>
+                </li>
+                <li style="margin-top: 20px">
+
+                    <div id="bzDiv">
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

@@ -14,6 +14,7 @@ import com.android.agnetty.core.AgnettyResult;
 import com.android.agnetty.utils.LogUtil;
 import com.baidu.android.pushservice.PushConstants;
 import com.baidu.android.pushservice.PushManager;
+import com.baidu.mapapi.SDKInitializer;
 import com.mobsandgeeks.saripaar.Validator;
 import com.yunfa365.lawservice.app.R;
 import com.yunfa365.lawservice.app.constant.AppCst;
@@ -58,6 +59,7 @@ public class AppApplication extends Application {
         if(processName !=null
                 && processName.equals(getPackageName())) {
 
+            SDKInitializer.initialize(this);
             EventBus.getDefault().register(this);
             ScreenUtil.GetInfo(this);
             ImageLoaders.getInstance().init(this);

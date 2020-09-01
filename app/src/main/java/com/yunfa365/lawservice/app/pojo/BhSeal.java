@@ -1,5 +1,7 @@
 package com.yunfa365.lawservice.app.pojo;
 
+import com.polidea.rxandroidble2.scan.ScanResult;
+
 import java.io.Serializable;
 
 public class BhSeal implements Serializable {
@@ -9,8 +11,24 @@ public class BhSeal implements Serializable {
     public String ZMac;
     public String Addtime;
 
+    public transient ScanResult scanResult;
+
+    public BhSeal() {
+
+    }
+
+    public BhSeal(ScanResult result) {
+        scanResult = result;
+        ZMac = scanResult.getBleDevice().getMacAddress();
+    }
+
     @Override
     public String toString() {
-        return ZTitle;
+        if (ZTitle != null) {
+            return ZTitle;
+        } else if (scanResult != null) {
+            return scanResult.getBleDevice().getMacAddress();
+        }
+        return null;
     }
 }

@@ -43,6 +43,8 @@ import com.yunfa365.lawservice.app.ui.activity.official.OfficialListAllActivity_
 import com.yunfa365.lawservice.app.ui.activity.official.OfficialListMyActivity_;
 import com.yunfa365.lawservice.app.ui.activity.seal.ScanSealActivity_;
 import com.yunfa365.lawservice.app.ui.activity.seal.SealListActivity_;
+import com.yunfa365.lawservice.app.ui.activity.seal.StartSealActivity;
+import com.yunfa365.lawservice.app.ui.activity.seal.StartSealActivity_;
 import com.yunfa365.lawservice.app.ui.activity.user.UserBindSealActivity_;
 import com.yunfa365.lawservice.app.ui.adapter.BannerAdapter;
 import com.yunfa365.lawservice.app.ui.fragment.base.BaseFragment;
@@ -274,6 +276,9 @@ class FragmentPage3 extends BaseFragment {
                 break;
             case 8:
                 OfficialListMyActivity_.intent(this).start();
+                break;
+            case 9:
+                StartSealActivity_.intent(this).start();
                 break;
             case 14:
                 BillListMyActivity_.intent(this).isDone(false).start();
