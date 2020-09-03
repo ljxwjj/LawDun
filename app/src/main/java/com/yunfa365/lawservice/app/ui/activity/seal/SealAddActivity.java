@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.android.agnetty.core.AgnettyFutureListener;
 import com.android.agnetty.core.AgnettyResult;
+import com.baihe.bhsdk.util.BleHelper;
 import com.yunfa365.lawservice.app.R;
 import com.yunfa365.lawservice.app.future.HttpFormFuture;
 import com.yunfa365.lawservice.app.pojo.BhSeal;
@@ -92,4 +93,9 @@ public class SealAddActivity extends BaseUserActivity {
                 .execute();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        BleHelper.getBleHelper(this).disconnectBle();
+    }
 }

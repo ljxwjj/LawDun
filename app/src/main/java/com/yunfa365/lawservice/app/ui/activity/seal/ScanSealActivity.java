@@ -29,7 +29,6 @@ import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
 import com.yunfa365.lawservice.app.ui.activity.base.BaseUserActivity;
 import com.yunfa365.lawservice.app.ui.view.holder.EmptyViewHolder;
-import com.yunfa365.lawservice.app.utils.AppUtil;
 import com.yunfa365.lawservice.app.utils.ScreenUtil;
 
 import org.androidannotations.annotations.AfterViews;
@@ -67,9 +66,6 @@ public class ScanSealActivity extends BaseUserActivity {
 
     @Extra
     int action;  // 1: 添加印章  2: 启动印章
-
-//    @Extra
-
 
     private List<BhSeal> zhangList, zhangMyList;
     private List<ScanResult> scanResultsList = new ArrayList<>();
@@ -265,7 +261,7 @@ public class ScanSealActivity extends BaseUserActivity {
                 String itemMac = item.getBleDevice().getMacAddress();
                 boolean addItem = true;
                 for (BhSeal seal : zhangList) {
-                    if (seal.ZMac.equals(itemMac)) {
+                    if (itemMac.equals(seal.ZMac)) {
                         addItem = false;
                         break;
                     }
@@ -277,7 +273,7 @@ public class ScanSealActivity extends BaseUserActivity {
             for (ScanResult item : scanResultsList) {
                 String itemMac = item.getBleDevice().getMacAddress();
                 for (BhSeal seal : zhangMyList) {
-                    if (seal.ZMac.equals(itemMac)) {
+                    if (itemMac.equals(seal.ZMac)) {
                         mData.add(seal);
                         break;
                     }
@@ -393,25 +389,25 @@ public class ScanSealActivity extends BaseUserActivity {
 
         @Override
         public void onClick(View v) {
-            if (action == 1) {
-                SealAddActivity_.intent(ScanSealActivity.this).mac(item.ZMac)
-                        .startForResult(REQUEST_CODE_SEAL_ADD);
-            } else if (action == 2) {
-                BleHelper.getBleHelper(ScanSealActivity.this).stopScan();
-                BleHelper.getBleHelper(ScanSealActivity.this).connect(item.ZMac, AppCst.BH_SDK_APP_KEY).subscribe(tag -> {
-                    if (tag) {
+            showLoading();
+            BleHelper.getBleHelper(ScanSealActivity.this).stopScan();
+            BleHelper.getBleHelper(ScanSealActivity.this).connect(item.ZMac, AppCst.BH_SDK_APP_KEY).subscribe(tag -> {
+                hideLoading();
+                if (tag) {
+                    if (action == 1) {
+                        SealAddActivity_.intent(ScanSealActivity.this).mac(item.ZMac)
+                                .startForResult(REQUEST_CODE_SEAL_ADD);
+                    } else if (action == 2) {
                         Intent data = new Intent();
                         data.putExtra("sealItem", item);
                         setResult(RESULT_OK, data);
                         finish();
-//                        SealConnectActivity_.intent(ScanSealActivity.this).start();
-                    } else {
-                        showToast("您没有权限使用此设备！");
-                        BleHelper.getBleHelper(ScanSealActivity.this).disconnectBle();
                     }
-                });
-
-            }
+                } else {
+                    showToast("您没有权限使用此设备！");
+                    BleHelper.getBleHelper(ScanSealActivity.this).disconnectBle();
+                }
+            });
         }
     }
 
