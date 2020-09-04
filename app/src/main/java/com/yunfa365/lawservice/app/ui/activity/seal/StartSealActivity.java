@@ -72,7 +72,11 @@ public class StartSealActivity extends BaseUserActivity {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 OfficialRecord item = (OfficialRecord) mAdapter.getItem(position);
-                gotoScanSeal(item);
+                if (item.WGNums > 0) {
+                    gotoScanSeal(item);
+                } else {
+                    showToast("没有可用的盖章次数");
+                }
             }
         });
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);

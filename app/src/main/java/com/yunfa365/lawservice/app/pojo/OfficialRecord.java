@@ -17,9 +17,10 @@ public class OfficialRecord implements CommonItem, Serializable {
     public String Title;
     public String Make;
     public int ZNums;
+    public int GNums;    // 盖章次数
+    public int WGNums;   //剩余盖章次数
     public int Stat;
     public String Addtime;
-    public int GNums;
     public String UsersFullName;
     public String FileIdTxt;
     public String SColsTxt;

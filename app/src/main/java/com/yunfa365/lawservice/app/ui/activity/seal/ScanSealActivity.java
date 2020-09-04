@@ -284,6 +284,21 @@ public class ScanSealActivity extends BaseUserActivity {
         mAdapter.notifyDataSetChanged();
     }
 
+    private void postIllegalStamp(BhSeal item) {// 提交非法操作
+        AppRequest request = new AppRequest.Build("api/WebSet/Message_Send")
+                .addParam("Cols", "2")
+                .addParam("sendtxt", item.ZMac)
+                .create();
+        new HttpFormFuture.Builder(this)
+                .setData(request)
+                .setListener(new AgnettyFutureListener(){
+                    @Override
+                    public void onComplete(AgnettyResult result) {
+                    }
+                })
+                .execute();
+    }
+
     class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         static final int ITEM_TYPE_HEADER = 0;
         static final int ITEM_TYPE_CONTENT = 1;
@@ -394,6 +409,7 @@ public class ScanSealActivity extends BaseUserActivity {
             BleHelper.getBleHelper(ScanSealActivity.this).connect(item.ZMac, AppCst.BH_SDK_APP_KEY).subscribe(tag -> {
                 hideLoading();
                 if (tag) {
+                    addSealListener(item);
                     if (action == 1) {
                         SealAddActivity_.intent(ScanSealActivity.this).mac(item.ZMac)
                                 .startForResult(REQUEST_CODE_SEAL_ADD);
@@ -409,6 +425,15 @@ public class ScanSealActivity extends BaseUserActivity {
                 }
             });
         }
+    }
+
+    private void addSealListener(BhSeal item) {
+        BleHelper.getBleHelper(this).setlistenerForIllegalStamp().subscribe(result -> {
+            LogUtil.d("非法盖章");
+            if (result) {
+                postIllegalStamp(item);
+            }
+        });
     }
 
     private class DividerItemDecoration extends RecyclerView.ItemDecoration {

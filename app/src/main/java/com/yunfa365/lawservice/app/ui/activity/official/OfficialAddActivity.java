@@ -1,5 +1,6 @@
 package com.yunfa365.lawservice.app.ui.activity.official;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,6 +20,7 @@ import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Order;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.yunfa365.lawservice.app.R;
 import com.yunfa365.lawservice.app.future.HttpFormFuture;
 import com.yunfa365.lawservice.app.pojo.Case;
@@ -34,6 +36,7 @@ import com.yunfa365.lawservice.app.utils.UriUtil;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
+import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -178,9 +181,23 @@ public class OfficialAddActivity extends BaseUserActivity {
 
     @Click(R.id.gzwj)
     void gzwjOnClick() {
+        RxPermissions rxPermissions = new RxPermissions(this);
+        rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+                .subscribe(aBoolean -> {
+                    if (aBoolean) {
+                        startGetContent();
+                    } else {
+                        showToast("获取权限失败");
+                    }
+                }, Throwable::printStackTrace);
+    }
+
+    private void startGetContent() {
         Matisse.from(this)
                 .choose(MimeType.ofAll())
+                .capture(true)
                 .countable(true)
+                .captureStrategy(new CaptureStrategy(true, "lawDun"))
                 .maxSelectable(1)
                 .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
                 .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
