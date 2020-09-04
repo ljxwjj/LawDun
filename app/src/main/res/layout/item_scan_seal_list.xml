@@ -16,4 +16,14 @@
         android:background="@color/common_color_white"
         android:textColor="@color/common_text_color"
         android:textSize="@dimen/common_size_normal"/>
+
+    <ImageView
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/wifi"
+        app:layout_constraintTop_toTopOf="@id/text"
+        app:layout_constraintBottom_toBottomOf="@id/text"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="12dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

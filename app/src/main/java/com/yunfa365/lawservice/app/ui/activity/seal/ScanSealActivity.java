@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -270,14 +271,16 @@ public class ScanSealActivity extends BaseUserActivity {
             }
         } else if (action == 2){
             if (zhangMyList == null) return;
-            for (ScanResult item : scanResultsList) {
-                String itemMac = item.getBleDevice().getMacAddress();
-                for (BhSeal seal : zhangMyList) {
-                    if (itemMac.equals(seal.ZMac)) {
-                        mData.add(seal);
-                        break;
+            for (BhSeal seal : zhangMyList) {
+                if (seal.scanResult == null) {
+                    for (ScanResult item : scanResultsList) {
+                        String itemMac = item.getBleDevice().getMacAddress();
+                        if (itemMac.equals(seal.ZMac)) {
+                            seal.scanResult = item;
+                        }
                     }
                 }
+                mData.add(seal);
             }
         }
 
@@ -358,12 +361,17 @@ public class ScanSealActivity extends BaseUserActivity {
             if (holder instanceof ContentViewHolder) {
                 BhSeal item = getItem(position);
                 ContentViewHolder itemViewHolder = (ContentViewHolder) holder;
-                if (item.scanResult != null) {
+                if (TextUtils.isEmpty(item.ZTitle) && item.scanResult != null) {
                     String name = item.scanResult.getBleDevice().getName();
                     String mac = item.scanResult.getBleDevice().getMacAddress();
                     itemViewHolder.text.setText(String.format("%s->%s", name, mac));
                 } else {
                     itemViewHolder.text.setText(item.ZTitle);
+                }
+                if (item.scanResult == null) {
+                    itemViewHolder.status.setImageResource(R.mipmap.no_wifi);
+                } else {
+                    itemViewHolder.status.setImageResource(R.mipmap.wifi);
                 }
                 itemViewHolder.item = item;
             }
@@ -393,17 +401,23 @@ public class ScanSealActivity extends BaseUserActivity {
     class ContentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         BhSeal item;
         TextView text;
+        ImageView status;
 
         public ContentViewHolder(View itemView) {
             super(itemView);
             RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
             itemView.setLayoutParams(params);
             text = itemView.findViewById(R.id.text);
+            status = itemView.findViewById(R.id.status);
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
+            if (item.scanResult == null) {
+                showToast("未搜索该设备");
+                return;
+            }
             showLoading();
             BleHelper.getBleHelper(ScanSealActivity.this).stopScan();
             BleHelper.getBleHelper(ScanSealActivity.this).connect(item.ZMac, AppCst.BH_SDK_APP_KEY).subscribe(tag -> {
