@@ -61,6 +61,9 @@ public class ScanSealActivity extends BaseUserActivity {
     TextView mRightTxt;
 
     @ViewById
+    View span2Title2;
+
+    @ViewById
     RecyclerView listView;
     MyAdapter mAdapter;
     List<BhSeal> mData = new ArrayList<>();
@@ -103,8 +106,10 @@ public class ScanSealActivity extends BaseUserActivity {
         listView.setAdapter(mAdapter);
 
         if (action == 1) {
+            span2Title2.setVisibility(View.GONE);
             loadZhangList();
         } else {
+            span2Title2.setVisibility(View.VISIBLE);
             loadZhangBindList();
         }
 

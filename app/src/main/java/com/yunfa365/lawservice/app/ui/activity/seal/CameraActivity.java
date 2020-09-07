@@ -14,9 +14,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.TextureView;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
@@ -36,6 +33,7 @@ import com.yunfa365.lawservice.app.utils.cameravideo.CameraHelper;
 import com.yunfa365.lawservice.app.utils.cameravideo.ICamera2;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
@@ -118,6 +116,11 @@ public class CameraActivity extends BaseActivity implements ICamera2.TakePhotoLi
     void init() {
         initView();
         initData();
+    }
+
+    @Click(R.id.submitBtn)
+    void submitBtnOnClick() {
+        finish();
     }
 
     protected void initView() {
