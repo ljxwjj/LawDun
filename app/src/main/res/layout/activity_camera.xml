@@ -23,6 +23,25 @@
             android:gravity="center"/>
     </LinearLayout>
 
+    <com.yunfa365.lawservice.app.ui.view.MaskView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="110dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:text="将文件置入框内，确保文件完整！"
+        android:textSize="@dimen/common_size_normal"
+        android:textColor="@color/common_color_white"/>
+
     <LinearLayout
         android:id="@+id/layout_video_photo"
         android:layout_width="match_parent"
