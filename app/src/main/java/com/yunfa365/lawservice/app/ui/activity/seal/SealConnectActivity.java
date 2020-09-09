@@ -167,7 +167,7 @@ public class SealConnectActivity extends BaseUserActivity {
     @Click(R.id.submitBtn)
     void submitBtnOnClick() {
         RxPermissions rxPermissions = new RxPermissions(this);
-        rxPermissions.request(Manifest.permission.ACCESS_FINE_LOCATION)
+        rxPermissions.request(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA)
                 .subscribe(aBoolean -> {
                     if (aBoolean) {
                         startSeal();

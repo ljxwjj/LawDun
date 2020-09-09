@@ -44,6 +44,7 @@ import androidx.core.content.FileProvider;
 
 import com.yunfa365.lawservice.app.R;
 import com.yunfa365.lawservice.app.ui.view.AutoFitTextureView;
+import com.yunfa365.lawservice.app.ui.view.AwbSeekBar;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -65,7 +66,16 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @date 2019年5月9日 17:08:21
  */
 
-public class CameraHelper implements ICamera2 {
+public class CameraHelper implements ICamera2, AwbSeekBar.OnAwbSeekBarChangeListener {
+
+    /**
+     * Camera2 API保证的最大预览宽度
+     */
+    private static final int MAX_PREVIEW_WIDTH = 1920;
+    /**
+     * Camera2 API保证的最大预览高度
+     */
+    private static final int MAX_PREVIEW_HEIGHT = 1280;
 
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
 
@@ -297,20 +307,57 @@ public class CameraHelper implements ICamera2 {
      * 初始化一个适合的预览尺寸
      */
     private void initSize() {
+        int width = mTextureView.getWidth();
+        int height = mTextureView.getHeight();
         Size largest = Collections.max(
                 Arrays.asList(mMap.getOutputSizes(ImageFormat.JPEG)),
                 new CompareSizesByArea());
 
+        //了解我们是否需要交换尺寸以获得相对于传感器的预览尺寸
+        int displayRotation = ((Activity)mContext).getWindowManager().getDefaultDisplay().getRotation();
+        boolean swappedDimensions = false;
+        switch (displayRotation) {
+            case Surface.ROTATION_0:
+            case Surface.ROTATION_180:
+                if (mSensorOrientation == 90 || mSensorOrientation == 270) {
+                    swappedDimensions = true;
+                }
+                break;
+            case Surface.ROTATION_90:
+            case Surface.ROTATION_270:
+                if (mSensorOrientation == 0 || mSensorOrientation == 180) {
+                    swappedDimensions = true;
+                }
+                break;
+            default:
+                Log.e("", "Display rotation is invalid: " + displayRotation);
+        }
+
         Point displaySize = new Point();
         ((Activity) mContext).getWindowManager().getDefaultDisplay().getSize(displaySize);
+        int rotatedPreviewWidth = width;
+        int rotatedPreviewHeight = height;
+        int maxPreviewWidth = displaySize.x;
+        int maxPreviewHeight = displaySize.y;
+
+        //如果需要颠倒方向
+        if (swappedDimensions) {
+            rotatedPreviewWidth = height;
+            rotatedPreviewHeight = width;
+            maxPreviewWidth = displaySize.y;
+            maxPreviewHeight = displaySize.x;
+        }
+
+        if (maxPreviewWidth > MAX_PREVIEW_WIDTH) {
+            maxPreviewWidth = MAX_PREVIEW_WIDTH;
+        }
+        if (maxPreviewHeight > MAX_PREVIEW_HEIGHT) {
+            maxPreviewHeight = MAX_PREVIEW_HEIGHT;
+        }
 
         mLargest = chooseOptimalSize(mMap.getOutputSizes(SurfaceTexture.class),
-                this.mTextureView.getWidth(),
-                this.mTextureView.getHeight(),
-                displaySize.x,
-                displaySize.y,
-                largest
-        );
+                rotatedPreviewWidth, rotatedPreviewHeight, maxPreviewWidth,
+                maxPreviewHeight, largest);
     }
 
     @SuppressLint("MissingPermission")
@@ -370,13 +417,15 @@ public class CameraHelper implements ICamera2 {
                 if (mMap == null) {
                     return false;
                 }
+
+                //获取摄像头角度
+                mSensorOrientation = mCharacteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
+
                 //初始化拍照的图片读取类
                 initImageReader();
                 //初始化尺寸
                 initSize();
 
-                //获取摄像头角度
-                mSensorOrientation = mCharacteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
 
                 mVideoSize = chooseVideoSize(mMap.getOutputSizes(MediaRecorder.class));
                 if (mTextureView != null) {
@@ -1042,7 +1091,55 @@ public class CameraHelper implements ICamera2 {
         this.mDeviceRotation = rotation;
     }
 
+    @Override
+    public void doInProgress1() {
 
+    }
+
+    @Override
+    public void doInProgress2() {
+
+    }
+
+    @Override
+    public void doInProgress3() {
+
+    }
+
+    @Override
+    public void doInProgress4() {
+
+    }
+
+    @Override
+    public void doInProgress5() {
+
+    }
+
+    @Override
+    public void doInProgress6() {
+
+    }
+
+    @Override
+    public void doInProgress7() {
+
+    }
+
+    @Override
+    public void doInProgress8() {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(int num) {
+
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
 
 
     /**

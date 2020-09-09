@@ -37,7 +37,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintDimensionRatio="H,12:5"/>
+                    app:layout_constraintDimensionRatio="H,540:247"/>
 
                 <com.yunfa365.lawservice.app.ui.view.loopview.LoopPageIndicator
                     android:id="@+id/loopViewIndicator"

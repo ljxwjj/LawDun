@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/black">
+    android:background="@color/black">
+
+    <com.yunfa365.lawservice.app.ui.view.AutoFitTextureView
+        android:id="@+id/video_texture"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="100dp"/>
 
     <LinearLayout
-        android:id="@+id/action_bar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="right">
@@ -20,39 +25,35 @@
             android:gravity="center"/>
     </LinearLayout>
 
-    <com.yunfa365.lawservice.app.ui.view.AutoTextureView
-        android:id="@+id/textureView_g"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/action_bar" />
-
     <com.yunfa365.lawservice.app.ui.view.MaskView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignTop="@id/textureView_g"
-        android:layout_alignBottom="@id/textureView_g"
+        android:layout_marginTop="50dp"
         android:paddingLeft="12dp"
         android:paddingRight="12dp"
         android:paddingTop="16dp"
-        android:paddingBottom="16dp"/>
+        android:paddingBottom="110dp"/>
 
     <TextView
-        android:id="@+id/notice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="12dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:text="将文件置入框内，确保文件完整！"
         android:textSize="@dimen/common_size_normal"
         android:textColor="@color/common_color_white"/>
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/video_photo_list"
+    <LinearLayout
+        android:id="@+id/layout_video_photo"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_marginBottom="5dp"
-        android:layout_above="@id/notice"/>
+        android:layout_alignParentBottom="true">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/video_photo_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
 
 </RelativeLayout>

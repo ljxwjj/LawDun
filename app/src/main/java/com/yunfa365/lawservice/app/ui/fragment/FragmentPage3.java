@@ -42,8 +42,7 @@ import com.yunfa365.lawservice.app.ui.activity.official.OfficialAddActivity_;
 import com.yunfa365.lawservice.app.ui.activity.official.OfficialListAllActivity_;
 import com.yunfa365.lawservice.app.ui.activity.official.OfficialListMyActivity_;
 import com.yunfa365.lawservice.app.ui.activity.seal.ScanSealActivity_;
-import com.yunfa365.lawservice.app.ui.activity.seal.SealListActivity_;
-import com.yunfa365.lawservice.app.ui.activity.seal.StartSealActivity;
+import com.yunfa365.lawservice.app.ui.activity.seal.SealManagerActivity_;
 import com.yunfa365.lawservice.app.ui.activity.seal.StartSealActivity_;
 import com.yunfa365.lawservice.app.ui.activity.user.UserBindSealActivity_;
 import com.yunfa365.lawservice.app.ui.adapter.BannerAdapter;
@@ -168,8 +167,9 @@ class FragmentPage3 extends BaseFragment {
         String homeBannerInfo = SpUtil.getHomeBannerInfo(mActivity);
         if (TextUtils.isEmpty(homeBannerInfo)) {
             mBannerInfo = new ArrayList<>();
-            mBannerInfo.add(new BannerInfo(R.mipmap.bannear1));
-            mBannerInfo.add(new BannerInfo(R.mipmap.bannear2));
+            mBannerInfo.add(new BannerInfo(R.mipmap.s3));
+            mBannerInfo.add(new BannerInfo(R.mipmap.s1));
+            mBannerInfo.add(new BannerInfo(R.mipmap.s2));
         } else {
             mBannerInfo = StringUtil.toObjectList(homeBannerInfo, BannerInfo.class);
         }
@@ -293,10 +293,13 @@ class FragmentPage3 extends BaseFragment {
                 ScanSealActivity_.intent(this).action(1).start();
                 break;
             case 19:
-                SealListActivity_.intent(this).start();
+                SealManagerActivity_.intent(this).defaultTab(1).start();
                 break;
             case 20:
                 UserBindSealActivity_.intent(this).start();
+                break;
+            case 21:
+                SealManagerActivity_.intent(this).start();
                 break;
             case 9991:
                 AuditingListActivity_.intent(this).start();
