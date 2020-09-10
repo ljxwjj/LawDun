@@ -34,6 +34,9 @@ import com.yunfa365.lawservice.app.ui.activity.custom.CustomListActivity_;
 import com.yunfa365.lawservice.app.ui.activity.custom.DfCustomListActivity_;
 import com.yunfa365.lawservice.app.ui.activity.finance.BillListAllActivity_;
 import com.yunfa365.lawservice.app.ui.activity.finance.BillListMyActivity_;
+import com.yunfa365.lawservice.app.ui.activity.joblog.JoblogAddActivity;
+import com.yunfa365.lawservice.app.ui.activity.joblog.JoblogAddActivity_;
+import com.yunfa365.lawservice.app.ui.activity.joblog.JoblogListActivity_;
 import com.yunfa365.lawservice.app.ui.activity.law_case.CaseListAllActivity_;
 import com.yunfa365.lawservice.app.ui.activity.law_case.CaseListMyActivity_;
 import com.yunfa365.lawservice.app.ui.activity.office.ChongTuActivity_;
@@ -279,6 +282,12 @@ class FragmentPage3 extends BaseFragment {
                 break;
             case 9:
                 StartSealActivity_.intent(this).start();
+                break;
+            case 10:
+                JoblogAddActivity_.intent(this).start();
+                break;
+            case 11:
+                JoblogListActivity_.intent(this).start();
                 break;
             case 14:
                 BillListMyActivity_.intent(this).isDone(false).start();

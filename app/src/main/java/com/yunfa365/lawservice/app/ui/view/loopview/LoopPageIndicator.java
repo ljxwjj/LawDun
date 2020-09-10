@@ -74,8 +74,8 @@ public class LoopPageIndicator extends LinearLayout{
         if (getChildCount() < totalPage) {
             for (int i = getChildCount(); i < totalPage; i++) {
                 LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-                layoutParams.leftMargin=3;
-                layoutParams.rightMargin=3;
+                layoutParams.leftMargin=6;
+                layoutParams.rightMargin=6;
 
                 //新建ImageView，用来显示分页图标
                 ImageView newPageImageView = new ImageView(mContext);

@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -17,6 +19,8 @@ import androidx.annotation.Nullable;
 import com.android.agnetty.core.AgnettyFutureListener;
 import com.android.agnetty.core.AgnettyResult;
 import com.android.agnetty.future.upload.form.FormUploadFile;
+import com.android.agnetty.utils.ImageUtil;
+import com.android.agnetty.utils.LogUtil;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -33,7 +37,9 @@ import com.yunfa365.lawservice.app.pojo.event.GaiZhang;
 import com.yunfa365.lawservice.app.pojo.event.GaiZhangPhoto;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.ui.activity.base.BaseUserActivity;
+import com.yunfa365.lawservice.app.utils.BitmapTools;
 import com.yunfa365.lawservice.app.utils.DateUtil;
+import com.yunfa365.lawservice.app.utils.FileUtil;
 import com.yunfa365.lawservice.app.utils.LocationUtil;
 import com.yunfa365.lawservice.app.utils.StringUtil;
 
@@ -46,6 +52,8 @@ import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 import java.util.List;
 
@@ -122,7 +130,7 @@ public class SealConnectActivity extends BaseUserActivity {
         zhangName.setText(sealItem.ZTitle);
         expireTime.setText("失效时间：" + expireTimeStr);
         officialName.setText(officialItem.Title);
-        sycs.setText(officialItem.ZNums + "");
+        sycs.setText(officialItem.WGNums + "");
         ygcs.setText("0");
 
         BleHelper.getBleHelper(this).shakeHand().subscribe(dataAfterShakehand -> {
@@ -325,13 +333,14 @@ public class SealConnectActivity extends BaseUserActivity {
     }
 
     private void postSealPhoto(String filePath) {
+        Bitmap bitmap = BitmapTools.getBitmap(filePath);
         AppRequest request = new AppRequest.Build("api/official/FileList_Add")
                 .addParam("Oid", officialItem.ID + "")
                 .addParam("FileCols", "3")
                 .addParam("lng", currentLatLng.longitude + "")
                 .addParam("lat", currentLatLng.latitude + "")
                 .addParam("NAddress", currentAddress)
-                .addFile(new FormUploadFile("file", "1.jpg", filePath))
+                .addFile(new FormUploadFile("file", FileUtil.getFileName(filePath), compressImage(bitmap)))
                 .create();
         new HttpFormFuture.Builder(this)
                 .setData(request)
@@ -342,5 +351,18 @@ public class SealConnectActivity extends BaseUserActivity {
                     }
                 })
                 .execute();
+    }
+
+    public static byte[] compressImage(Bitmap image) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
+        int options = 100;
+        double targetSize = 1.5 * 1024 * 1024;
+        while ( baos.toByteArray().length > targetSize) {	//循环判断如果压缩后图片是否大于100kb,大于继续压缩
+            baos.reset();//重置baos即清空baos
+            image.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
+            options -= 10;//每次都减少10
+        }
+        return baos.toByteArray();
     }
 }

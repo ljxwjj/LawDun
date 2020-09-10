@@ -1,0 +1,11 @@
+[
+  {"field":"V1Txt,V2Txt", "label":"日志类型", "valueFormat":"%s —— %s"},
+  {"field":"CaseIdTxt", "label":"案号"},
+  {"field":"CustName", "label":"客户名称"},
+  {"field":"BegTime", "label":"开始时间"},
+  {"field":"EndTime", "label":"结束时间"},
+  {"field":"LongTimeTxt", "label":"工作时长"},
+  {"field":"Des", "label":"工作描述"},
+  {"field":"FilePath", "label":"相关附件", "value":"预览文件", "forwordHost":"image", "forwordId": "FilePath"},
+  {"field":"AddTime", "label":"入库时间"}
+]

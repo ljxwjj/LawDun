@@ -11,6 +11,8 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
+import com.android.agnetty.utils.LogUtil;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -99,7 +101,6 @@ public final class BitmapTools {
 		return BitmapFactory.decodeFile(path, options);
 	}
 
-	
 	/** 
 	* @Title: getBitmap 
 	* @Description:根据图片数据字节数组获取图片,获取制定宽高缩放的图片

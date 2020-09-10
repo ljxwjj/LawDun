@@ -149,6 +149,12 @@
         <activity android:name=".ui.activity.official.OfficialAddActivity_"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".ui.activity.joblog.JoblogAddActivity_"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.joblog.JoblogListActivity_"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.joblog.JobLogDetailActivity_"
+            android:screenOrientation="portrait"/>
 
 
         <activity android:name=".ui.activity.common.PhotoPagerActivity"

@@ -28,7 +28,7 @@ public class OfficialRecord implements CommonItem, Serializable {
 
     @Override
     public String getTitle() {
-        return CaseIdTxt;
+        return FileIdTxt;
     }
 
     @Override

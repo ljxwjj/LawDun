@@ -20,6 +20,7 @@ import com.yunfa365.lawservice.app.pojo.User;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
 import com.yunfa365.lawservice.app.ui.activity.LoginActivity_;
+import com.yunfa365.lawservice.app.ui.activity.WebActivity_;
 import com.yunfa365.lawservice.app.ui.activity.base.BaseUserActivity;
 import com.yunfa365.lawservice.app.ui.activity.personal.ModifyPasswordActivity_;
 import com.yunfa365.lawservice.app.ui.activity.personal.ProfileActivity_;
@@ -121,12 +122,16 @@ class FragmentPage5 extends BaseFragment {
 
     @Click(R.id.lxwm)
     void lxwmOnClick() {
-
+        WebActivity_.intent(this)
+                .url("https://api.lawdun.com/Web/about/contact.html")
+                .start();
     }
 
     @Click(R.id.gywm)
     void gywmOnClick() {
-
+        WebActivity_.intent(this)
+                .url("https://api.lawdun.com/Web/about/about.html")
+                .start();
     }
 
     public void logout() {

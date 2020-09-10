@@ -233,6 +233,7 @@ public class CameraActivity extends BaseActivity {
     @Click(R.id.submitBtn)
     void submitBtnOnClick() {
         finish();
+        //EventBus.getDefault().post(new GaiZhang());
     }
 
     protected void initView() {
