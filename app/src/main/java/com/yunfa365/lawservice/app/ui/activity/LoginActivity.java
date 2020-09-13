@@ -54,9 +54,6 @@ class LoginActivity extends BaseActivity {
     @ViewById
     EditText inputPassword;
 
-    @ViewById
-    TextView inputFile;
-
     private Validator validator;
 
     @AfterViews
@@ -105,14 +102,10 @@ class LoginActivity extends BaseActivity {
         String phone = inputPhone.getText().toString();
         String password = inputPassword.getText().toString();
         SpUtil.setUsername(LoginActivity.this, phone);
-        FormUploadFile file = (FormUploadFile) inputFile.getTag();
 
         AppRequest.Build build = new AppRequest.Build("api/Users/Users_Login")
                 .addParam("Mobile", phone)
                 .addParam("UPwd", password);
-        if (file != null) {
-            build.addFile(file);
-        }
         AppRequest request = build.create();
         new HttpFormFuture.Builder(this)
                 .setData(request)
