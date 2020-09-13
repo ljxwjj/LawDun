@@ -4,58 +4,134 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <EditText
-        android:id="@+id/inputPhone"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@mipmap/login_bg"
+        android:scaleType="centerCrop"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
         app:layout_constraintTop_toTopOf="parent"
-        android:inputType="phone"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.64">
+        <TextView
+            android:id="@+id/Phone_label"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="手机号码"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/common_size_normal"
+            android:textColor="#66ffffff"
+            android:background="@drawable/login_input_bg_shap"/>
 
-    <EditText
-        android:id="@+id/inputPassword"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/inputPhone"
-        android:inputType="textPassword" />
+        <EditText
+            android:id="@+id/inputPhone"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="110dp"
+            android:inputType="phone"
+            android:singleLine="true"
+            android:maxLength="22"
+            app:layout_constraintLeft_toLeftOf="@id/Phone_label"
+            app:layout_constraintRight_toRightOf="@id/Phone_label"
+            app:layout_constraintTop_toTopOf="@id/Phone_label"
+            app:layout_constraintBottom_toBottomOf="@id/Phone_label"
+            android:background="@null"
+            android:textSize="@dimen/common_size_normal"
+            android:textColor="@color/common_color_white"/>
 
-    <TextView
-        android:id="@+id/inputFile"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
-        android:hint="请选择文件"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/inputPassword" />
+        <TextView
+            android:id="@+id/password_label"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="18dp"
+            app:layout_constraintTop_toBottomOf="@id/Phone_label"
+            android:text="密码"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/common_size_normal"
+            android:textColor="#66ffffff"
+            android:background="@drawable/login_input_bg_shap"/>
 
-    <Button
-        android:id="@+id/submitBtn"
+        <EditText
+            android:id="@+id/inputPassword"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="110dp"
+            app:layout_constraintLeft_toLeftOf="@id/password_label"
+            app:layout_constraintRight_toRightOf="@id/password_label"
+            app:layout_constraintTop_toTopOf="@id/password_label"
+            app:layout_constraintBottom_toBottomOf="@id/password_label"
+            android:background="@null"
+            android:inputType="textPassword"
+            android:textSize="@dimen/common_size_normal"
+            android:textColor="@color/common_color_white" />
+
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/password_label"
+            android:layout_marginTop="16dp"
+            android:text="我已阅读并同意 律盾服务协议，隐私权政策"
+            android:textColor="#808CB0"
+            android:textSize="@dimen/common_size_small"
+            android:paddingLeft="11dp"/>
+
+        <Button
+            android:id="@+id/submitBtn"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="17.5dp"
+            android:text="立即登录"
+            android:textColor="@color/common_color_white"
+            android:textSize="@dimen/common_size_normal"
+            app:layout_constraintTop_toBottomOf="@id/checkbox"
+            android:background="@drawable/login_button_bg_shap"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        app:layout_constraintTop_toBottomOf="@id/center"
+        android:layout_marginTop="40dp">
+        <TextView
+            android:id="@+id/forgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="忘记密码？"
+            android:textSize="@dimen/common_size_small"
+            android:textColor="#66ffffff"/>
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/registerBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="注册新账号"
+            android:textSize="@dimen/common_size_small"
+            android:textColor="#66ffffff"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/login_logo"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:text="登录"
-        android:textColor="@color/common_color_white"
-        android:textSize="@dimen/common_size_normal"
-        app:layout_constraintTop_toBottomOf="@id/inputFile"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="124dp"
+        android:src="@mipmap/login_logo"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/registerBtn"
-        app:layout_constraintHorizontal_chainStyle="spread"/>
-
-    <Button
-        android:id="@+id/registerBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginLeft="16dp"
-        android:text="注册"
-        android:textColor="@color/common_color_white"
-        android:textSize="@dimen/common_size_normal"
-        app:layout_constraintLeft_toRightOf="@id/submitBtn"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/submitBtn"/>
+        app:layout_constraintBottom_toTopOf="@id/center" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
