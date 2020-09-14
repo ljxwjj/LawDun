@@ -6,7 +6,7 @@ android {
         config {
             keyAlias 'lawdun'
             keyPassword 'fujian1877'
-            storeFile file('./lawdun.keystore')
+            storeFile file('../lawdun.jks')
             storePassword 'fujian1877'
         }
     }
@@ -17,7 +17,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 26
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

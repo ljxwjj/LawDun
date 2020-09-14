@@ -2,16 +2,18 @@ package com.yunfa365.lawservice.app.application;
 
 import android.app.Application;
 import android.app.Notification;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.TextUtils;
 
 import androidx.multidex.MultiDex;
 
-import com.android.agnetty.core.AgnettyFuture;
 import com.android.agnetty.core.AgnettyFutureListener;
-import com.android.agnetty.core.AgnettyManager;
 import com.android.agnetty.core.AgnettyResult;
+import com.android.agnetty.future.download.DownloadFuture;
 import com.android.agnetty.utils.LogUtil;
+import com.android.agnetty.utils.StorageUtil;
 import com.baidu.android.pushservice.PushConstants;
 import com.baidu.android.pushservice.PushManager;
 import com.baidu.mapapi.SDKInitializer;
@@ -21,12 +23,13 @@ import com.yunfa365.lawservice.app.constant.AppCst;
 import com.yunfa365.lawservice.app.future.HttpFormFuture;
 import com.yunfa365.lawservice.app.future.HttpJsonFuture;
 import com.yunfa365.lawservice.app.pojo.AppGlobal;
-import com.yunfa365.lawservice.app.pojo.CaseCols;
+import com.yunfa365.lawservice.app.pojo.NewVersionInfo;
 import com.yunfa365.lawservice.app.pojo.User;
-import com.yunfa365.lawservice.app.pojo.base.BaseBean;
 import com.yunfa365.lawservice.app.pojo.event.BaiDuPushBindEvent;
 import com.yunfa365.lawservice.app.pojo.event.LoginEvent;
 import com.yunfa365.lawservice.app.pojo.event.LogoutEvent;
+import com.yunfa365.lawservice.app.pojo.event.NewVersionEvent;
+import com.yunfa365.lawservice.app.pojo.event.RequestCheckVersion;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
 import com.yunfa365.lawservice.app.ui.notification.PushNotificationBuilder;
@@ -141,7 +144,6 @@ public class AppApplication extends Application {
         if (AppGlobal.mUser.mRole == null) {
             AppGlobal.mUser.loadUserRole(this);
         }
-        loadSffsData();
 
         if (AppGlobal.mBaiDuChannelId != null) {
             PushManager.listTags(getApplicationContext());
@@ -181,40 +183,15 @@ public class AppApplication extends Application {
                 .execute();
     }
 
-    private void loadSffsData() {
-        String TAG = "GetSFFFList";
-        AgnettyManager manager = AgnettyManager.getInstance(this);
-        AgnettyFuture future = manager.getFutureByTag(TAG);
-        if (future != null) return;
-
-        AppRequest request = new AppRequest.Build("api/Case/PayCols_Get")
-                .create();
-        new HttpFormFuture.Builder(this)
-                .setTag(TAG)
-                .setData(request)
-                .setListener(new AgnettyFutureListener(){
-                    @Override
-                    public void onComplete(AgnettyResult result) {
-                        AppResponse resp = (AppResponse) result.getAttach();
-                        if (resp.flag) {
-                            BaseBean[] sffs = resp.resultsToArray(BaseBean.class);
-                            AppCst.sffss = sffs;
-                        }
-                    }
-                })
-                .execute();
-    }
-
-
-    /*@Subscribe
+    @Subscribe
     public void onEvent(RequestCheckVersion event) {
         String version = AppUtil.getVersionName(this);
-        AppRequest request = new AppRequest.Build("Home/CheckLastestAppVersion")
+        AppRequest request = new AppRequest.Build("api/WebSet/App_Version")
                 .addParam("Number", version)  // 版本号
                 .addParam("Type", "1")        // 1:律所版  2：用户版
                 .addParam("AppCode", "1")     //1： 安卓  2： IOS
                 .create();
-        new HttpJsonFuture.Builder(this)
+        new HttpFormFuture.Builder(this)
                 .setData(request)
                 .setListener(new AgnettyFutureListener(){
                     @Override
@@ -226,10 +203,10 @@ public class AppApplication extends Application {
                     public void onComplete(AgnettyResult result) {
                         AppResponse resp = (AppResponse)result.getAttach();
                         // 状态  0：没有更新   1：普通更新  2：微小更新  3：强制更新
-                        if (resp.Status == AppCst.HTTP_CODE_SUCCESS) {
+                        if (resp.flag == false) {
                             EventBus.getDefault().post(new NewVersionEvent(0, resp.Message));
-                        } else if (resp.Status == 3) {
-                            final NewVersionInfo versionInfo = resp.resultsToObject(NewVersionInfo.class);
+                        } else {
+                            final NewVersionInfo versionInfo = resp.getFirstObject(NewVersionInfo.class);
                             NewVersionEvent event = new NewVersionEvent(1, resp.Message);
                             event.versionInfo = versionInfo;
                             EventBus.getDefault().post(event);
@@ -290,7 +267,7 @@ public class AppApplication extends Application {
             });
         }
         progressDialog.show();
-    }*/
+    }
 
     @Override
     protected void attachBaseContext(Context base) {

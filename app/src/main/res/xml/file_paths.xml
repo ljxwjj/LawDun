@@ -3,5 +3,6 @@
     <paths>
         <root-path path="" name="camera_photos" />
         <external-path name="external_files" path="."/>
+        <external-path name="download" path=""/> <!-- 很重要，不配置下载的apk无法安装 -->
     </paths>
 </resources>

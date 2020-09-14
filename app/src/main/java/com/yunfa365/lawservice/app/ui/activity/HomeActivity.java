@@ -1,5 +1,7 @@
 package com.yunfa365.lawservice.app.ui.activity;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,16 +14,22 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTabHost;
 
 import com.android.agnetty.utils.LogUtil;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.yunfa365.lawservice.app.R;
+import com.yunfa365.lawservice.app.application.AppApplication;
 import com.yunfa365.lawservice.app.pojo.AppGlobal;
+import com.yunfa365.lawservice.app.pojo.NewVersionInfo;
 import com.yunfa365.lawservice.app.pojo.event.LoginEvent;
 import com.yunfa365.lawservice.app.pojo.event.LogoutEvent;
+import com.yunfa365.lawservice.app.pojo.event.NewVersionEvent;
+import com.yunfa365.lawservice.app.pojo.event.RequestCheckVersion;
 import com.yunfa365.lawservice.app.ui.activity.base.BaseUserActivity;
 import com.yunfa365.lawservice.app.ui.fragment.FragmentPage1_;
 import com.yunfa365.lawservice.app.ui.fragment.FragmentPage2_;
 import com.yunfa365.lawservice.app.ui.fragment.FragmentPage3_;
 import com.yunfa365.lawservice.app.ui.fragment.FragmentPage4_;
 import com.yunfa365.lawservice.app.ui.fragment.FragmentPage5_;
+import com.yunfa365.lawservice.app.utils.LocationUtil;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -99,7 +107,7 @@ public class HomeActivity extends BaseUserActivity {
             fragmentTabHost.setCurrentTab(mDefaultTab);
         }
         // 请求检查更新
-//        EventBus.getDefault().post(new RequestCheckVersion());
+        EventBus.getDefault().post(new RequestCheckVersion());
     }
 
     @Override
@@ -141,14 +149,14 @@ public class HomeActivity extends BaseUserActivity {
         LogUtil.d("HomeActivity onDestroy!!!");
     }
 
-    /*@Subscribe(threadMode = ThreadMode.MAIN, priority = 1)
+    @Subscribe(threadMode = ThreadMode.MAIN, priority = 1)
     public void onEvent(NewVersionEvent event) {
         if (event.status == 1) {
             showNewVersionDialog(event.versionInfo);
         }
-    }*/
+    }
 
-    /*private void showNewVersionDialog(final NewVersionInfo versionInfo) {
+    private void showNewVersionDialog(final NewVersionInfo versionInfo) {
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         builder.setTitle("发现新版本" + versionInfo.Number);
         builder.setMessage(versionInfo.Mark);
@@ -173,39 +181,16 @@ public class HomeActivity extends BaseUserActivity {
     }
 
     void downloadNewVersionApk(final NewVersionInfo versionInfo) {
-        if (!Nammu.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            final PermissionCallback permissionStorageCallback = new PermissionCallback() {
-                @Override public void permissionGranted() {
-                    ((AppApplication)getApplication()).downloadApk(HomeActivity.this, versionInfo);
-                }
-
-                @Override public void permissionRefused() {
-                }
-            };
-            if (Nammu.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                //User already refused to give us this permission or removed it
-                //Now he/she can mark "never ask again" (sic!)
-                Snackbar.make(rootLayout, "需要获取文件存储的权限，用于存储下载最新版本的安装文件。",
-                        Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
-                    @Override public void onClick(View view) {
-                        Nammu.askForPermission(HomeActivity.this,
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                permissionStorageCallback);
+        RxPermissions rxPermissions = new RxPermissions(this);
+        rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe(aBoolean -> {
+                    if (aBoolean) {
+                        ((AppApplication)getApplication()).downloadApk(HomeActivity.this, versionInfo);
+                    } else {
+                        showToast("获取权限失败");
                     }
-                }).show();
-            } else {
-                //First time asking for permission
-                // or phone doesn't offer permission
-                // or user marked "never ask again"
-                Nammu.askForPermission(this,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        permissionStorageCallback);
-            }
-        } else {
-            ((AppApplication)getApplication()).downloadApk(this, versionInfo);
-        }
-
-    }*/
+                }, Throwable::printStackTrace);
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LogoutEvent event) {

@@ -30,7 +30,7 @@ import java.util.Date;
 /**
  * Created by Administrator on 2016/5/9.
  */
-@EFragment(R.layout.fragment_case_list_right_menu)
+@EFragment(R.layout.fragment_joblog_list_right_menu)
 public class MenuRightFragment extends Fragment {
 
     @ViewById(R.id.base_id_back)
