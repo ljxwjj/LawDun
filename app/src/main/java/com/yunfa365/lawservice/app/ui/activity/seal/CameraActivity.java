@@ -244,7 +244,6 @@ public class CameraActivity extends BaseActivity {
         mShowAction.setDuration(300);
 
 
-
         LinearLayoutManager ms = new LinearLayoutManager(this);
         ms.setOrientation(LinearLayoutManager.HORIZONTAL);
         videoPhotoList.setLayoutManager(ms);

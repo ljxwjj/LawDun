@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -19,7 +18,6 @@ import androidx.annotation.Nullable;
 import com.android.agnetty.core.AgnettyFutureListener;
 import com.android.agnetty.core.AgnettyResult;
 import com.android.agnetty.future.upload.form.FormUploadFile;
-import com.android.agnetty.utils.ImageUtil;
 import com.android.agnetty.utils.LogUtil;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -35,7 +33,9 @@ import com.yunfa365.lawservice.app.pojo.BhSeal;
 import com.yunfa365.lawservice.app.pojo.OfficialRecord;
 import com.yunfa365.lawservice.app.pojo.event.GaiZhang;
 import com.yunfa365.lawservice.app.pojo.event.GaiZhangPhoto;
+import com.yunfa365.lawservice.app.pojo.event.OfficialFinishEvent;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
+import com.yunfa365.lawservice.app.pojo.http.AppResponse;
 import com.yunfa365.lawservice.app.ui.activity.base.BaseUserActivity;
 import com.yunfa365.lawservice.app.utils.BitmapTools;
 import com.yunfa365.lawservice.app.utils.DateUtil;
@@ -52,7 +52,6 @@ import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 import java.util.List;
@@ -123,6 +122,17 @@ public class SealConnectActivity extends BaseUserActivity {
         });
         mTitleTxt.setText("启动印章");
 
+        BleHelper.getBleHelper(this).shakeHand().subscribe(dataAfterShakehand -> {
+            getBattery();
+        });
+
+        mLocationClient = new LocationClient(this);
+        mLocationClient.registerLocationListener(mBDLocationListener);
+        requestPermission();
+        loadItemDetail();
+    }
+
+    private void initView() {
         Calendar today = Calendar.getInstance();
         today.add(Calendar.DAY_OF_MONTH, 1);
         expireTimeStr = DateUtil.formatDate(today, "yyyy-MM-dd HH:mm:ss");
@@ -132,14 +142,6 @@ public class SealConnectActivity extends BaseUserActivity {
         officialName.setText(officialItem.Title);
         sycs.setText(officialItem.WGNums + "");
         ygcs.setText("0");
-
-        BleHelper.getBleHelper(this).shakeHand().subscribe(dataAfterShakehand -> {
-            getBattery();
-        });
-
-        mLocationClient = new LocationClient(this);
-        mLocationClient.registerLocationListener(mBDLocationListener);
-        requestPermission();
     }
 
     private void getBattery() {
@@ -154,10 +156,14 @@ public class SealConnectActivity extends BaseUserActivity {
 //                showToast(String.format("启动印章成功，盖章%d次，启动序号:%d", officialItem.ZNums, result));
                 //监听盖章
                 BleHelper.getBleHelper(SealConnectActivity.this).setlistenerForStamp().subscribe( r-> {
-                    sycs.setText((officialItem.WGNums - r.getStampNumber()) + "");
+                    officialItem.WGNums--;
+                    sycs.setText(officialItem.WGNums + "");
                     ygcs.setText(r.getStampNumber() + "");
                     EventBus.getDefault().post(new GaiZhang());
                     postForStamp();
+                    if (officialItem.WGNums == 0) {
+                        EventBus.getDefault().post(new OfficialFinishEvent());
+                    }
 //                    showToast("盖章次数:" + r.getStampNumber());
                 });
                 CameraActivity_.intent(this).startForResult(START_CAMERA_REQUEST_CODE);
@@ -174,6 +180,10 @@ public class SealConnectActivity extends BaseUserActivity {
 
     @Click(R.id.submitBtn)
     void submitBtnOnClick() {
+        if (officialItem.WGNums <= 0) {
+            showToast("没有可用的盖章次数！");
+            return;
+        }
         RxPermissions rxPermissions = new RxPermissions(this);
         rxPermissions.request(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA)
                 .subscribe(aBoolean -> {
@@ -317,6 +327,37 @@ public class SealConnectActivity extends BaseUserActivity {
         openGPSSettings();
     }
 
+    private void loadItemDetail() {
+        showLoading();
+        AppRequest request = new AppRequest.Build("api/official/Des_Get")
+                .addParam("Oid", officialItem.ID + "")
+                .create();
+        new HttpFormFuture.Builder(this)
+                .setData(request)
+                .setListener(new AgnettyFutureListener(){
+                    @Override
+                    public void onComplete(AgnettyResult result) {
+                        hideLoading();
+                        AppResponse resp = (AppResponse) result.getAttach();
+                        if (resp.flag) {
+                            officialItem = resp.getFirstObject(OfficialRecord.class);
+                            initView();
+                        } else {
+                            showToast(resp.Message);
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onException(AgnettyResult result) {
+                        hideLoading();
+                        showToast(R.string.network_exception_message);
+                        finish();
+                    }
+                })
+                .execute();
+    }
+
     private void postForStamp() { // 提交盖章动作， 盖一次请求一次
         AppRequest request = new AppRequest.Build("api/official/Zhang_Add")
                 .addParam("Oid", officialItem.ID + "")
@@ -334,6 +375,7 @@ public class SealConnectActivity extends BaseUserActivity {
 
     private void postSealPhoto(String filePath) {
         Bitmap bitmap = BitmapTools.getBitmap(filePath);
+        bitmap = BitmapTools.scaleZoomBitmap(bitmap, 1500, 1500);
         AppRequest request = new AppRequest.Build("api/official/FileList_Add")
                 .addParam("Oid", officialItem.ID + "")
                 .addParam("FileCols", "3")
@@ -357,8 +399,8 @@ public class SealConnectActivity extends BaseUserActivity {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
         int options = 100;
-        double targetSize = 1.5 * 1024 * 1024;
-        while ( baos.toByteArray().length > targetSize) {	//循环判断如果压缩后图片是否大于100kb,大于继续压缩
+        double targetSize = 1 * 1024 * 1024; // 1M
+        while ( baos.size() > targetSize) {	//循环判断如果压缩后图片是否大于100kb,大于继续压缩
             baos.reset();//重置baos即清空baos
             image.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
             options -= 10;//每次都减少10

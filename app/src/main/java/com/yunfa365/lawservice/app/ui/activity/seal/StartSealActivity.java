@@ -1,11 +1,13 @@
 package com.yunfa365.lawservice.app.ui.activity.seal;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,6 +24,7 @@ import com.yunfa365.lawservice.app.future.HttpFormFuture;
 import com.yunfa365.lawservice.app.pojo.BhSeal;
 import com.yunfa365.lawservice.app.pojo.OfficialRecord;
 import com.yunfa365.lawservice.app.pojo.PageInfo;
+import com.yunfa365.lawservice.app.pojo.event.OfficialFinishEvent;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
 import com.yunfa365.lawservice.app.ui.activity.base.BaseUserActivity;
@@ -30,6 +33,8 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -55,6 +60,33 @@ public class StartSealActivity extends BaseUserActivity {
     BaseQuickAdapter mAdapter;
     private PageInfo pageInfo = new PageInfo();
     private OfficialRecord mSelectedItem;
+    private boolean reloadListFlag = false;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (reloadListFlag) {
+            reLoadData();
+            reloadListFlag = false;
+        }
+    }
+
+    @Subscribe
+    public void onEvent(OfficialFinishEvent event) {
+        reloadListFlag = true;
+    }
 
     @AfterViews
     void init() {
@@ -117,6 +149,7 @@ public class StartSealActivity extends BaseUserActivity {
     }
 
     private void reLoadData() {
+        pageInfo.reset();
         mAdapter.setEmptyView(R.layout.loading_view);
         loadData();
     }

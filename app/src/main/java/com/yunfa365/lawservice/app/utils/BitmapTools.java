@@ -6,6 +6,7 @@ import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
@@ -245,6 +246,22 @@ public final class BitmapTools {
 		byte[] bitmapByte = baos.toByteArray();
 		return bitmapByte;
 	}
-	
+
+	public static Bitmap scaleZoomBitmap(Bitmap bm, float maxWidth, float maxHeight) {
+		// 获得图片的宽高
+		int width = bm.getWidth();
+		int height = bm.getHeight();
+		// 计算缩放比例
+		float scaleWidth = ((float) maxWidth) / width;
+		float scaleHeight = ((float) maxHeight) / height;
+		float scaleFinal = scaleWidth < scaleHeight?scaleWidth:scaleHeight;
+		if (scaleFinal >= 1) return bm;
+		// 取得想要缩放的matrix参数
+		Matrix matrix = new Matrix();
+		matrix.postScale(scaleFinal, scaleFinal);
+		// 得到新的图片
+		Bitmap newbm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, true);
+		return newbm;
+	}
 	
 }
