@@ -6,7 +6,7 @@ android {
         config {
             keyAlias 'lawdun'
             keyPassword 'fujian1877'
-            storeFile file('D:/workspace/LawDun/app/lawdun.keystore')
+            storeFile file('./lawdun.keystore')
             storePassword 'fujian1877'
         }
     }

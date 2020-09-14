@@ -54,9 +54,6 @@ class LoginActivity extends BaseActivity {
     @ViewById
     EditText inputPassword;
 
-    @ViewById
-    TextView inputFile;
-
     private Validator validator;
 
     @AfterViews
@@ -100,77 +97,15 @@ class LoginActivity extends BaseActivity {
         RegisterActivity_.intent(this).start();
     }
 
-    @Click(R.id.inputFile)
-    void inputFileOnClick() {
-        requestSelectFile();
-    }
-
-    private void requestSelectFile() {
-        RxPermissions rxPermissions = new RxPermissions(this);
-        rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
-                .subscribe(aBoolean -> {
-                    if (aBoolean) {
-                        startGetContent();
-                    } else {
-                        AppUtil.showToast(LoginActivity.this, "获取权限失败");
-                    }
-                }, Throwable::printStackTrace);
-    }
-
-    private void startGetContent() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("*/*");
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        try {
-            startActivityForResult( Intent.createChooser(intent, "选择上传文件"), REQUEST_CODE_CHOOSE);
-        } catch (android.content.ActivityNotFoundException ex) {
-            AppUtil.showToast(this, "Please install a File Manager.");
-        }
-    }
-
-    @OnActivityResult(REQUEST_CODE_CHOOSE)
-    void photoPickerOnResult(int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            Uri uri = data.getData();
-            String path = UriUtil.getPath(this, uri);
-            if (TextUtils.isEmpty(path)) {
-                String fileName = UriUtil.getFileName(this, uri);
-                byte[] content = UriUtil.getContent(this, uri);
-                if (fileName != null && content != null) {
-                    onFileSelected(fileName, content);
-                } else {
-                    LogUtil.e("文件读取失败");
-                }
-            } else {
-                onFileSelected(path);
-            }
-        }
-    }
-
-    private void onFileSelected(String path) {
-        FormUploadFile file = new FormUploadFile("file", FileUtil.getFileName(path), path);
-        inputFile.setText(path);
-        inputFile.setTag(file);
-    }
-
-    private void onFileSelected(String fileName, byte[] content) {
-        FormUploadFile file = new FormUploadFile("file", fileName, content);
-        inputFile.setText(fileName);
-        inputFile.setTag(file);
-    }
 
     private void doCommit() {
         String phone = inputPhone.getText().toString();
         String password = inputPassword.getText().toString();
         SpUtil.setUsername(LoginActivity.this, phone);
-        FormUploadFile file = (FormUploadFile) inputFile.getTag();
 
         AppRequest.Build build = new AppRequest.Build("api/Users/Users_Login")
                 .addParam("Mobile", phone)
                 .addParam("UPwd", password);
-        if (file != null) {
-            build.addFile(file);
-        }
         AppRequest request = build.create();
         new HttpFormFuture.Builder(this)
                 .setData(request)
