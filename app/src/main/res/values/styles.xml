@@ -29,13 +29,18 @@
         <!-- 模糊 -->
         <item name="android:backgroundDimAmount">0.2</item>
     </style>
+
+    <style name="My_CheckBox" parent="@android:style/Widget.Material.CompoundButton.CheckBox">
+        <item name="android:colorControlActivated">@color/common_color_white</item>
+        <item name="android:colorControlNormal">@color/common_color_white</item>
+    </style>
     
     <style name="submit_btn">
         <item name="android:layout_width">300dp</item>
         <item name="android:layout_height">50dp</item>
-        <item name="android:background">@drawable/common_round_blue_select_bg</item>
+        <item name="android:background">@drawable/common_submit_btn_round_bg</item>
         <item name="android:textColor">@color/common_color_white</item>
-        <item name="android:textSize">@dimen/common_size_normal</item>
+        <item name="android:textSize">@dimen/common_size_big</item>
     </style>
 
     <!--设置tabLayout字体大小-->

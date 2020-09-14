@@ -3,10 +3,17 @@ package com.yunfa365.lawservice.app.ui.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.android.agnetty.core.AgnettyFutureListener;
 import com.android.agnetty.core.AgnettyResult;
@@ -14,10 +21,12 @@ import com.android.agnetty.future.upload.form.FormUploadFile;
 import com.android.agnetty.utils.LogUtil;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.Checked;
 import com.mobsandgeeks.saripaar.annotation.Order;
 import com.mobsandgeeks.saripaar.annotation.Password;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.yunfa365.lawservice.app.R;
+import com.yunfa365.lawservice.app.constant.AppCst;
 import com.yunfa365.lawservice.app.future.HttpFormFuture;
 import com.yunfa365.lawservice.app.pojo.AppGlobal;
 import com.yunfa365.lawservice.app.pojo.User;
@@ -54,11 +63,36 @@ class LoginActivity extends BaseActivity {
     @ViewById
     EditText inputPassword;
 
+    @Checked(message = "请阅读并同意服务协议与隐私政策")
+    @Order(3)
+    @ViewById
+    CheckBox checkbox;
+
     private Validator validator;
 
     @AfterViews
     void init(){
         initValidate();
+
+        String checkboxStr = checkbox.getText().toString();
+        SpannableString spannableString = new SpannableString(checkboxStr);
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                xyOnClick(widget);
+            }
+        };
+        String linkStr = "律盾服务协议，隐私权政策";
+        int s = checkboxStr.indexOf(linkStr);
+        spannableString.setSpan(clickableSpan, s, s+linkStr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        checkbox.setText(spannableString);
+        checkbox.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    private void xyOnClick(View view) {
+        WebActivity_.intent(this)
+                .url(AppCst.getHttpUrl() + "Web/about/UserAgreement.html")
+                .start();
     }
 
     private void initValidate() {

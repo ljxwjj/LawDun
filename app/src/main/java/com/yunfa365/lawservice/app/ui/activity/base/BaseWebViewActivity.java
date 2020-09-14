@@ -28,29 +28,21 @@ import org.greenrobot.eventbus.ThreadMode;
 public class BaseWebViewActivity extends Activity {
     private ProgressDialog mProgressDialog;
     private AlertDialog mReLoginDialog;
-    private LoginStatusObserver mObserver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mObserver = new LoginStatusObserver();
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (AppGlobal.mUser == null) {
-            showReLoginDialog();
-            return;
-        }
-        EventBus.getDefault().register(mObserver);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        EventBus.getDefault().unregister(mObserver);
     }
 
     public boolean isLoading() {
@@ -89,13 +81,6 @@ public class BaseWebViewActivity extends Activity {
         Intent intent = new Intent(this, LoginActivity_.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-    }
-
-    class LoginStatusObserver {
-        @Subscribe(threadMode = ThreadMode.MAIN)
-        public void onEvent(LogoutEvent event) {
-            showReLoginDialog();
-        }
     }
 
     public void showToast(String message) {

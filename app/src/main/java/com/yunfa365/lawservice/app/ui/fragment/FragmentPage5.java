@@ -14,6 +14,7 @@ import com.android.agnetty.core.AgnettyFutureListener;
 import com.android.agnetty.core.AgnettyResult;
 import com.baidu.android.pushservice.PushManager;
 import com.yunfa365.lawservice.app.R;
+import com.yunfa365.lawservice.app.constant.AppCst;
 import com.yunfa365.lawservice.app.future.HttpFormFuture;
 import com.yunfa365.lawservice.app.pojo.AppGlobal;
 import com.yunfa365.lawservice.app.pojo.User;
@@ -123,14 +124,14 @@ class FragmentPage5 extends BaseFragment {
     @Click(R.id.lxwm)
     void lxwmOnClick() {
         WebActivity_.intent(this)
-                .url("https://api.lawdun.com/Web/about/contact.html")
+                .url(AppCst.getHttpUrl() + "Web/about/contact.html")
                 .start();
     }
 
     @Click(R.id.gywm)
     void gywmOnClick() {
         WebActivity_.intent(this)
-                .url("https://api.lawdun.com/Web/about/about.html")
+                .url(AppCst.getHttpUrl() + "Web/about/about.html")
                 .start();
     }
 
