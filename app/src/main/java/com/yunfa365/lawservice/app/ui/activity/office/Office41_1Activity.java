@@ -147,8 +147,6 @@ public class Office41_1Activity extends BaseUserActivity {
     @ViewById
     EditText ajbz;
 
-
-
     @ViewById
     TextView kpzt;   // 开票状态
 
@@ -260,20 +258,21 @@ public class Office41_1Activity extends BaseUserActivity {
             sfzp.setText(sfzps[0].toString());
             sfzp.setTag(sfzps[0]);
         } else {
-            anh.setText(caseItem.CaseID);
-            zyry.setText(caseItem.CaseID);
-
+            anh.setText(caseItem.CaseIdTxt);
+            zyry.setText(caseItem.UsersListTxt);
+            sarq.setText(caseItem.BegTime);
             ay.setText(caseItem.AyMake);
-            sarq.setText(caseItem.Begtime);
-            dfdsr.setText(caseItem.DCustIdTxt);
-            wtr.setText(caseItem.CustIdTxt);
-            slbm.setText(caseItem.Slfy);
             ssbd.setText(caseItem.Ssbd);
-            dlf.setText(caseItem.Price + "");
+            wtr.setText(caseItem.CustIdTxt);
+            dfdsr.setText(caseItem.DCustIdTxt);
+            sffs.setText(caseItem.PayColsTxt);
+            sffs.setTag(new BaseBean(caseItem.PayCols, null));
+            dlf.setText(caseItem.CasePrice + "");
+            slbm.setText(caseItem.Slfy);
+            ssjd.setText(caseItem.SscxTxt);
             ssdw.setText(caseItem.SsdwTxt);
             ssdw.setTag(new BaseBean(caseItem.Ssdw, null));
             ajbz.setText(caseItem.Des);
-            ssjd.setText(caseItem.SscxTxt);
             String ssjdStr = caseItem.Sscx;
             String ssjdStrs[] = ssjdStr.split(",");
             BaseBean[] ssjdObjs = new BaseBean[ssjdStrs.length];
@@ -289,11 +288,32 @@ public class Office41_1Activity extends BaseUserActivity {
                 AppUtil.showToast(this, "数据解析错误");
             }
             ssjd.setTag(ssjdObjs);
-            bzje.setText(caseItem.BuTiePrice + "");
-            sffs.setText(caseItem.PayColsTxt);
-            sffs.setTag(new BaseBean(caseItem.PayCols, null));
+
+            for (BaseBean item : kpzts) {
+                if (item.ID == caseItem.BillStat) {
+                    kpzt.setText(item.toString());
+                    kpzt.setTag(item);
+                }
+            }
+            for (BaseBean item : sfzps) {
+                if (item.ID == caseItem.IsFrom) {
+                    sfzp.setText(item.toString());
+                    sfzp.setTag(item);
+                }
+            }
+            jzf.setText(caseItem.ZPrice + "");
             fxsfsm.setText(caseItem.FengXianMake);
-            zfbz.setText(caseItem.IsBuTie);
+            for (BaseBean item : zfbzs) {
+                if (item.ID == caseItem.IsBuTie) {
+                    zfbz.setText(item.toString());
+                    zfbz.setTag(item);
+                }
+            }
+            bzje.setText(caseItem.BuTiePrice + "");
+            larq.setText(caseItem.CaseTime1);
+            ktrq.setText(caseItem.CaseTime2);
+            xprq.setText(caseItem.CaseTime3);
+            ssrq.setText(caseItem.CaseTime4);
         }
     }
 
@@ -362,7 +382,7 @@ public class Office41_1Activity extends BaseUserActivity {
             @Override
             public boolean isValid(EditText view) {
                 String hasBz = zfbz.getText().toString();
-                if (zfbzs[1].equals(hasBz)) {
+                if (zfbzs[0].Title.equals(hasBz)) {
                     return true;
                 }
                 String je = view.getText().toString();
@@ -564,6 +584,27 @@ public class Office41_1Activity extends BaseUserActivity {
     void wtrOnClick(View view) {
         Intent intent = new Intent(this, Office_searchCustomActivity_.class);
         startActivityForResult(intent, WTR_REQUEST_CODE);
+    }
+
+    @Click({R.id.larq, R.id.ktrq, R.id.xprq, R.id.ssrq})
+    void rqOnClick(EditText view) {
+        String rq = view.getText().toString();
+        final Calendar calendar = Calendar.getInstance();
+        if (TextUtils.isEmpty(rq)) {
+            calendar.setTime(new Date());
+        } else {
+            calendar.setTime(StringUtil.formatDate(rq, "yyyy-MM-dd"));
+        }
+        new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker picker, int year, int monthOfYear, int dayOfMonth) {
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, monthOfYear);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                String rq = DateUtil.formatDate(calendar, "yyyy-MM-dd");
+                view.setText(rq);
+            }
+        },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
     @Click(android.R.id.button1)

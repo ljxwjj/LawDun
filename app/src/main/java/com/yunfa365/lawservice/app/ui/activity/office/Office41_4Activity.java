@@ -237,21 +237,41 @@ public class Office41_4Activity extends BaseUserActivity {
             sfzp.setText(sfzps[0].toString());
             sfzp.setTag(sfzps[0]);
         } else {
-            anh.setText(caseItem.CaseID);
-            zyry.setText(caseItem.CaseID);
-            sarq.setText(caseItem.Begtime);
+            anh.setText(caseItem.CaseIdTxt);
+            zyry.setText(caseItem.UsersListTxt);
+            sarq.setText(caseItem.BegTime);
             ay.setText(caseItem.AyMake);
             wtr.setText(caseItem.CustIdTxt);
             dfdsr.setText(caseItem.DCustIdTxt);
             ssbd.setText(caseItem.Ssbd);
             sffs.setText(caseItem.PayColsTxt);
             sffs.setTag(new BaseBean(caseItem.PayCols, null));
-            dlf.setText(caseItem.Price + "");
-
-            fxsfsm.setText(caseItem.FengXianMake);
-            zfbz.setText(caseItem.IsBuTie);
-            bzje.setText(caseItem.BuTiePrice + "");
+            dlf.setText(caseItem.CasePrice + "");
+            slbm.setText(caseItem.Slfy);
             ajbz.setText(caseItem.Des);
+
+
+            for (BaseBean item : kpzts) {
+                if (item.ID == caseItem.BillStat) {
+                    kpzt.setText(item.toString());
+                    kpzt.setTag(item);
+                }
+            }
+            for (BaseBean item : sfzps) {
+                if (item.ID == caseItem.IsFrom) {
+                    sfzp.setText(item.toString());
+                    sfzp.setTag(item);
+                }
+            }
+            jzf.setText(caseItem.ZPrice + "");
+            fxsfsm.setText(caseItem.FengXianMake);
+            for (BaseBean item : zfbzs) {
+                if (item.ID == caseItem.IsBuTie) {
+                    zfbz.setText(item.toString());
+                    zfbz.setTag(item);
+                }
+            }
+            bzje.setText(caseItem.BuTiePrice + "");
         }
     }
 
@@ -419,13 +439,15 @@ public class Office41_4Activity extends BaseUserActivity {
                 .addParam("CaseId", caseItem == null?"0":caseItem.ID + "")
                 .addParam("ColsV1", selectedCaseCols.Fid + "")
                 .addParam("ColsV2", selectedCaseCols.ID + "")
+                .addParam("UsersList", zyry.getText().toString())
                 .addParam("BegTime", sarq.getText().toString())         // 收案日期
                 .addParam("AyMake", ay.getText().toString())            // 案由
-                .addParam("Wtr", wtr.getText().toString())              // 委托人
-                .addParam("TDfdsr", dfdsr.getText().toString())         // 对方当事人
+                .addParam("CustName", wtr.getText().toString())         // 委托人
+                .addParam("DCustName", dfdsr.getText().toString())      // 对方当事人
                 .addParam("Ssbd", ssbd.getText().toString())            // 标的
-                .addParam("PayCols", sffs.getText().toString())         // 收费方式
-                .addParam("Price", dlf.getText().toString())            // 代理费
+                .addParam("PayCols", ((BaseBean)sffs.getTag()).ID + "") // 收费方式
+                .addParam("FengXianMake", fxsfsm.getText().toString())
+                .addParam("CasePrice", dlf.getText().toString())        // 代理费
                 .addParam("Slfy", slbm.getText().toString())
                 .addParam("Des", ajbz.getText().toString())             // 备注说明
                 .addParam("IsFrom", ((BaseBean)sfzp.getTag()).ID + "")

@@ -1,5 +1,7 @@
 package com.yunfa365.lawservice.app.pojo;
 
+import com.google.gson.annotations.JsonAdapter;
+import com.yunfa365.lawservice.app.gson.FormatDateJsonAdapter;
 import com.yunfa365.lawservice.app.pojo.base.CommonItem;
 
 import java.io.Serializable;
@@ -25,6 +27,7 @@ public class Case implements Serializable, CommonItem {
     public double CasePrice;
     public double ZPrice;
     public int IsFrom;    //是否指派
+    @JsonAdapter(FormatDateJsonAdapter.class)
     public String BegTime;
     public int Stat;
     public int EndStat;
@@ -37,7 +40,6 @@ public class Case implements Serializable, CommonItem {
     public String EndStatTxt;
     public String TempCols; // "MS"
 
-    public double Price;
     public String CaseID;
     public String Title;
     public String LxRen;
@@ -51,16 +53,19 @@ public class Case implements Serializable, CommonItem {
     public String SscxTxt;
     public int Ssdw;    // 诉讼地位
     public String SsdwTxt;
-    public String Begtime;
     public String Des;
     public int PayCols;
     public String FengXianMake;
-    public String IsBuTie;     // 就否政府补助
+    public int IsBuTie;     // 就否政府补助
     public double BuTiePrice;  // 补助金额
     public int BillStat;       // 开票状态
+    @JsonAdapter(FormatDateJsonAdapter.class)
     public String CaseTime1;
+    @JsonAdapter(FormatDateJsonAdapter.class)
     public String CaseTime2;
+    @JsonAdapter(FormatDateJsonAdapter.class)
     public String CaseTime3;
+    @JsonAdapter(FormatDateJsonAdapter.class)
     public String CaseTime4;
     public String UsersList; // 执业人员ID
     public String UsersListTxt; // 执业人员

@@ -52,6 +52,8 @@ import java.util.List;
 
 /**
  * Created by Administrator on 2016/4/20.
+ *
+ * 咨询代写文书
  */
 @EActivity(R.layout.activity_office41_5)
 public class Office41_5Activity extends BaseUserActivity {
@@ -173,13 +175,16 @@ public class Office41_5Activity extends BaseUserActivity {
             sffs.setText(AppCst.sffss[1].toString());
             sffs.setTag(AppCst.sffss[1]);
         } else {
+            anh.setText(caseItem.CaseIdTxt);
             ajlx.setText(caseItem.ColsV2Txt);
-            fwrc.setText(caseItem.Ssbd);
+            zyry.setText(caseItem.UsersListTxt);
+            sarq.setText(caseItem.BegTime);
             dssx.setText(caseItem.AyMake);
+            fwrc.setText(caseItem.Ssbd);
+            wtr.setText(caseItem.CustIdTxt);
             sffs.setText(caseItem.PayColsTxt);
             sffs.setTag(new BaseBean(caseItem.PayCols, null));
-            dlf.setText(caseItem.Price + "");
-            wtr.setText(caseItem.CustIdTxt);
+            dlf.setText(caseItem.CasePrice + "");
             bzsm.setText(caseItem.Des);
         }
     }
@@ -264,11 +269,14 @@ public class Office41_5Activity extends BaseUserActivity {
                 .addParam("CaseId", caseItem == null?"0":caseItem.ID + "")
                 .addParam("ColsV1", selectedCaseCols.Fid + "")
                 .addParam("ColsV2", selectedCaseCols.ID + "")
-                .addParam("Ssbd", fwrc.getText().toString())        //服务人次
+                .addParam("UsersList", zyry.getText().toString())
+                .addParam("BegTime", sarq.getText().toString())         // 收案日期
                 .addParam("AyMake", dssx.getText().toString())      //咨询/代书事项
-                .addParam("Price", dlf.getText().toString())       //服务费用
-                .addParam("TWtr", wtr.getText().toString())        //委托人
-                .addParam("Des", bzsm.getText().toString())         //备注说明
+                .addParam("Ssbd", fwrc.getText().toString())        //服务人次
+                .addParam("CustName", wtr.getText().toString())         // 委托人
+                .addParam("PayCols", ((BaseBean)sffs.getTag()).ID + "") // 收费方式
+                .addParam("CasePrice", dlf.getText().toString())        // 代理费
+                .addParam("Des", bzsm.getText().toString())             // 备注说明
                 ;
 
         AppRequest request = build.create();
