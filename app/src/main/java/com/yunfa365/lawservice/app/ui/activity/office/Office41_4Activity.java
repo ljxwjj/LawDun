@@ -282,7 +282,7 @@ public class Office41_4Activity extends BaseUserActivity {
             @Override
             public boolean isValid(EditText view) {
                 String hasBz = zfbz.getText().toString();
-                if (zfbzs[1].equals(hasBz)) {
+                if (zfbzs[0].Title.equals(hasBz)) {
                     return true;
                 }
                 String je = view.getText().toString();
