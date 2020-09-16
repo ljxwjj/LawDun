@@ -1,6 +1,8 @@
 package com.yunfa365.lawservice.app.pojo;
 
 
+import com.google.gson.annotations.JsonAdapter;
+import com.yunfa365.lawservice.app.gson.UrlDecoderJsonAdapter;
 import com.yunfa365.lawservice.app.utils.FileUtil;
 
 import java.io.Serializable;
@@ -10,6 +12,7 @@ public class CaseFile implements Serializable {
 
     public String ID;
     public String FileName;
+    @JsonAdapter(UrlDecoderJsonAdapter.class)
     public String FilePath;
 
     public CaseFile() {

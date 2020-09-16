@@ -25,7 +25,6 @@ import org.androidannotations.annotations.ViewById;
  */
 @EFragment(R.layout.fragment_custom_list_right_menu)
 public class CustomMenuRightFragment extends Fragment {
-    private static final TSearchType[] jsfss = {new TSearchType(1, "根据委托人"), new TSearchType(4, "根据电话")};
 
     @ViewById(R.id.base_id_back)
     View mBackView;
@@ -35,9 +34,6 @@ public class CustomMenuRightFragment extends Fragment {
 
     @ViewById
     EditText gjc;
-
-    @ViewById
-    EditText jsfs;
 
     private DrawerActivity mActivity;
 
@@ -59,8 +55,7 @@ public class CustomMenuRightFragment extends Fragment {
     }
 
     private void initData() {
-        jsfs.setText(jsfss[0].toString());
-        jsfs.setTag(jsfss[0]);
+
     }
 
     @Click(android.R.id.button1)
@@ -75,17 +70,5 @@ public class CustomMenuRightFragment extends Fragment {
     private void hideKeyBord(View v) {
         InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-    }
-
-    @Click(R.id.jsfs)
-    void jsfsOnClick(View view) {
-        new SpinnerDialog(mActivity, "检索方式", jsfss, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                TSearchType fs = jsfss[which];
-                jsfs.setText(fs.toString());
-                jsfs.setTag(fs);
-            }
-        }).show();
     }
 }

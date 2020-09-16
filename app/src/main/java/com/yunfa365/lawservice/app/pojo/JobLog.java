@@ -1,5 +1,7 @@
 package com.yunfa365.lawservice.app.pojo;
 
+import com.google.gson.annotations.JsonAdapter;
+import com.yunfa365.lawservice.app.gson.UrlDecoderJsonAdapter;
 import com.yunfa365.lawservice.app.pojo.base.CommonItem;
 
 import java.io.Serializable;
@@ -16,6 +18,7 @@ public class JobLog implements Serializable, CommonItem {
     public String CustName;
     public String BegTime;
     public String EndTime;
+    @JsonAdapter(UrlDecoderJsonAdapter.class)
     public String FilePath;
     public String Des;
     public String AddTime;

@@ -22,7 +22,7 @@ import org.androidannotations.annotations.ViewById;
 /**
  * Created by Administrator on 2016/5/9.
  */
-@EFragment(R.layout.fragment_custom_list_right_menu)
+@EFragment(R.layout.fragment_auditing_list_right_menu)
 public class MenuRightFragment extends Fragment {
     private static final TSearchType[] jsfss = {new TSearchType(1, "根据委托人"), new TSearchType(4, "根据电话")};
 
@@ -52,7 +52,7 @@ public class MenuRightFragment extends Fragment {
                 mActivity.getDrawerLayout().closeDrawers();
             }
         });
-        mTitleTxt.setText("客户检索");
+        mTitleTxt.setText("高级搜索");
 
         initData();
     }

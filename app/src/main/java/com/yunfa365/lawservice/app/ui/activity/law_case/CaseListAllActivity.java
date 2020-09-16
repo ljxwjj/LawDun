@@ -74,7 +74,6 @@ public class CaseListAllActivity extends DrawerActivity {
     private String keyword4 = "";
     private String keyword5 = "";
     private String keyword6 = "";
-    private String keyword7 = "";
 
     private CommonFooterViewHolder mFooterViewHolder;
 
@@ -175,13 +174,12 @@ public class CaseListAllActivity extends DrawerActivity {
         final int loadPage = mPage + 1;
 
         AppRequest request = new AppRequest.Build("api/Case/list_All")
-                .addParam("FullName", keyword1)
-                .addParam("CaseIdTxt", keyword2)
-                .addParam("CustName", keyword3)
-                .addParam("DCustName", keyword4)
-                .addParam("BegTime", keyword5)
-                .addParam("EndTime", keyword6)
-                .addParam("Stat", keyword7)
+                .addParam("CaseIdTxt", keyword1)
+                .addParam("CustName", keyword2)
+                .addParam("DCustName", keyword3)
+                .addParam("BegTime", keyword4)
+                .addParam("EndTime", keyword5)
+                .addParam("Stat", keyword6)
                 .addParam("PageIndex", loadPage+"")
                 .create();
         new HttpFormFuture.Builder(this)
@@ -230,14 +228,13 @@ public class CaseListAllActivity extends DrawerActivity {
 
     //String title, String type, String cols, String caseYear, String auditStat
     public void reLoadData(String... params) {
-        if (params != null && params.length == 7) {
+        if (params != null && params.length == 6) {
             keyword1 = params[0];
             keyword2 = params[1];
             keyword3 = params[2];
             keyword4 = params[3];
             keyword5 = params[4];
             keyword6 = params[5];
-            keyword7 = params[6];
         }
         mPage = 0;
         mAdapter.mData.clear();

@@ -2,6 +2,7 @@ package com.yunfa365.lawservice.app.ui.activity.official;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -12,7 +13,9 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.yunfa365.lawservice.app.R;
+import com.yunfa365.lawservice.app.pojo.TSearchType;
 import com.yunfa365.lawservice.app.ui.activity.base.DrawerActivity;
+import com.yunfa365.lawservice.app.ui.dialog.SpinnerDialog;
 import com.yunfa365.lawservice.app.utils.DateUtil;
 import com.yunfa365.lawservice.app.utils.StringUtil;
 
@@ -29,6 +32,11 @@ import java.util.Date;
  */
 @EFragment(R.layout.fragment_official_list_right_menu)
 public class MenuRightFragment extends Fragment {
+    private static final TSearchType[] spzts = {new TSearchType(1000, "全部")
+            , new TSearchType(0, "待审批")
+            , new TSearchType(1, "审批通过")
+            , new TSearchType(2, "未通过")};
+
 
     @ViewById(R.id.base_id_back)
     View mBackView;
@@ -43,13 +51,13 @@ public class MenuRightFragment extends Fragment {
     EditText keyword2;
 
     @ViewById
-    EditText keyword3;
+    EditText ksrq;
 
     @ViewById
-    EditText keyword4;
+    EditText jzrq;
 
     @ViewById
-    EditText keyword5;
+    EditText spzt;
 
     private DrawerActivity mActivity;
 
@@ -65,8 +73,8 @@ public class MenuRightFragment extends Fragment {
                 mActivity.getDrawerLayout().closeDrawers();
             }
         });
-        mTitleTxt.setText("客户检索");
-
+        mTitleTxt.setText("高级搜索");
+        spzt.setTag(spzts[0]);
         initData();
     }
 
@@ -81,9 +89,9 @@ public class MenuRightFragment extends Fragment {
 
         String k1 = keyword1.getText().toString();
         String k2 = keyword2.getText().toString();
-        String k3 = keyword3.getText().toString();
-        String k4 = keyword4.getText().toString();
-        String k5 = keyword5.getText().toString();
+        String k3 = ksrq.getText().toString();
+        String k4 = jzrq.getText().toString();
+        String k5 = ((TSearchType)spzt.getTag()).id + "";
         mActivity.reLoadData(k1, k2, k3, k4, k5);
     }
 
@@ -93,7 +101,7 @@ public class MenuRightFragment extends Fragment {
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
-    @Click({R.id.keyword4, R.id.keyword5})
+    @Click({R.id.ksrq, R.id.jzrq})
     void keyword45OnClick(EditText keywordView) {
         String rq = keywordView.getText().toString();
         final Calendar calendar = Calendar.getInstance();
@@ -112,5 +120,17 @@ public class MenuRightFragment extends Fragment {
                 keywordView.setText(rq);
             }
         },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
+    }
+
+    @Click(R.id.spzt)
+    void spztOnclick(View view) {
+        new SpinnerDialog(mActivity, "审批状态", spzts, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                TSearchType fs = spzts[which];
+                spzt.setText(fs.toString());
+                spzt.setTag(fs);
+            }
+        }).show();
     }
 }

@@ -27,7 +27,7 @@
                     android:layout_width="wrap_content"
                     android:minWidth="84dp"
                     android:layout_height="wrap_content"
-                    android:text="发票抬头："
+                    android:text="案号搜索："
                     android:textColor="@color/common_color_dark_gray"
                     android:textSize="@dimen/common_size_small" />
 
@@ -57,7 +57,7 @@
                     android:layout_width="wrap_content"
                     android:minWidth="84dp"
                     android:layout_height="wrap_content"
-                    android:text="执业人员："
+                    android:text="用印名称："
                     android:textColor="@color/common_color_dark_gray"
                     android:textSize="@dimen/common_size_small" />
 
@@ -86,41 +86,12 @@
                     android:layout_width="wrap_content"
                     android:minWidth="84dp"
                     android:layout_height="wrap_content"
-                    android:text="案号搜索："
-                    android:textColor="@color/common_color_dark_gray"
-                    android:textSize="@dimen/common_size_small" />
-
-                <EditText
-                    android:id="@+id/keyword3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:hint=""
-                    android:imeOptions="actionNext"
-                    android:singleLine="true"
-                    android:textColor="@color/common_text_color"
-                    android:textColorHint="@color/common_text_color_hint"
-                    android:textSize="@dimen/common_size_small" />
-            </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="@color/common_text_color_hint"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:minWidth="84dp"
-                    android:layout_height="wrap_content"
                     android:text="申请日期："
                     android:textColor="@color/common_color_dark_gray"
                     android:textSize="@dimen/common_size_small" />
 
                 <EditText
-                    android:id="@+id/keyword4"
+                    android:id="@+id/ksrq"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
@@ -152,7 +123,7 @@
                     android:textSize="@dimen/common_size_small" />
 
                 <EditText
-                    android:id="@+id/keyword5"
+                    android:id="@+id/jzrq"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
@@ -167,6 +138,38 @@
                     android:drawableRight="@mipmap/right_arrow" />
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/common_text_color_hint"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:minWidth="84dp"
+                    android:layout_height="wrap_content"
+                    android:text="审批状态："
+                    android:textColor="@color/common_color_dark_gray"
+                    android:textSize="@dimen/common_size_small" />
+
+                <EditText
+                    android:id="@+id/spzt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:focusable="false"
+                    android:hint="选择审批状态"
+                    android:imeOptions="actionNext"
+                    android:inputType="none"
+                    android:singleLine="true"
+                    android:textColor="@color/common_text_color"
+                    android:textColorHint="@color/common_text_color_hint"
+                    android:textSize="@dimen/common_size_small"
+                    android:drawableRight="@mipmap/right_arrow" />
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"

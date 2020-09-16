@@ -27,7 +27,7 @@
                     android:layout_width="wrap_content"
                     android:minWidth="84dp"
                     android:layout_height="wrap_content"
-                    android:text="委托人名称："
+                    android:text="关 键 词："
                     android:textColor="@color/common_color_dark_gray"
                     android:textSize="@dimen/common_size_small" />
 
@@ -43,6 +43,38 @@
                     android:textColor="@color/common_text_color"
                     android:textColorHint="@color/common_text_color_hint"
                     android:textSize="@dimen/common_size_small" />
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/common_text_color_hint"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:minWidth="84dp"
+                    android:layout_height="wrap_content"
+                    android:text="检索方式："
+                    android:textColor="@color/common_color_dark_gray"
+                    android:textSize="@dimen/common_size_small" />
+
+                <EditText
+                    android:id="@+id/jsfs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:focusable="false"
+                    android:hint="请选择关键词检索方式"
+                    android:imeOptions="actionNext"
+                    android:inputType="none"
+                    android:singleLine="true"
+                    android:textColor="@color/common_text_color"
+                    android:textColorHint="@color/common_text_color_hint"
+                    android:textSize="@dimen/common_size_small"
+                    android:drawableRight="@mipmap/right_arrow" />
             </LinearLayout>
 
             <View

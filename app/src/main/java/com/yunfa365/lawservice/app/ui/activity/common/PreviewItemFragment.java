@@ -9,8 +9,11 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
 import com.yunfa365.lawservice.app.GlideApp;
 import com.yunfa365.lawservice.app.R;
+import com.yunfa365.lawservice.app.pojo.AppGlobal;
 import com.zhihu.matisse.listener.OnFragmentInteractionListener;
 
 import it.sephiroth.android.library.imagezoom.ImageViewTouch;
@@ -44,7 +47,8 @@ public class PreviewItemFragment extends Fragment {
 
         ImageViewTouch image = view.findViewById(R.id.image_view);
         image.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
-        GlideApp.with(image).load(item)
+        String url = String.format("%s%sapp_lawid=%d&app_uid=%d", item, item.contains("?")?"&":"?", AppGlobal.mUser.LawId, AppGlobal.mUser.ID);
+        GlideApp.with(image).load(url)
                 .placeholder(R.mipmap.img_loading)
                 .error(R.mipmap.img_loading)
                 .into(image);

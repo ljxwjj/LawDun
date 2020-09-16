@@ -95,9 +95,10 @@ class FragmentPage4 extends BaseFragment {
 
         for (GridItem item : mGridItems) {
             View view = LinearLayout.inflate(mActivity, R.layout.tools_grid_item, null);
-            ImageView imageView = view.findViewById(R.id.image);
+            TextView imageView = view.findViewById(R.id.image);
             TextView textView = view.findViewById(R.id.text);
-            imageView.setImageResource(ResourceUtil.getMipmapId(mActivity, item.image));
+            String image = StringUtil.unescape(item.image);
+            imageView.setText(image);
             textView.setText(item.name);
             myGridLayout.addView(view);
             view.setTag(item);

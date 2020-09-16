@@ -172,11 +172,11 @@ public class OfficialListMyActivity extends DrawerActivity {
         final int loadPage = mPage + 1;
 
         AppRequest request = new AppRequest.Build("api/official/list_My")
-                .addParam("BTitle", keyword1)
-                .addParam("x", keyword2)
-                .addParam("CaseIdTxt", keyword3)
-                .addParam("BegTime", keyword4)
-                .addParam("EndTime", keyword5)
+                .addParam("CaseIdTxt", keyword1)
+                .addParam("OName", keyword2)
+                .addParam("BegTime", keyword3)
+                .addParam("EndTime", keyword4)
+                .addParam("Stat", keyword5)
                 .addParam("PageIndex", loadPage+"")
                 .create();
         new HttpFormFuture.Builder(this)

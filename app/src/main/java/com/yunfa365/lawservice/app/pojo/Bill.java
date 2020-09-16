@@ -1,5 +1,7 @@
 package com.yunfa365.lawservice.app.pojo;
 
+import com.google.gson.annotations.JsonAdapter;
+import com.yunfa365.lawservice.app.gson.UrlDecoderJsonAdapter;
 import com.yunfa365.lawservice.app.pojo.base.CommonItem;
 
 public class Bill implements CommonItem {
@@ -18,6 +20,7 @@ public class Bill implements CommonItem {
     public int BComType;
     public int BillCols;
     public String SwNums;
+    @JsonAdapter(UrlDecoderJsonAdapter.class)
     public String FilePath;
     public String BankName;
     public String BankNums;

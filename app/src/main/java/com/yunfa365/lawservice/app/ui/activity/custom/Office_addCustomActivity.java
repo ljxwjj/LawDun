@@ -457,30 +457,36 @@ public class Office_addCustomActivity extends BaseUserActivity {
     private void doCommit() {
         LogUtil.d("+++++++++++doCommit+++");
 
+        int sheng = 0, shi = 0, qu = 0;
         DiQu[] dqs = (DiQu[]) ssqy.getTag();
+        if (dqs != null) {
+            sheng = dqs[0].id;
+            shi = dqs[1].id;
+            qu = dqs[2].id;
+        }
         FormUploadFile file = (FormUploadFile) xgwj.getTag();
 
         AppRequest.Build build = new AppRequest.Build("api/Custom/Add")
+                .addParam("Cid", customItem == null?"0":customItem.ID + "")
                 .addParam("Title", wtr.getText().toString())              // 客户名称
                 .addParam("CaseUName", dsr.getText().toString())       // 当事人名称
                 .addParam("Mobile", sjhm.getText().toString())
                 .addParam("CustCols", ((CusTomCols) khnx.getTag()).ID + "")          // 客户类型
+                .addParam("CustRanks", ((YesNo)khdj.getTag()).id + "")
                 .addParam("UNums", xgzj.getText().toString())       // 身份证号
                 .addParam("Make", ajbz.getText().toString())        // 备注
                 .addParam("YwRen", ywlxr.getText().toString())
                 .addParam("YwRenZhiWu", zw.getText().toString())
                 .addParam("FzRen", zyfzr.getText().toString())
                 .addParam("YingXiangLi", dqyxl.getText().toString())
-                .addParam("Phone", gddh.getText().toString())       // 固定电话
-                .addParam("Email", yx.getText().toString())
-                .addParam("CustRanks", ((YesNo)khdj.getTag()).id + "")
                 .addParam("WeiXinNums", wxhm.getText().toString())
                 .addParam("QQNums", qqhm.getText().toString())
-                .addParam("ProvinceId", dqs[0].id + "")   // 省
-                .addParam("CityId", dqs[1].id + "")    // 市
-                .addParam("AreaId", dqs[2].id + "")
+                .addParam("Phone", gddh.getText().toString())       // 固定电话
+                .addParam("Email", yx.getText().toString())
+                .addParam("ProvinceId", sheng + "")   // 省
+                .addParam("CityId", shi + "")    // 市
+                .addParam("AreaId", qu + "")
                 .addParam("Address", xxdz.getText().toString());
-        if (customItem != null) build.addParam("Cid", customItem.ID + "");
         if (file != null) build.addFile(file);
 
         AppRequest request = build.create();
@@ -502,6 +508,9 @@ public class Office_addCustomActivity extends BaseUserActivity {
                             data.putExtra("customItem", custom);
                             setResult(RESULT_OK, data);
                             finish();
+                            CustomInfoActivity_.intent(Office_addCustomActivity.this)
+                                    .ID(custom.ID)
+                                    .start();
                         } else {
                             AppUtil.showToast(Office_addCustomActivity.this, resp.Message);
                         }

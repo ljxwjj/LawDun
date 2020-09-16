@@ -32,6 +32,7 @@ import com.yunfa365.lawservice.app.ui.activity.auditing.AuditedListActivity_;
 import com.yunfa365.lawservice.app.ui.activity.auditing.AuditingListActivity_;
 import com.yunfa365.lawservice.app.ui.activity.custom.CustomListActivity_;
 import com.yunfa365.lawservice.app.ui.activity.custom.DfCustomListActivity_;
+import com.yunfa365.lawservice.app.ui.activity.custom.Office_addCustomActivity_;
 import com.yunfa365.lawservice.app.ui.activity.finance.BillListAllActivity_;
 import com.yunfa365.lawservice.app.ui.activity.finance.BillListMyActivity_;
 import com.yunfa365.lawservice.app.ui.activity.joblog.JoblogAddActivity;
@@ -309,6 +310,9 @@ class FragmentPage3 extends BaseFragment {
                 break;
             case 21:
                 SealManagerActivity_.intent(this).start();
+                break;
+            case 22:
+                Office_addCustomActivity_.intent(this).start();
                 break;
             case 9991:
                 AuditingListActivity_.intent(this).start();

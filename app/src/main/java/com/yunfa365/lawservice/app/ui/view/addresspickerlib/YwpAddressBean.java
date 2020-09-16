@@ -20,7 +20,7 @@ public class YwpAddressBean {
     }
 
     private YwpAddressBean(Context context) {
-        String diquStr = FileUtil.getRawFileContent(context.getResources(), R.raw.xietong_diqu);
+        String diquStr = FileUtil.getRawFileContent(context.getResources(), R.raw.citys);
         allData = StringUtil.toObjectList(diquStr, DiQu.class);
     }
 

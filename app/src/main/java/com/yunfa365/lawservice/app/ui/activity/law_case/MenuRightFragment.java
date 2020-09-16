@@ -44,9 +44,6 @@ public class MenuRightFragment extends Fragment {
     TextView mTitleTxt;
 
     @ViewById
-    EditText zyry;
-
-    @ViewById
     EditText ahss;
 
     @ViewById
@@ -92,18 +89,17 @@ public class MenuRightFragment extends Fragment {
         hideKeyBord();
         mActivity.getDrawerLayout().closeDrawers();
 
-        String k1 = zyry.getText().toString();
         String k2 = ahss.getText().toString();
         String k3 = wtr.getText().toString();
         String k4 = dfdsr.getText().toString();
         String k5 = ksrq.getText().toString();
         String k6 = jzrq.getText().toString();
         String k7 = ((TSearchType)spzt.getTag()).id + "";
-        mActivity.reLoadData(k1, k2, k3, k4, k5, k6, k7);
+        mActivity.reLoadData(k2, k3, k4, k5, k6, k7);
     }
 
     public void hideKeyBord() {
-        View v = zyry;
+        View v = ahss;
         InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }

@@ -89,7 +89,7 @@ public class JoblogListActivity extends DrawerActivity {
                 finish();
             }
         });
-        mTitleTxt.setText("我的案件");
+        mTitleTxt.setText("工作日志");
 
         menuRightFragment = MenuRightFragment_.builder().build();
         getSupportFragmentManager().beginTransaction()

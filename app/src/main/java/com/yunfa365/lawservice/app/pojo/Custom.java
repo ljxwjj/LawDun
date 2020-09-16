@@ -1,5 +1,7 @@
 package com.yunfa365.lawservice.app.pojo;
 
+import com.google.gson.annotations.JsonAdapter;
+import com.yunfa365.lawservice.app.gson.UrlDecoderJsonAdapter;
 import com.yunfa365.lawservice.app.pojo.base.CommonItem;
 
 import java.io.Serializable;
@@ -29,6 +31,7 @@ public class Custom implements Serializable, CommonItem {
     public String Model1;
     public String Model2;
     public String Model3;
+    @JsonAdapter(UrlDecoderJsonAdapter.class)
     public String FilePath;
 
     public String UsersFullName;
