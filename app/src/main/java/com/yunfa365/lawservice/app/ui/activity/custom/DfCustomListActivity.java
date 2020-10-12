@@ -69,7 +69,7 @@ public class DfCustomListActivity extends DrawerActivity {
     @ViewById(R.id.id_drawerLayout)
     DrawerLayout mDrawerLayout;
 
-    private CustomMenuRightFragment menuRightFragment;
+    private DfCustomMenuRightFragment menuRightFragment;
 
     private String keyword1 = "";
 
@@ -88,7 +88,7 @@ public class DfCustomListActivity extends DrawerActivity {
         });
         mTitleTxt.setText("对方当事人");
 
-        menuRightFragment = CustomMenuRightFragment_.builder().build();
+        menuRightFragment = DfCustomMenuRightFragment_.builder().build();
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.id_right_menu, menuRightFragment)
                 .commit();

@@ -3,12 +3,19 @@ package com.yunfa365.lawservice.app.ui.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.URLSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.android.agnetty.core.AgnettyFutureListener;
 import com.android.agnetty.core.AgnettyResult;
@@ -34,6 +41,9 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.Calendar;
+import java.util.Date;
 
 @EFragment(R.layout.fragment_page5)
 class FragmentPage5 extends BaseFragment {
@@ -61,6 +71,12 @@ class FragmentPage5 extends BaseFragment {
 
     @ViewById
     TextView billValue;
+
+    @ViewById
+    TextView user_agreement;
+
+    @ViewById
+    TextView copyright;
 
     private BaseUserActivity mActivity;
 
@@ -107,6 +123,30 @@ class FragmentPage5 extends BaseFragment {
                 logout();
             }
         });
+
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        int year = calendar.get(Calendar.YEAR);
+
+        copyright.setText(getString(R.string.app_copyright, year));
+
+        user_agreement.setMovementMethod(LinkMovementMethod.getInstance());
+        CharSequence text = user_agreement.getText();
+        Spannable sp = (Spannable) user_agreement.getText();
+        URLSpan[] urls = sp.getSpans(0, text.length(), URLSpan.class);
+        SpannableStringBuilder style = new SpannableStringBuilder(text);
+        style.clearSpans();
+        for (final URLSpan url : urls) {
+            ClickableSpan myURLSpan = new ClickableSpan() {
+                @Override
+                public void onClick(@NonNull View widget) {
+                    WebActivity_.intent(FragmentPage5.this).url(url.getURL()).start();
+                }
+            };
+            style.setSpan(myURLSpan, sp.getSpanStart(url), sp.getSpanEnd(url), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        user_agreement.setText(style);
 
         loadData();
     }

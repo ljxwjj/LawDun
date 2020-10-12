@@ -75,7 +75,7 @@ public class MenuRightFragment extends Fragment {
                 mActivity.getDrawerLayout().closeDrawers();
             }
         });
-        mTitleTxt.setText("客户检索");
+        mTitleTxt.setText("高级检索");
         spzt.setTag(spzts[0]);
         initData();
     }

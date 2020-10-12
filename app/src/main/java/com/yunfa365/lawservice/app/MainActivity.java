@@ -1,17 +1,28 @@
 package com.yunfa365.lawservice.app;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.URLSpan;
 import android.view.View;
 import android.widget.TextView;
 
 import com.yunfa365.lawservice.app.pojo.AppGlobal;
 import com.yunfa365.lawservice.app.ui.activity.HomeActivity_;
 import com.yunfa365.lawservice.app.ui.activity.LoginActivity_;
+import com.yunfa365.lawservice.app.ui.activity.WebActivity_;
 import com.yunfa365.lawservice.app.utils.ScreenUtil;
+import com.yunfa365.lawservice.app.utils.SpUtil;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,7 +47,13 @@ public class MainActivity extends AppCompatActivity {
         mHandler = new MyHandler();
 
         setContentView(R.layout.activity_main);
-        goHome();
+
+        boolean agreementFlag = SpUtil.getUserAgreementFlag(this);
+        if (agreementFlag) {
+            goHome();
+        } else {
+            showUserAgreementDialog();
+        }
     }
 
     private void goHome() {
@@ -68,5 +85,43 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private void showUserAgreementDialog() {
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setView(R.layout.dialog_user_agreement).setCancelable(false)
+                .setPositiveButton("我同意", (dialog12, which) -> {
+                    dialog12.dismiss();
+                    SpUtil.setUserAgreementFlag(MainActivity.this);
+                    goHome();
+                })
+                .setNegativeButton("暂不使用", (dialog1, which) -> finish())
+                .create();
+        dialog.show();
+        TextView textView = dialog.findViewById(R.id.text);
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
+        CharSequence text = textView.getText();
+        Spannable sp = (Spannable) textView.getText();
+        URLSpan[] urls = sp.getSpans(0, text.length(), URLSpan.class);
+        SpannableStringBuilder style = new SpannableStringBuilder(text);
+        style.clearSpans();
+        for (final URLSpan url : urls) {
+            ClickableSpan myURLSpan = new ClickableSpan() {
+                @Override
+                public void onClick(@NonNull View widget) {
+                    WebActivity_.intent(MainActivity.this).url(url.getURL()).start();
+                }
+
+                @Override
+                public void updateDrawState(TextPaint ds) {
+                    super.updateDrawState(ds);
+                    if (ds != null) {
+                        ds.setUnderlineText(false);
+                    }
+                }
+            };
+            style.setSpan(myURLSpan, sp.getSpanStart(url), sp.getSpanEnd(url), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        textView.setText(style);
     }
 }
