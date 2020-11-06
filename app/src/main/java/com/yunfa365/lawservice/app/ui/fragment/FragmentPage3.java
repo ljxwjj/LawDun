@@ -161,11 +161,7 @@ class FragmentPage3 extends BaseFragment {
             return;
         }
         _contentView_.setTag(new Object());
-        String title = AppGlobal.mUser.FullName;
-        if (TextUtils.isEmpty(title)) {
-            title = "e律师";
-        }
-        mTitleTxt.setText(title);
+        mTitleTxt.setText("律盾");
         mActivity = (HomeActivity)getActivity();
 
         String homeBannerInfo = SpUtil.getHomeBannerInfo(mActivity);

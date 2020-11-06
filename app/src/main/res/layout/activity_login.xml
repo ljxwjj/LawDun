@@ -128,6 +128,21 @@
             android:textColor="#66ffffff"/>
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/shiyongBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/center"
+        android:drawableLeft="@mipmap/shiyong"
+        android:drawablePadding="9.5dp"
+        android:gravity="center"
+        android:text="申请试用"
+        android:textColor="#42A8FF"
+        android:textSize="@dimen/common_size_big"/>
+
     <ImageView
         android:id="@+id/login_logo"
         android:layout_width="wrap_content"

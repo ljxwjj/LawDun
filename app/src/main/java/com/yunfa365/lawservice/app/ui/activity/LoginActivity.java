@@ -131,6 +131,11 @@ class LoginActivity extends BaseActivity {
         RegisterActivity_.intent(this).start();
     }
 
+    @Click(R.id.shiyongBtn)
+    void shiyongBtnOnClick() {
+        String url = "https://www.lawdun.com/taste.aspx";
+        WebActivity_.intent(this).url(url).start();
+    }
 
     private void doCommit() {
         String phone = inputPhone.getText().toString();
