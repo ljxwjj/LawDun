@@ -58,7 +58,7 @@ public class HomeActivity extends BaseUserActivity {
     String iconFonts;
     private String[] iconFontArray;
 
-    private String texts[] = { "消息", "办公", "应用", "我" };
+    private String texts[] = { "智能印章", "我的" };
     private Class fragmentArray[];
     private TextView fontIcons[] = new TextView[5];
 
@@ -71,8 +71,6 @@ public class HomeActivity extends BaseUserActivity {
         TextView textView = (TextView) view.findViewById(R.id.text);
         fontIcons[i] = imageView;
 
-        // 设置图标
-        //imageView.setImageResource(imageButton[i]);
         imageView.setText(iconFontArray[i]);
         // 设置标题
         textView.setText(texts[i]);
@@ -82,16 +80,11 @@ public class HomeActivity extends BaseUserActivity {
     @AfterViews
     void init(){
         LogUtil.e("-------------------------------------------------------------");
-//        LogUtil.d(getApplicationContext().getFilesDir().getAbsolutePath());             /data/data/com.lvlian.elvshi/files
-//        LogUtil.d(getApplicationContext().getPackageResourcePath());                    /data/app/com.lvlian.elvshi-2/base.apk
-//        LogUtil.d(getApplicationContext().getDatabasePath("db").getAbsolutePath());     /data/data/com.lvlian.elvshi/databases/db
-
         if (AppGlobal.mUser == null) {
             gotoLogin();
             return;
         }
-        fragmentArray = new Class[]{ FragmentPage1_.class, FragmentPage3_.class,
-                FragmentPage4_.class, FragmentPage5_.class };
+        fragmentArray = new Class[]{ FragmentPage3_.class, FragmentPage5_.class };
         iconFontArray = iconFonts.split(",");
         fragmentTabHost.setup(this, getSupportFragmentManager(), R.id.maincontent);
         for (int i = 0; i < texts.length; i++) {
@@ -103,7 +96,7 @@ public class HomeActivity extends BaseUserActivity {
         }
         fragmentTabHost.getTabWidget().setDividerDrawable(null);
 
-        if (mDefaultTab >=0 || mDefaultTab <=3) {
+        if (mDefaultTab >=0 || mDefaultTab <=1) {
             fragmentTabHost.setCurrentTab(mDefaultTab);
         }
         // 请求检查更新

@@ -38,7 +38,7 @@
     <string name="footer_hint_load_ready">释放立即加载更多</string>
 
     <string name="contacts_icon">&#xe605;</string>
-    <string name="icon_fonts">&#xe601;,&#xe603;,&#xe602;,&#xe604;</string>
+    <string name="icon_fonts">&#xe603;,&#xe604;</string>
     <string name="forword_icon">&#xe651;</string>
     <string name="xxx">xxx</string>
 </resources>
