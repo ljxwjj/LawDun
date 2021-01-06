@@ -45,12 +45,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
-import com.yanzhenjie.loading.dialog.LoadingDialog;
 import com.yunfa365.lawservice.app.R;
 import com.yunfa365.lawservice.app.pojo.event.GaiZhang;
 import com.yunfa365.lawservice.app.pojo.event.GaiZhangPhoto;
 import com.yunfa365.lawservice.app.ui.activity.base.BaseActivity;
 import com.yunfa365.lawservice.app.ui.view.AutoTextureView;
+import com.yunfa365.lawservice.app.utils.BitmapTools;
 import com.yunfa365.lawservice.app.utils.CompareSizesByArea;
 import com.yunfa365.lawservice.app.utils.UriUtil;
 
@@ -172,7 +172,7 @@ public class CameraActivity extends BaseActivity {
 
     private ImageReader mImageReader;
 
-    private File mFile;
+//    private File mFile;
 
     /**
      * 照片集合
@@ -233,7 +233,7 @@ public class CameraActivity extends BaseActivity {
     @Click(R.id.submitBtn)
     void submitBtnOnClick() {
         finish();
-        //EventBus.getDefault().post(new GaiZhang());
+//        runOnUiThread(() -> EventBus.getDefault().post(new GaiZhang()));
     }
 
     protected void initView() {
@@ -253,10 +253,7 @@ public class CameraActivity extends BaseActivity {
     }
 
     protected void initData() {
-
         fileName = System.currentTimeMillis() + ".jpg";
-        mFile = new File(getExternalFilesDir(null), fileName);
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -336,10 +333,14 @@ public class CameraActivity extends BaseActivity {
             = new ImageReader.OnImageAvailableListener() {
         @Override
         public void onImageAvailable(ImageReader reader) {
+            initData();
+            File mFile = new File(getExternalFilesDir(null), fileName);
+
             Image mImage = reader.acquireNextImage();
             ByteBuffer buffer = mImage.getPlanes()[0].getBuffer();
             byte[] bytes = new byte[buffer.remaining()];
             buffer.get(bytes);
+            bytes = BitmapTools.scaleZoomImage(bytes, 1500, 1500);
             FileOutputStream output = null;
             try {
                 output = new FileOutputStream(mFile);
@@ -366,7 +367,7 @@ public class CameraActivity extends BaseActivity {
                     EventBus.getDefault().post(item);
                 }
             });
-            initData();
+
             // 其次把文件插入到系统图库
             /*try {
                 MediaStore.Images.Media.insertImage(getContentResolver(),
@@ -868,7 +869,7 @@ public class CameraActivity extends BaseActivity {
                 public void onCaptureCompleted(@NonNull CameraCaptureSession session,
                                                @NonNull CaptureRequest request,
                                                @NonNull TotalCaptureResult result) {
-                    Log.e(TAG, mFile.toString());
+                    Log.e(TAG, fileName);
                     unlockFocus();
                 }
             };

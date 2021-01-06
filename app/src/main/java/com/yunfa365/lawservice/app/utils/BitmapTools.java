@@ -263,5 +263,26 @@ public final class BitmapTools {
 		Bitmap newbm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, true);
 		return newbm;
 	}
+
+	public static byte[] scaleZoomImage(byte[] bytes, float maxWidth, float maxHeight) {
+		if(bytes == null) return null;
+		Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+		Bitmap nbm  = scaleZoomBitmap(bm , maxWidth, maxHeight);
+
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		nbm.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
+		int quality = 100;
+		double targetSize = 1 * 1024 * 1024; // 1M
+		while ( baos.size() > targetSize) {	//循环判断如果压缩后图片是否大于100kb,大于继续压缩
+			baos.reset();//重置baos即清空baos
+			nbm.compress(Bitmap.CompressFormat.JPEG, quality, baos);//这里压缩options%，把压缩后的数据存放到baos中
+			quality -= 10;//每次都减少10
+		}
+		bytes = baos.toByteArray();
+
+		bm.recycle();
+		nbm.recycle();
+		return bytes;
+	}
 	
 }

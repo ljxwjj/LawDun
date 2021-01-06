@@ -5,20 +5,16 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.Nullable;
-
 import com.android.agnetty.core.AgnettyFutureListener;
 import com.android.agnetty.core.AgnettyResult;
 import com.android.agnetty.future.upload.form.FormUploadFile;
-import com.android.agnetty.utils.LogUtil;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -37,12 +33,10 @@ import com.yunfa365.lawservice.app.pojo.event.OfficialFinishEvent;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
 import com.yunfa365.lawservice.app.ui.activity.base.BaseUserActivity;
-import com.yunfa365.lawservice.app.utils.BitmapTools;
 import com.yunfa365.lawservice.app.utils.DateUtil;
 import com.yunfa365.lawservice.app.utils.FileUtil;
 import com.yunfa365.lawservice.app.utils.LocationUtil;
 import com.yunfa365.lawservice.app.utils.StringUtil;
-
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
@@ -51,8 +45,6 @@ import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-
-import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 import java.util.List;
 
@@ -141,7 +133,7 @@ public class SealConnectActivity extends BaseUserActivity {
         expireTime.setText("失效时间：" + expireTimeStr);
         officialName.setText(officialItem.Title);
         sycs.setText(officialItem.WGNums + "");
-        ygcs.setText("0");
+        ygcs.setText(officialItem.GNums + "");
     }
 
     private void getBattery() {
@@ -157,8 +149,9 @@ public class SealConnectActivity extends BaseUserActivity {
                 //监听盖章
                 BleHelper.getBleHelper(SealConnectActivity.this).setlistenerForStamp().subscribe( r-> {
                     officialItem.WGNums--;
+                    officialItem.GNums++;
                     sycs.setText(officialItem.WGNums + "");
-                    ygcs.setText(r.getStampNumber() + "");
+                    ygcs.setText(officialItem.GNums + "");
                     EventBus.getDefault().post(new GaiZhang());
                     postForStamp();
                     if (officialItem.WGNums == 0) {
@@ -374,15 +367,15 @@ public class SealConnectActivity extends BaseUserActivity {
     }
 
     private void postSealPhoto(String filePath) {
-        Bitmap bitmap = BitmapTools.getBitmap(filePath);
-        bitmap = BitmapTools.scaleZoomBitmap(bitmap, 1500, 1500);
+//        Bitmap bitmap = BitmapTools.getBitmap(filePath);
+//        bitmap = BitmapTools.scaleZoomBitmap(bitmap, 1500, 1500);
         AppRequest request = new AppRequest.Build("api/official/FileList_Add")
                 .addParam("Oid", officialItem.ID + "")
                 .addParam("FileCols", "3")
                 .addParam("lng", currentLatLng.longitude + "")
                 .addParam("lat", currentLatLng.latitude + "")
                 .addParam("NAddress", currentAddress)
-                .addFile(new FormUploadFile("file", FileUtil.getFileName(filePath), compressImage(bitmap)))
+                .addFile(new FormUploadFile("file", FileUtil.getFileName(filePath), filePath))
                 .create();
         new HttpFormFuture.Builder(this)
                 .setData(request)
@@ -395,7 +388,7 @@ public class SealConnectActivity extends BaseUserActivity {
                 .execute();
     }
 
-    public static byte[] compressImage(Bitmap image) {
+    /*public static byte[] compressImage(Bitmap image) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
         int options = 100;
@@ -406,5 +399,5 @@ public class SealConnectActivity extends BaseUserActivity {
             options -= 10;//每次都减少10
         }
         return baos.toByteArray();
-    }
+    }*/
 }
