@@ -7,13 +7,11 @@ import com.android.agnetty.constant.AgnettyCst;
  */
 public class AppCst extends BaseCst {
 
-    public static final int PERSONAL_EDITION_WID = 999;  // 个人版标记
-
     // 是否是调试模式
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
     //API接口地址
     private final static String HTTP_ROOT = "https://api.lawdun.com/";
-    private final static String HTTP_ROOT_DEBUG = "https://api.lawdun.com/";
+    private final static String HTTP_ROOT_DEBUG = "http://api.lawdun.com/";
     static {
 		AgnettyCst.DEBUG = DEBUG;
     }

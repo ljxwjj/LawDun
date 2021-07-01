@@ -1,6 +1,7 @@
 package com.yunfa365.lawservice.app.pojo.http;
 
 import com.android.agnetty.future.upload.form.FormUploadFile;
+import com.android.agnetty.utils.LogUtil;
 import com.android.agnetty.utils.MD5Util;
 import com.google.gson.annotations.Expose;
 import com.yunfa365.lawservice.app.pojo.AppGlobal;
@@ -140,6 +141,10 @@ public class AppRequest {
 			strBuilder.append(key);
 			strBuilder.append(value);
 		}
-		return MD5Util.getMD5(strBuilder.toString().toLowerCase());
+		String paramSrc = strBuilder.toString().toLowerCase();
+		String paramSig = MD5Util.getMD5(paramSrc);
+		LogUtil.d(paramSrc);
+		LogUtil.d(paramSig);
+		return paramSig;
 	}
 }

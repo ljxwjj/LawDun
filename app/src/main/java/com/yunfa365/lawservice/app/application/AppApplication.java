@@ -29,6 +29,7 @@ import com.yunfa365.lawservice.app.pojo.event.BaiDuPushBindEvent;
 import com.yunfa365.lawservice.app.pojo.event.LoginEvent;
 import com.yunfa365.lawservice.app.pojo.event.LogoutEvent;
 import com.yunfa365.lawservice.app.pojo.event.NewVersionEvent;
+import com.yunfa365.lawservice.app.pojo.event.PrivacyAuthorizationEvent;
 import com.yunfa365.lawservice.app.pojo.event.RequestCheckVersion;
 import com.yunfa365.lawservice.app.pojo.http.AppRequest;
 import com.yunfa365.lawservice.app.pojo.http.AppResponse;
@@ -53,6 +54,7 @@ import org.greenrobot.eventbus.Subscribe;
 public class AppApplication extends Application {
 
     private static AppApplication instance;
+    private static boolean initThirdSDKed = false;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -62,23 +64,32 @@ public class AppApplication extends Application {
         if(processName !=null
                 && processName.equals(getPackageName())) {
 
-            SDKInitializer.initialize(this);
             EventBus.getDefault().register(this);
             ScreenUtil.GetInfo(this);
             ImageLoaders.getInstance().init(this);
-            autoLogin();
 
             Validator.registerAnnotation(OptionalEmail.class);
             Validator.registerAnnotation(OptionalPhone.class);
             Validator.registerAnnotation(Phone.class);
             Validator.registerAnnotation(OptionalIdCard.class);
 
-            initBaiduPushManager();
+            if (SpUtil.getUserAgreementFlag(this)) {
+                initThirdSDK();
+                autoLogin();
+            }
         }
 
         if (!AppCst.DEBUG) {
             AppCrashHandler.getInstance().init(getApplicationContext());
         }
+    }
+
+    private void initThirdSDK() {
+        if (initThirdSDKed) return;
+        initThirdSDKed = true;
+
+        SDKInitializer.initialize(this);
+        initBaiduPushManager();
     }
 
     private void initBaiduPushManager() {
@@ -131,6 +142,11 @@ public class AppApplication extends Application {
         AppUtil.showToast(this, "测试模拟登录用户");
         EventBus.getDefault().post(new LoginEvent());
         return true;
+    }
+
+    @Subscribe
+    public void onEvent(PrivacyAuthorizationEvent event) {
+        initThirdSDK();
     }
 
     @Subscribe

@@ -18,11 +18,14 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.yunfa365.lawservice.app.pojo.AppGlobal;
+import com.yunfa365.lawservice.app.pojo.event.PrivacyAuthorizationEvent;
 import com.yunfa365.lawservice.app.ui.activity.HomeActivity_;
 import com.yunfa365.lawservice.app.ui.activity.LoginActivity_;
 import com.yunfa365.lawservice.app.ui.activity.WebActivity_;
 import com.yunfa365.lawservice.app.utils.ScreenUtil;
 import com.yunfa365.lawservice.app.utils.SpUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -90,12 +93,16 @@ public class MainActivity extends AppCompatActivity {
     private void showUserAgreementDialog() {
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setView(R.layout.dialog_user_agreement).setCancelable(false)
-                .setPositiveButton("我同意", (dialog12, which) -> {
+                .setPositiveButton("同意", (dialog12, which) -> {
                     dialog12.dismiss();
                     SpUtil.setUserAgreementFlag(MainActivity.this);
+                    EventBus.getDefault().post(new PrivacyAuthorizationEvent());
                     goHome();
                 })
-                .setNegativeButton("暂不使用", (dialog1, which) -> finish())
+                .setNegativeButton("拒绝", (dialog1, which) -> {
+                    dialog1.dismiss();
+                    finish();
+                })
                 .create();
         dialog.show();
         TextView textView = dialog.findViewById(R.id.text);
